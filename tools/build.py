@@ -164,7 +164,7 @@ PAGE = f"""<!DOCTYPE html>
 <meta property="og:image" content="https://bharatfinedine.com/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261111">
+<link rel="stylesheet" href="assets/site.css?v=20261112">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False, separators=(",", ":"))}</script>
 </head>
 <body class="has-bar">
@@ -192,15 +192,15 @@ PAGE = f"""<!DOCTYPE html>
 </main>
 <footer class="foot"><div class="legal"><div class="wrap"><span>© 2026 Bharat Fine Dine · by Sardesai's Kitchen · FSSAI Lic. No. 11524049000056</span><span><a href="index.html">Home</a> · <a href="events.html">Events</a> · <a href="tel:+919126268181">+91 91262 68181</a></span></div></div></footer>
 <div class="mbar" aria-label="Quick actions"><span class="cnt" id="barCount">Add dishes with +</span><a class="go" href="index.html#plan">Plan my table</a></div>
-<script src="assets/data.js?v=20261111" defer></script>
-<script src="assets/app.js?v=20261111" defer></script>
+<script src="assets/data.js?v=20261112" defer></script>
+<script src="assets/app.js?v=20261112" defer></script>
 </body>
 </html>
 """
 (ROOT / "menu.html").write_text(PAGE, encoding="utf-8")
 # ---------- index.html: the stop card shown before JavaScript runs ----------
 k = data[0]
-card = ('<div class="top"><span class="kick" style="--k:%s">Stop 1 of %d · %s</span></div><h2 class="h3">%s</h2><p class="line">%s</p>' % (k["ink"], len(data), e(k["sub"]), e(k["title"]), e(k["line"]))
+card = ('<div class="top"><span class="kick" style="--k:%s">Stop 1 of %d<span class="rg"> · %s</span></span></div><h2 class="h3">%s</h2><p class="line">%s</p>' % (k["ink"], len(data), e(k["sub"]), e(k["title"]), e(k["line"]))
         + "".join('<div class="dish"><span class="mark%s" aria-hidden="true"></span><span class="n">%s</span><b>%s</b></div>' % ("" if d["veg"] else " nv", e(d["name"]), e(d["price"])) for d in k["dishes"])
         + '<a class="lnk" href="menu.html#k-%s">See all %d %s dishes →</a>' % (k["id"], k["count"], e(k["name"])))
 idx = ROOT / "index.html"

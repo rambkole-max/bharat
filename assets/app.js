@@ -78,7 +78,7 @@
     }).join("");
     var renderStop = function () {
       var k = K[cur - 1], nx = K[cur % K.length];
-      stopEl.innerHTML = '<div class="top"><span class="kick" style="--k:' + k.ink + '">Stop ' + k.n + " of " + K.length + " · " + esc(k.sub) + '</span><button type="button" class="next" data-stop="' + nx.n + '">' + (cur < K.length ? "Next: " : "Back to: ") + esc(nx.name) + " →</button></div>" +
+      stopEl.innerHTML = '<div class="top"><span class="kick" style="--k:' + k.ink + '">Stop ' + k.n + " of " + K.length + '<span class="rg"> · ' + esc(k.sub) + '</span></span><button type="button" class="next" data-stop="' + nx.n + '">' + (cur < K.length ? "Next: " : "Back to: ") + esc(nx.name) + " →</button></div>" +
         '<h2 class="h3">' + esc(k.title) + '</h2><p class="line">' + esc(k.line) + "</p>" +
         k.dishes.map(function (d) { return '<div class="dish"><span class="mark' + (d.veg ? "" : " nv") + '" aria-hidden="true"></span><span class="n">' + esc(d.name) + '</span><span class="sr">' + (d.veg ? "Veg" : "Non-veg") + ".</span><b>" + esc(d.price) + "</b></div>"; }).join("") +
         '<a class="lnk" href="menu.html#k-' + k.id + '">See all ' + k.count + " " + esc(k.name) + " dishes →</a>";

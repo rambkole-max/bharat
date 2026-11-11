@@ -301,3 +301,13 @@ dialog::backdrop{background:rgba(30,27,24,.6)}
 .mgrid > *{min-width:0}
 .dlg .body > *{flex:none}
 .mbar .cnt{color:var(--cream);font-weight:600}
+
+/* alignment pass */
+.stop{display:flex;flex-direction:column}
+.stop .lnk{margin-top:auto}
+.stop .top{align-items:center}
+.stop .top .kick{white-space:nowrap}
+.stop .rg{display:none}
+.stats{display:flex;gap:var(--s6)}
+.band .in{align-items:start}
+@media (min-width:820px){ .duo{align-items:stretch} .stop,.plan{padding:24px 28px} .stop .rg{display:inline} .hero{align-items:center} }
