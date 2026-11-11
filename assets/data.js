@@ -32,6 +32,11 @@ window.BFD_KITCHENS = [
     "name": "Veg Patiyala",
     "veg": true,
     "price": "₹389"
+   },
+   {
+    "name": "Kaju Curry",
+    "veg": true,
+    "price": "₹349"
    }
   ]
  },
@@ -67,6 +72,11 @@ window.BFD_KITCHENS = [
     "name": "Tandoor Chicken",
     "veg": false,
     "price": "₹649 / ₹399"
+   },
+   {
+    "name": "Murgh Seekh Kebab",
+    "veg": false,
+    "price": "₹389"
    }
   ]
  },
@@ -102,6 +112,11 @@ window.BFD_KITCHENS = [
     "name": "Veg Dum Biryani",
     "veg": true,
     "price": "₹249"
+   },
+   {
+    "name": "Butter Chicken",
+    "veg": false,
+    "price": "₹389"
    }
   ]
  },
@@ -137,6 +152,11 @@ window.BFD_KITCHENS = [
     "name": "Shev Bhaji",
     "veg": true,
     "price": "₹219"
+   },
+   {
+    "name": "Chicken Sukha",
+    "veg": false,
+    "price": "₹329"
    }
   ]
  },
@@ -172,6 +192,11 @@ window.BFD_KITCHENS = [
     "name": "Surmai Curry",
     "veg": false,
     "price": "As per size"
+   },
+   {
+    "name": "Pomfret Tawa",
+    "veg": false,
+    "price": "As per size"
    }
   ]
  },
@@ -204,6 +229,11 @@ window.BFD_KITCHENS = [
     "name": "Grilled Chicken Salad",
     "veg": false,
     "price": "₹299"
+   },
+   {
+    "name": "Veg Club Sandwich",
+    "veg": true,
+    "price": "₹249"
    }
   ]
  },
@@ -236,6 +266,11 @@ window.BFD_KITCHENS = [
     "name": "Crispy Honey Chilli Chicken",
     "veg": false,
     "price": "₹190"
+   },
+   {
+    "name": "Veg Spring Roll",
+    "veg": true,
+    "price": "₹279"
    }
   ]
  }

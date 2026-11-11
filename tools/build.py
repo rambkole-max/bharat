@@ -18,32 +18,32 @@ KITCHENS = [
     dict(id="punjabi", name="Punjabi", title="The Punjabi kitchen", sub="Punjab · North", color="#74540D", ink="#74540D",
          art="img/mural-punjab-720.webp", thumb="img/mural-punjab-480.webp", pin=(22, 20),
          line="The Golden Temple, the dhol, and a basket of naan.",
-         featured=[("Paneer Sultani", None), ("Malai Kofta", None), ("Veg Patiyala", None)]),
+         featured=[("Paneer Sultani", None), ("Malai Kofta", None), ("Veg Patiyala", None), ("Kaju Curry", None)]),
     dict(id="tandoor", short="Tandoor", name="Tandoor & BBQ", title="Tandoor & BBQ", sub="Off the coal", color="#B23B2B", ink="#9A3023",
          art="img/mural-tandoor-720.webp", thumb="img/mural-tandoor-480.webp", pin=(84, 38),
          line="Coal under the tandoor, and kebabs straight off the skewer.",
-         featured=[("Murgh Malai Tikka", None), ("Paneer Malai Tikka", None), ("Tandoor Chicken Full/Half", "Tandoor Chicken")]),
+         featured=[("Murgh Malai Tikka", None), ("Paneer Malai Tikka", None), ("Tandoor Chicken Full/Half", "Tandoor Chicken"), ("Murgh Seekh Kebab", None)]),
     dict(id="mughlai", name="Mughlai", title="The Mughlai kitchen", sub="Awadh · Lucknow", color="#A05610", ink="#8A4A0C",
          art="img/mural-mughlai-720.webp", thumb="img/mural-mughlai-480.webp", pin=(71, 13),
          line="Lucknow’s gateway, a nawab at ease, and slow dum handis.",
-         featured=[("Chicken Mughlai", None), ("Mutton Rogan Josh", None), ("Veg Dum Biryani", None)]),
+         featured=[("Chicken Mughlai", None), ("Mutton Rogan Josh", None), ("Veg Dum Biryani", None), ("Butter Chicken", None)]),
     dict(id="maharashtrian", name="Maharashtrian", title="The Maharashtrian kitchen", sub="Home ground", color="#8C2D46", ink="#8C2D46",
          art="img/mural-maharashtra-720.webp", thumb="img/mural-maharashtra-480.webp", pin=(31, 66),
          line="Kolhapuri heat and Saoji spice from next door.",
-         featured=[("Chicken Kolhapuri Full/Half", "Chicken Kolhapuri"), ("Veg Saoji", None), ("Shev Bhaji", None)]),
+         featured=[("Chicken Kolhapuri Full/Half", "Chicken Kolhapuri"), ("Veg Saoji", None), ("Shev Bhaji", None), ("Chicken Sukha", None)]),
     dict(id="coastal", short="Coastal", name="Coastal & Seafood", title="Coastal & Seafood", sub="Konkan to Kerala", color="#163E52", ink="#163E52",
          art="img/mural-goa-720.webp", thumb="img/mural-goa-480.webp", pin=(7, 60),
          line="Church bells, backwater boats and the day’s catch.",
          featured=[("Fish (Amritsari/Ajwaini/Achari/Lasuni)", "Fish Amritsari"), ("Prawns (Koliwada/Rava/Tawa/Tandoori)", "Prawns Koliwada"),
-                   ("Surmai CurryGoan/kerla/mangolorian", "Surmai Curry")]),
+                   ("Surmai CurryGoan/kerla/mangolorian", "Surmai Curry"), ("Pomfret (Tawa/Tandoori/Rava)", "Pomfret Tawa")]),
     dict(id="continental", name="Continental", title="The Continental kitchen", sub="Beyond Bharat", color="#48532A", ink="#48532A",
          art="img/mural-continental.webp", thumb="img/mural-continental-300.webp", pin=None,
          line="Grills, salads, sizzlers, pizza and pasta.",
-         featured=[("Waldorf Salad", None), ("Cheese Club Sandwich", None), ("Grilled Chicken Salad", None)]),
+         featured=[("Waldorf Salad", None), ("Cheese Club Sandwich", None), ("Grilled Chicken Salad", None), ("Veg Club Sandwich", None)]),
     dict(id="oriental", short="Chinese", name="Chinese & Oriental", title="Chinese & Oriental", sub="The East", color="#0F4E37", ink="#0F4E37",
          art="img/mural-oriental.webp", thumb="img/mural-oriental-300.webp", pin=None,
          line="Wok-tossed starters, noodles, rice bowls and Thai curries.",
-         featured=[("Veg Hakka Noodles", None), ("Burnt Garlic Noodles", None), ("Crispy Honey Chilli Chicken", None)]),
+         featured=[("Veg Hakka Noodles", None), ("Burnt Garlic Noodles", None), ("Crispy Honey Chilli Chicken", None), ("Veg Spring Roll", None)]),
 ]
 MORE = dict(id="other", name="Drinks & more", title="Drinks, soups and desserts", sub="For the table", color="#1E1B18", ink="#1E1B18",
             line="Juices, mocktails, soups, salads and something sweet.")
@@ -164,7 +164,7 @@ PAGE = f"""<!DOCTYPE html>
 <meta property="og:image" content="https://bharatfinedine.com/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261112">
+<link rel="stylesheet" href="assets/site.css?v=20261113">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False, separators=(",", ":"))}</script>
 </head>
 <body class="has-bar">
@@ -192,8 +192,8 @@ PAGE = f"""<!DOCTYPE html>
 </main>
 <footer class="foot"><div class="legal"><div class="wrap"><span>© 2026 Bharat Fine Dine · by Sardesai's Kitchen · FSSAI Lic. No. 11524049000056</span><span><a href="index.html">Home</a> · <a href="events.html">Events</a> · <a href="tel:+919126268181">+91 91262 68181</a></span></div></div></footer>
 <div class="mbar" aria-label="Quick actions"><span class="cnt" id="barCount">Add dishes with +</span><a class="go" href="index.html#plan">Plan my table</a></div>
-<script src="assets/data.js?v=20261112" defer></script>
-<script src="assets/app.js?v=20261112" defer></script>
+<script src="assets/data.js?v=20261113" defer></script>
+<script src="assets/app.js?v=20261113" defer></script>
 </body>
 </html>
 """

@@ -72,6 +72,16 @@
     pins.innerHTML = K.filter(function (k) { return k.pin; }).map(function (k) {
       return '<button type="button" class="pin" data-stop="' + k.n + '" style="left:' + k.pin[0] + "%;top:" + k.pin[1] + '%"><span class="dot" style="--k:' + k.color + '">' + k.n + "</span>" + esc(k.name) + "</button>";
     }).join("");
+    // phone: a pin whose label would be cut by the screen edge shows only its number until swiped into view
+    var flipPins = function () {
+      var w = wall.clientWidth, x0 = wall.getBoundingClientRect().left;
+      Array.prototype.forEach.call(pins.querySelectorAll(".pin"), function (b) {
+        b.classList.toggle("flip", false);
+        var r = b.getBoundingClientRect();
+        b.classList.toggle("flip", wall.scrollWidth > w && r.left - x0 < w && r.right - x0 > w - 8);
+      });
+    };
+    flipPins(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(flipPins); window.addEventListener("resize", flipPins); wall.addEventListener("scroll", flipPins, { passive: true });
     journey.innerHTML = K.map(function (k) {
       return '<button type="button" class="node" data-stop="' + k.n + '" style="--k:' + k.color + '"><img src="' + k.thumb + '" alt="" width="480" height="270" loading="lazy" decoding="async">' +
         '<span class="ln"><span class="dot">' + k.n + "</span></span><b>" + esc(k.name) + "</b><small>" + esc(k.sub) + "</small><small><b>" + k.count + "</b> dishes · " + kind(k) + "</small></button>";
