@@ -36,8 +36,9 @@ There is no reservation backend. "Plan my table" builds a WhatsApp message (occa
 
 Phone number, hours, slots and tracking IDs (GA4, Meta Pixel) are in `CFG` at the top of `assets/app.js`. Analytics load after the page is idle.
 
-## Still to confirm with the client
-- **Hall and room capacities** in `ROOMS` (`assets/app.js`) are placeholders. The event planner's "fits your event" depends on them.
-- Featured dishes and their descriptions for each stop.
-- Review names and quotes; the review count in the page's structured data.
-- Food photography (none is used yet).
+## Content status
+- Client sign-off received (11 Nov 2026) on the featured dishes, review quotes and stats.
+- Banquet halls: about 300 to 350 seats each, as confirmed. Private and board rooms are shown for groups up to 20, the online table limit.
+- Seven Chinese chicken dishes show "Price on request" by choice.
+- Menu spelling was cleaned up on 11 Nov 2026 (39 dish names, and the descriptions).
+- No food photography is used yet.

@@ -340,11 +340,11 @@
      ===================================================================== */
   var ev = $("#planner");
   if (ev) {
-    /* PLACEHOLDER capacities: confirm with the restaurant before launch. */
+    /* Each banquet hall seats about 300 to 350 (confirmed by the restaurant). Rooms take up to 20, the online table limit. */
     var SIZES = [{ t: "Up to 20", max: 20 }, { t: "20 to 100", max: 100 }, { t: "100 to 300", max: 300 }, { t: "300+", max: 9999 }];
     var ROOMS = [
-      { name: "Samiksha banquet hall", info: "300+ seats · full catering", img: "img/svc-hall-720.webp", min: 21, max: 9999 },
-      { name: "Sanskruti banquet hall", info: "300+ seats · full catering", img: "img/hall-sanskruti-720.webp", min: 21, max: 9999 },
+      { name: "Samiksha banquet hall", info: "300 to 350 seats · full catering", img: "img/svc-hall-720.webp", min: 21, max: 350 },
+      { name: "Sanskruti banquet hall", info: "300 to 350 seats · full catering", img: "img/hall-sanskruti-720.webp", min: 21, max: 350 },
       { name: "Private dining rooms", info: "Smaller celebrations", img: "img/svc-private-720.webp", min: 1, max: 20 },
       { name: "Board and meeting rooms", info: "AV-ready, for meetings", img: "img/svc-meeting-720.webp", min: 1, max: 20 }
     ];
@@ -364,7 +364,7 @@
       $("#fitTitle").textContent = "Spaces that fit " + SIZES[E.size].t.toLowerCase() + " guests";
       $("#fits").innerHTML = ROOMS.map(function (r) { var ok = lo <= r.max && SIZES[E.size].max >= r.min; return { r: r, ok: ok }; }).sort(function (a, b) { return b.ok - a.ok; }).map(function (x) {
         return '<div class="card flat fit' + (x.ok ? " ok" : "") + '"><img src="' + x.r.img + '" alt="" width="96" height="72" loading="lazy"><div class="tx"><b>' + esc(x.r.name) + "</b><span>" + esc(x.r.info) + '</span><span class="badge">' + (x.ok ? "Fits your event" : (lo > x.r.max ? "Too small for this" : "Larger than you need")) + "</span></div></div>";
-      }).join("");
+      }).join("") + (E.size === 3 ? '<p class="note">Each hall seats about 300 to 350 guests. Tell us your number and our coordinator will confirm what works.</p>' : "");
       var s = $("#evSend"); s.href = evOk() ? wa(evMsg()) : "#evName"; s.setAttribute("aria-disabled", !evOk());
     };
     ev.addEventListener("click", function (e) {

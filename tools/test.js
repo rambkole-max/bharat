@@ -381,7 +381,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     }
     const info = await p.$$eval('.fit', e => e.map(x => x.querySelector('b').textContent + ': ' + x.querySelectorAll('span')[0].textContent));
     await p.click('#evSize [data-size="3"]');
-    const big = await p.$$eval('.fit.ok', e => e.map(x => x.textContent)); ck(S, '300+ guests: no single 300-seat hall is promised as enough without a caveat', big.every(t => /300\+ seats/.test(t)), big.join(' | '));
+    const big = await p.$$eval('.fit.ok', e => e.map(x => x.textContent)); ck(S, '300+ guests: halls show 300 to 350 seats and a note about larger numbers', big.every(t => /300 to 350 seats/.test(t)) && await p.$eval('#fits', e => /about 300 to 350 guests/.test(e.textContent)), big.join(' | '));
     eq(S, 'send button is greyed until name and phone are filled', await p.getAttribute('#evSend', 'aria-disabled'), 'true');
     await p.click('#evSend', { force: true }); await p.waitForTimeout(100);
     eq(S, 'pressing it early shows the error and moves focus to name', [await p.$eval('#evErr', e => e.hidden), await p.evaluate(() => document.activeElement.id), await p.$eval('#evDone', e => e.hidden)], [false, 'evName', true]);
