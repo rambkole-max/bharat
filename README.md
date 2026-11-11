@@ -8,7 +8,7 @@ Static HTML/CSS/JS. No framework. Three pages:
 | `menu.html` | The menu in wall order. Search, veg-only, and a dish list that travels with the table request. **Generated, do not edit by hand.** |
 | `events.html` | Event planner: type, guest count, date, menu, the spaces that fit, enquiry on WhatsApp. |
 
-Shared files: `assets/site.css` (design tokens + all components), `assets/app.js` (all behaviour), `assets/data.js` (generated kitchen data).
+Shared files: `assets/site.css` (design tokens + all components), `assets/app.js` (all behaviour, the file to edit), `assets/app.min.js` (generated; the file the pages load), `assets/data.js` (generated kitchen data).
 
 ## Deploy
 Upload `index.html`, `menu.html`, `events.html`, `assets/`, the favicons, `og-image.jpg`, `robots.txt`, `sitemap.xml`, `_headers`.
@@ -17,10 +17,19 @@ Upload `index.html`, `menu.html`, `events.html`, `assets/`, the favicons, `og-im
 
 ## Changing the menu
 1. Edit `data/menu.json` (dish name, `veg`, `price`, optional `desc`; each section has a `kitchen`).
-2. Run `python3 tools/build.py` from the repo root. It rewrites `menu.html`, `assets/data.js` and the first stop card inside `index.html`.
+2. Run `python3 tools/build.py` from the repo root. It rewrites `menu.html`, `assets/data.js`, the first stop card inside `index.html`, and `assets/app.min.js`.
 3. Bump the `?v=` number on the CSS/JS links in the three pages so phones fetch the new files.
 
 Kitchen names, colours, mural art, pin positions and the featured dishes of each stop are in `KITCHENS` at the top of `tools/build.py`.
+
+## Changing the script
+Edit `assets/app.js`, then run `python3 tools/build.py`. The pages load `assets/app.min.js`, so an edit to `app.js` does nothing until the build has run. Minifying needs Node.js (`npx terser`); without it the build copies `app.js` unminified and prints a warning. Bump the `?v=` number afterwards.
+
+## Testing
+```
+node tools/test.js
+```
+Runs about 600 checks in a headless browser: layout at five screen sizes, every homepage section, the booking and event flows, every dish and price against `data/menu.json`, links, and behaviour with JavaScript off. It starts its own local server and exits non-zero if anything fails. Needs Node.js and Playwright (`npm i -g playwright`, then `npx playwright install chromium`). Run it after every menu or code change. Images that are not in the repo are skipped, not checked.
 
 ## How booking works
 There is no reservation backend. "Plan my table" builds a WhatsApp message (occasion, guests, day, time, a suggested seating, any dishes on the list, a `BFD-xxxx` reference) and opens it to +91 91262 68181. Staff confirm on WhatsApp; the site says "request", never "confirmed". Slots already past today (India time) are disabled. The event planner works the same way.

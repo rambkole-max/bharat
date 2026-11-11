@@ -320,3 +320,7 @@ dialog::backdrop{background:rgba(30,27,24,.6)}
 @media (max-width:819.98px){ .pin{height:40px} .pin.flip{padding:0;min-width:40px;justify-content:center} }
 .mbar a,.mbar button{display:flex;align-items:center;justify-content:center;min-height:48px}
 .sec[id],#wall,#plan,#top{scroll-margin-top:100px}
+/* stay inside the screen even when a photo fails to load */
+.pics{grid-template-columns:repeat(2,minmax(0,1fr))}
+.band .in > *,.space > *,.visit > *{min-width:0}
+img{max-width:100%}
