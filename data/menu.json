@@ -1,0 +1,1820 @@
+{
+ "sections": [
+  {
+   "id": "beverages",
+   "title": "Beverages",
+   "kitchen": "other",
+   "items": [
+    {
+     "name": "Orange Juice",
+     "veg": true,
+     "price": "₹129"
+    },
+    {
+     "name": "Pineapple Juice",
+     "veg": true,
+     "price": "₹129"
+    },
+    {
+     "name": "Watermelon Juice",
+     "veg": true,
+     "price": "₹129"
+    },
+    {
+     "name": "Fresh Lime Soda Sweet/Salted",
+     "veg": true,
+     "price": "₹69"
+    },
+    {
+     "name": "Fresh Lime Water",
+     "veg": true,
+     "price": "₹59"
+    },
+    {
+     "name": "Butter Milk Plain/Masala",
+     "veg": true,
+     "price": "₹79 / ₹89"
+    },
+    {
+     "name": "Soft Drink 330ML/500ML",
+     "veg": true,
+     "price": "MRP"
+    },
+    {
+     "name": "Packaged Drinking Water",
+     "veg": true,
+     "price": "MRP"
+    }
+   ]
+  },
+  {
+   "id": "mocktails",
+   "title": "Mocktails",
+   "kitchen": "other",
+   "items": [
+    {
+     "name": "Special Mocktail",
+     "veg": true,
+     "price": "₹249"
+    },
+    {
+     "name": "Fruit Explosion",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Mix Fruit Juice, Strawberry Ice Cream, Grenadine Syrup, Coconut Syrup, Fruit Toppings."
+    },
+    {
+     "name": "Guava Merry",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Guava & Pineapple Juice, Fresh Pineapple Chopped, Red Chilli Powder, Black Salt and Tabasco Sauce."
+    },
+    {
+     "name": "Black Beauty",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Thums Up, Orange, Mint, Lime, Black Salt."
+    },
+    {
+     "name": "Blue Coco Boomer",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Blue Curacao Syrup, Coconut Syrup, Pineapple Juice, Fresh Cream, Vanilla Ice Cream."
+    },
+    {
+     "name": "Cucumber Ginger Mocktail",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Cucumber, Fresh Ginger, Sugar, Soda, Lime Juice."
+    },
+    {
+     "name": "Pineapple Mint Mojito",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Pineapple Juice, Pineapple, Mint, Lime, Soda."
+    },
+    {
+     "name": "Peach Sunrise",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Peach Syrup, Sugar Syrup, Soda, Lime Juice, Sprite, Grenadine Syrup."
+    },
+    {
+     "name": "Cranberry Mojito",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Cranberry Juice, Mint Leaves, Mojito Syrup, Lime, Sugar Syrup."
+    },
+    {
+     "name": "Watermelon Soda Float",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Watermelon, Vanilla Ice Cream, Coconut Cream, Soda."
+    },
+    {
+     "name": "Pomegranate Cooler",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Pomegranate Juice, Pomegranate Seeds, Sugar Syrup, Lime Juice."
+    }
+   ]
+  },
+  {
+   "id": "soups",
+   "title": "Soups",
+   "kitchen": "other",
+   "items": [
+    {
+     "name": "Cream Of Almond Soup",
+     "veg": true,
+     "price": "₹199",
+     "desc": "A creamy, rich soup with a nutty flavour of almonds."
+    },
+    {
+     "name": "Cream Of Mushroom Soup",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Deliciously creamy with tender bites of mushroom pieces. Full flavoured with garlic, onions and herbs subtle enough to shine through and complement the natural flavour of mushrooms without overpowering."
+    },
+    {
+     "name": "Cream Of Broccoli",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Prepared with broccoli, vegetable stock, milk and cream."
+    },
+    {
+     "name": "Veg Sweetcorn Soup",
+     "veg": true,
+     "price": "₹179",
+     "desc": "Delicious soup made from fresh American sweet corn, scallions, herbs and spices."
+    },
+    {
+     "name": "Lemon Coriander Soup",
+     "veg": true,
+     "price": "₹169",
+     "desc": "The refreshing combination of lemon and coriander gives you a healthy soup."
+    },
+    {
+     "name": "Cream Of Tomato Soup/Spinach",
+     "veg": true,
+     "price": "₹159"
+    },
+    {
+     "name": "Veg Tom Yum Soup",
+     "veg": true,
+     "price": "₹169",
+     "desc": "Various aromatic ingredients are sliced, roughly pounded, and simmered to extract their flavor. These include fresh ingredients such as lemongrass, kaffir lime leaves, galangal, chilis, shallots, and garlic."
+    },
+    {
+     "name": "Veg Manchow Soup",
+     "veg": true,
+     "price": "₹149",
+     "desc": "A restaurant style Chinese vegetarian soup made with mixed vegetables, garlic, ginger, soya sauce, ground pepper & a few other pantry ingredients."
+    },
+    {
+     "name": "Veg Hot & Sour Soup",
+     "veg": true,
+     "price": "₹149",
+     "desc": "Is a spicy and hot soup made with mixed fresh vegetables, mushrooms, spices and soy sauce."
+    },
+    {
+     "name": "Sweetcorn Chicken",
+     "veg": false,
+     "price": "₹209",
+     "desc": "Tender corn kernels and diced chicken, simmered to a soup."
+    },
+    {
+     "name": "Cream of Chicken",
+     "veg": false,
+     "price": "₹209",
+     "desc": "Boneless chicken chop, Milk, Cream, Salt, Pepper."
+    },
+    {
+     "name": "Tom Yum Chicken",
+     "veg": false,
+     "price": "₹209",
+     "desc": "Tom Yum is a world-famous Thai soup that has a full flavour that is sour, salty, spicy and slightly sweet."
+    },
+    {
+     "name": "Tom Kha Gai Chicken",
+     "veg": false,
+     "price": "₹209",
+     "desc": "A spicy soup, made with coconut milk."
+    },
+    {
+     "name": "Chicken Lemon Coriander",
+     "veg": false,
+     "price": "₹209",
+     "desc": "Tender chicken bites, crunchy cabbage, & lots of fresh coriander leaves cooked in a made-from-scratch broth."
+    },
+    {
+     "name": "Hot & Sour Chicken",
+     "veg": false,
+     "price": "₹209",
+     "desc": "Spicy and tangy soup with sesame and chilli flavour topped with chicken."
+    },
+    {
+     "name": "Chicken Manchow Soup",
+     "veg": false,
+     "price": "₹209",
+     "desc": "Spicy & hot soup with chicken and vegetables."
+    },
+    {
+     "name": "Chicken Clear Soup",
+     "veg": false,
+     "price": "₹209",
+     "desc": "A light, healthy, & comforting broth-based soup made by gently simmering chicken with vegetables & aromatics."
+    }
+   ]
+  },
+  {
+   "id": "shorba",
+   "title": "Shorba",
+   "kitchen": "mughlai",
+   "items": [
+    {
+     "name": "Tomato Shorba",
+     "veg": true,
+     "price": "₹190",
+     "desc": "Tomato Dhaniya Shorba is a light, spiced Indian-style tomato and coriander broth."
+    },
+    {
+     "name": "Palak Shorba",
+     "veg": true,
+     "price": "₹190",
+     "desc": "Palak soup is a wonderfully flavorful, comforting, and healthy dish, made with simple, wholesome ingredients."
+    },
+    {
+     "name": "Dal Shorba",
+     "veg": true,
+     "price": "₹190",
+     "desc": "Dal shorba is simply lentil soup made from yellow moong dal or toor dal."
+    }
+   ]
+  },
+  {
+   "id": "salads",
+   "title": "Salads",
+   "kitchen": "continental",
+   "items": [
+    {
+     "name": "Greek Farmhouse Salad",
+     "veg": true,
+     "price": "₹249",
+     "desc": "Kalamata olives and feta cheese provide the must-have salty and briny contrast to crisp romaine lettuce, cucumbers, sweet tomatoes, and spicy red onions."
+    },
+    {
+     "name": "Waldorf Salad",
+     "veg": true,
+     "price": "₹249",
+     "desc": "A fruit and nut salad made of celery, fresh apples, walnuts, and grapes, dressed in mayonnaise, and traditionally served on a bed of lettuce."
+    },
+    {
+     "name": "Russian Salad",
+     "veg": true,
+     "price": "₹249",
+     "desc": "A creamy, addictive salad with lots of veggies and mayonnaise. Simple, fresh, and the ideal summer salad."
+    },
+    {
+     "name": "Sprout Salad",
+     "veg": true,
+     "price": "₹199",
+     "desc": "Assorted sprouts with chat masala, salt and special spices."
+    },
+    {
+     "name": "Fresh Garden Salad",
+     "veg": true,
+     "price": "₹149",
+     "desc": "Cucumber, tomatoes, carrot, beetroot, cabbage and green chilly."
+    },
+    {
+     "name": "Grilled Chicken Salad",
+     "veg": false,
+     "price": "₹299",
+     "desc": "Grilled Chicken Salad – Boneless Chicken, Babycorn, Onion, Iceberg Lettuce, cherry tomato with Lemon Vinaigrette Dressing."
+    },
+    {
+     "name": "Asian Mix Chicken Salad",
+     "veg": false,
+     "price": "₹299",
+     "desc": "Asian Mix Chicken Salad – Iceberg, Red Cabbage, Carrot, Diced Chicken with Sweet Chilly Dressing."
+    },
+    {
+     "name": "Caesar’s Chicken Salad",
+     "veg": false,
+     "price": "₹299",
+     "desc": "Caesar’s Chicken Salad – Iceberg, Croutons, Parmesan Cheese, Chicken with Caesar Dressing."
+    },
+    {
+     "name": "Italian Chicken Salad",
+     "veg": false,
+     "price": "₹299",
+     "desc": "Italian Chicken Salad – Cabbage, Bell Peppers, Carrots, Chicken, Grapes and Pineapple with Mayonnaise Dressing."
+    }
+   ]
+  },
+  {
+   "id": "papad-raita",
+   "title": "Papad & Raita",
+   "kitchen": "other",
+   "items": [
+    {
+     "name": "Cheese Pakoda",
+     "veg": true,
+     "price": "₹269"
+    },
+    {
+     "name": "Paneer Pakoda",
+     "veg": true,
+     "price": "₹259"
+    },
+    {
+     "name": "Schezwan Cheese Masala Papad",
+     "veg": true,
+     "price": "₹99"
+    },
+    {
+     "name": "Masala Peanuts",
+     "veg": true,
+     "price": "₹169"
+    },
+    {
+     "name": "Raita (Boondi/Pineapple/Mix Veg/Onion Mint)",
+     "veg": true,
+     "price": "₹129"
+    },
+    {
+     "name": "Papad Churi",
+     "veg": true,
+     "price": "₹99"
+    },
+    {
+     "name": "Butter Cheese Papad",
+     "veg": true,
+     "price": "₹110"
+    },
+    {
+     "name": "Fried Masala Papad",
+     "veg": true,
+     "price": "₹45"
+    },
+    {
+     "name": "Roasted Masala Papad",
+     "veg": true,
+     "price": "₹40"
+    },
+    {
+     "name": "Papad Fried/Roasted",
+     "veg": true,
+     "price": "₹40 / ₹35"
+    }
+   ]
+  },
+  {
+   "id": "sandwiches",
+   "title": "Sandwiches",
+   "kitchen": "continental",
+   "items": [
+    {
+     "name": "Cheese Club Sandwich",
+     "veg": true,
+     "price": "₹269"
+    },
+    {
+     "name": "Cheese Grilled Sandwich",
+     "veg": true,
+     "price": "₹239"
+    },
+    {
+     "name": "Cheese Chilly Toast",
+     "veg": true,
+     "price": "₹269"
+    },
+    {
+     "name": "Veg Club Sandwich",
+     "veg": true,
+     "price": "₹249"
+    },
+    {
+     "name": "Veg Sandwich",
+     "veg": true,
+     "price": "₹179"
+    }
+   ]
+  },
+  {
+   "id": "chinese-oriental-starters",
+   "title": "Chinese & Oriental — Starters",
+   "kitchen": "oriental",
+   "items": [
+    {
+     "name": "Mongolian Cottage Cheese",
+     "veg": true,
+     "price": "₹475",
+     "desc": "Cottage cheese tossed in Mongolian sauce."
+    },
+    {
+     "name": "Paneer Cheese Cigar",
+     "veg": true,
+     "price": "₹359",
+     "desc": "Chatpata minced paneer and cheese with salt, pepper, mustard, Worcestershire sauce, ginger and garlic, in a deep-fried cigar-sized roll."
+    },
+    {
+     "name": "Crispy Corn Salt & Pepper",
+     "veg": true,
+     "price": "₹359",
+     "desc": "American corn, crispy fried and tossed in sea salt, black pepper and garlic."
+    },
+    {
+     "name": "Paneer Chilly Dry",
+     "veg": true,
+     "price": "₹289",
+     "desc": "It is simply flour or batter coated fried paneer cubes tossed in a spicy, salty, tangy and sweet sauce made with green bell peppers, garlic, ginger, green chillies, soy sauce and more seasonings."
+    },
+    {
+     "name": "Paneer 65",
+     "veg": true,
+     "price": "₹289",
+     "desc": "Paneer coated in spices, ginger, garlic and lemon juice, tossed with curry leaves, curd and spices."
+    },
+    {
+     "name": "Mushroom Chilly/Manchurian Dry",
+     "veg": true,
+     "price": "₹279"
+    },
+    {
+     "name": "Veg Spring Roll",
+     "veg": true,
+     "price": "₹279"
+    },
+    {
+     "name": "Honey Chilly Potato",
+     "veg": true,
+     "price": "₹289"
+    },
+    {
+     "name": "Corn Crunchy",
+     "veg": true,
+     "price": "₹299"
+    },
+    {
+     "name": "Veg Manchurian Dry",
+     "veg": true,
+     "price": "₹219"
+    },
+    {
+     "name": "Gobi Manchurian Dry",
+     "veg": true,
+     "price": "₹219"
+    },
+    {
+     "name": "Veg Crispy",
+     "veg": true,
+     "price": "₹219"
+    },
+    {
+     "name": "Veg 65/Gobi 65",
+     "veg": true,
+     "price": "₹219"
+    },
+    {
+     "name": "Peri Peri Fries",
+     "veg": true,
+     "price": "₹189"
+    },
+    {
+     "name": "French Fries",
+     "veg": true,
+     "price": "₹169"
+    },
+    {
+     "name": "Crispy Honey Chilli Chicken",
+     "veg": false,
+     "price": "₹190",
+     "desc": "Made with fried chicken strips tossed with delicious spicy-sweet, honey chilli sauce."
+    },
+    {
+     "name": "Mongolian Chicken",
+     "veg": false,
+     "price": "₹190",
+     "desc": "A dish of crispy chicken coated in a sweet, savory, and aromatic sauce. The chicken is often made with boneless, sliced chicken breast or thighs, & the sauce typically includes soy sauce, brown sugar, & scallions."
+    },
+    {
+     "name": "Chicken Spring Rolls",
+     "veg": false,
+     "price": "₹190",
+     "desc": "Vermicelli noodles, ground chicken, carrots, a few sprigs of cilantro, a few basil leaves, and a sprinkling of fried garlic."
+    },
+    {
+     "name": "Hunan Chicken",
+     "veg": false,
+     "price": "Price on request",
+     "desc": "Hunan chicken is a spicy, savory, and tangy Chinese-American stir-fry dish featuring tender, thinly sliced chicken and a mix of vibrant vegetables tossed in a bold sauce."
+    },
+    {
+     "name": "Chicken Manchurian/Chilly",
+     "veg": false,
+     "price": "Price on request"
+    },
+    {
+     "name": "Chicken Pepper/Lemon",
+     "veg": false,
+     "price": "Price on request"
+    },
+    {
+     "name": "Chicken Garlic",
+     "veg": false,
+     "price": "Price on request"
+    },
+    {
+     "name": "Chicken 65/Kantaki",
+     "veg": false,
+     "price": "Price on request"
+    },
+    {
+     "name": "Chicken Lollipop",
+     "veg": false,
+     "price": "Price on request"
+    },
+    {
+     "name": "Chicken Salt & Pepper",
+     "veg": false,
+     "price": "Price on request"
+    }
+   ]
+  },
+  {
+   "id": "tandoori-starters",
+   "title": "Tandoori Starters",
+   "kitchen": "tandoor",
+   "items": [
+    {
+     "name": "Assorted Non Veg Platter",
+     "veg": false,
+     "price": "₹1399",
+     "desc": "Speciality of the house."
+    },
+    {
+     "name": "Tandoor Chicken Full/Half",
+     "veg": false,
+     "price": "₹649 / ₹399",
+     "desc": "Tandoori chicken is a dish made from chicken marinated in yogurt and spices and roasted in a tandoor."
+    },
+    {
+     "name": "Murgh Lapeta Kebab",
+     "veg": false,
+     "price": "₹529",
+     "desc": "Tender chicken pieces are marinated in yogurt and spices, then cooked with a rich and aromatic spices of onion, tomato, cashew nuts, coconut and green chilies."
+    },
+    {
+     "name": "Makrana Tangri Kebab",
+     "veg": false,
+     "price": "₹489",
+     "desc": "A chicken Tangdi infused with flavors and spices and cooked so well that the meat came right off the bone."
+    },
+    {
+     "name": "Murgh Afghani Kebab",
+     "veg": false,
+     "price": "₹499",
+     "desc": "Goodness of cream mixed with rich cashews, poppy seeds and melon seeds along with pepper infused in chicken and grilled to perfection."
+    },
+    {
+     "name": "Murgh Alishan Kebab",
+     "veg": false,
+     "price": "₹429",
+     "desc": "Boneless chicken stuffed with minced roasted chicken and green peas, marinated in yogurt, ginger, garlic medium spiced paste and barbecued."
+    },
+    {
+     "name": "Murgh Seekh Kebab",
+     "veg": false,
+     "price": "₹389",
+     "desc": "Seekh Kebabs are made of ground meat that is seasoned with aromatic spices and ginger, garlic, green chilies, onions, cilantro."
+    },
+    {
+     "name": "Murgh Pahadi Kebab",
+     "veg": false,
+     "price": "₹369",
+     "desc": "Pahadi kabab is a spicy green colored chicken kabab made using boneless chicken marinating in a yoghurt based marination with herbs and spices."
+    },
+    {
+     "name": "Afghani Tangri Kebab",
+     "veg": false,
+     "price": "₹449",
+     "desc": "Afghani Tangdi Kabab is a wonderful royal preparation of chicken whole legs marinated in rich ingredients, spices and nut paste."
+    },
+    {
+     "name": "Murgh Reshmi Kebab",
+     "veg": false,
+     "price": "₹369",
+     "desc": "Chicken Reshmi Kabab is made with Pieces of Boneless Chicken Breast, marinated in juicy mixture of Curd, Cream, Cashew nuts and Spices and then Grilled in Oven."
+    },
+    {
+     "name": "Murgh Peshawari",
+     "veg": false,
+     "price": "₹369",
+     "desc": "Murgh peshawari is a dish of chicken that originated in Peshawar and is known for its flavorful blend of spices and tender chicken."
+    },
+    {
+     "name": "Murgh Malai Tikka",
+     "veg": false,
+     "price": "₹369",
+     "desc": "Murgh Malai Tikkas are bite size pieces of chicken cooked in a creamy marinade with yoghurt, cheese, ginger, garlic and cheese."
+    },
+    {
+     "name": "Murgh Banjara Kebab",
+     "veg": false,
+     "price": "₹369",
+     "desc": "Chicken grilled in a marinade of ginger, garlic, green chilli and cheese."
+    },
+    {
+     "name": "Murgh Tikka",
+     "veg": false,
+     "price": "₹329",
+     "desc": "A popular Indian appetizer consisting of small, boneless pieces of chicken marinated in a blend of Indian spices and yogurt, then typically grilled or roasted."
+    }
+   ]
+  },
+  {
+   "id": "kebabs",
+   "title": "Kebabs",
+   "kitchen": "tandoor",
+   "items": [
+    {
+     "name": "Assorted Tandoor Platter",
+     "veg": true,
+     "price": "₹999",
+     "desc": "Speciality of the house."
+    },
+    {
+     "name": "Paneer Suneri Kebab",
+     "veg": true,
+     "price": "₹469",
+     "desc": "Speciality of the house."
+    },
+    {
+     "name": "Paneer Sufiyani",
+     "veg": true,
+     "price": "₹399",
+     "desc": "Speciality of the house."
+    },
+    {
+     "name": "Paneer Dilkhush",
+     "veg": true,
+     "price": "₹469",
+     "desc": "Speciality of the house."
+    },
+    {
+     "name": "Stuffed Mushroom Cheese",
+     "veg": true,
+     "price": "₹399",
+     "desc": "Speciality of the house."
+    },
+    {
+     "name": "Veg Burashi Seekh Kebab",
+     "veg": true,
+     "price": "₹349",
+     "desc": "Marinated With Carrot, Cauliflower, Beetroot & Spinach, Mint & Indian Spices."
+    },
+    {
+     "name": "Veg Seekh Kebab",
+     "veg": true,
+     "price": "₹329",
+     "desc": "Veg Seekh Kabab is a delicious snack cum starter made using mixed vegetables like carrot, beans, cabbage, peas, capsicum, potatoes and spices."
+    },
+    {
+     "name": "Paneer Peshawari Kebab",
+     "veg": true,
+     "price": "₹329",
+     "desc": "Cottage cheese marinated with ginger garlic paste and brown onion paste and yogurt then grilled in charcoal oven."
+    },
+    {
+     "name": "Paneer Malai Tikka",
+     "veg": true,
+     "price": "₹319",
+     "desc": "Cottage cheese marinated with roasted cashew nut paste, fresh cream, cheese and yogurt then grilled in charcoal oven."
+    },
+    {
+     "name": "Paneer Pahadi Kebab",
+     "veg": true,
+     "price": "₹289",
+     "desc": "Cottage cheese marinated with fresh spinach, coriander, mint, green chilly, ginger garlic paste and yogurt with house special herbs and spices, then grilled in charcoal oven served with grated cheese and butter."
+    },
+    {
+     "name": "Paneer Banjara Kebab",
+     "veg": true,
+     "price": "₹289",
+     "desc": "Cottage cheese marinated in blend of herbs, spices and yogurt, and then grilled until tender and slightly charred. Served with grated cheese and butter with smoky taste."
+    },
+    {
+     "name": "Tandoori Mushroom/Babycorn/Aloo",
+     "veg": true,
+     "price": "₹279"
+    },
+    {
+     "name": "Paneer Achari Tikka",
+     "veg": true,
+     "price": "₹289",
+     "desc": "Cottage cheese marinated with fresh pickle and house special spices, then grilled in charcoal oven served with special garnishing."
+    },
+    {
+     "name": "Paneer Tikka",
+     "veg": true,
+     "price": "₹279"
+    }
+   ]
+  },
+  {
+   "id": "chef-special-chicken-kebab",
+   "title": "Chef Special — Chicken Kebab",
+   "kitchen": "tandoor",
+   "items": [
+    {
+     "name": "Murgh Jungali Kebab",
+     "veg": false,
+     "price": "₹899"
+    },
+    {
+     "name": "Murgh Dhamaka Kebab",
+     "veg": false,
+     "price": "₹799"
+    },
+    {
+     "name": "Murgh Madira Kebab",
+     "veg": false,
+     "price": "₹799"
+    },
+    {
+     "name": "Murgh Dum Ka Kebab",
+     "veg": false,
+     "price": "₹499"
+    },
+    {
+     "name": "Murgh Sholay Kebab",
+     "veg": false,
+     "price": "₹399"
+    }
+   ]
+  },
+  {
+   "id": "chef-special-mutton-kebab",
+   "title": "Chef Special — Mutton Kebab",
+   "kitchen": "tandoor",
+   "items": [
+    {
+     "name": "Mutton Seekh Kebab",
+     "veg": false,
+     "price": "₹499",
+     "desc": "Mutton nawabi seekh is a type of kebab made with spiced minced mutton and typically cooked on a skewer."
+    }
+   ]
+  },
+  {
+   "id": "seafood-starters",
+   "title": "Seafood — Starters",
+   "kitchen": "coastal",
+   "items": [
+    {
+     "name": "Fish (Amritsari/Ajwaini/Achari/Lasuni)",
+     "veg": false,
+     "price": "₹649"
+    },
+    {
+     "name": "Pomfret (Tawa/Tandoori/Rava)",
+     "veg": false,
+     "price": "APS"
+    },
+    {
+     "name": "Prawns (Koliwada/Rava/Tawa/Tandoori)",
+     "veg": false,
+     "price": "APS"
+    },
+    {
+     "name": "Surmai (Tawa/Rava)",
+     "veg": false,
+     "price": "APS"
+    }
+   ]
+  },
+  {
+   "id": "continental-starters",
+   "title": "Continental — Starters",
+   "kitchen": "continental",
+   "items": [
+    {
+     "name": "Garlic Chicken Cheese Ball",
+     "veg": false,
+     "price": "₹399"
+    },
+    {
+     "name": "Italian Spices Fried Chicken",
+     "veg": false,
+     "price": "₹399"
+    },
+    {
+     "name": "Crispy Fried Chicken",
+     "veg": false,
+     "price": "₹399"
+    },
+    {
+     "name": "Barbecue Chicken Wing",
+     "veg": false,
+     "price": "₹399"
+    }
+   ]
+  },
+  {
+   "id": "pizza",
+   "title": "Pizza",
+   "kitchen": "continental",
+   "items": [
+    {
+     "name": "Margherita Pizza",
+     "veg": true,
+     "price": "₹359",
+     "desc": "Typical Neapolitan pizza, roundish in shape with a raised edge and garnished with hand-crushed peeled tomatoes, mozzarella, fresh basil leaves."
+    },
+    {
+     "name": "Tandoori Paneer Tikka Pizza",
+     "veg": true,
+     "price": "₹359",
+     "desc": "Homemade Pizza crust layered with a Special sauce, paneer, bell pepper, onions, and cheese, this Paneer Pizza is a must-have for pizza night."
+    },
+    {
+     "name": "Exotica Veg Pizza",
+     "veg": true,
+     "price": "₹359",
+     "desc": "Mushroom, capsicum, black olives and stretchy mozzarella, seasoned with garlic and oregano."
+    }
+   ]
+  },
+  {
+   "id": "pizza-pasta",
+   "title": "Pizza & Pasta",
+   "kitchen": "continental",
+   "items": [
+    {
+     "name": "Nachos",
+     "veg": true,
+     "price": "₹379"
+    },
+    {
+     "name": "Cheese Garlic Bread",
+     "veg": true,
+     "price": "₹299"
+    },
+    {
+     "name": "Cheese Mozzarella Stick",
+     "veg": true,
+     "price": "₹429"
+    },
+    {
+     "name": "Cheese Corn Ball",
+     "veg": true,
+     "price": "₹329"
+    },
+    {
+     "name": "Arrabiata Pasta",
+     "veg": true,
+     "price": "₹369"
+    },
+    {
+     "name": "Alfredo Pasta",
+     "veg": true,
+     "price": "₹369"
+    },
+    {
+     "name": "Rusticana Chicken",
+     "veg": false,
+     "price": "₹369"
+    },
+    {
+     "name": "BBQ Chicken",
+     "veg": false,
+     "price": "₹369"
+    },
+    {
+     "name": "Peri Peri Chicken",
+     "veg": false,
+     "price": "₹369"
+    },
+    {
+     "name": "Carbonara Chicken Pasta",
+     "veg": false,
+     "price": "₹399"
+    },
+    {
+     "name": "Chicken Pesto Pasta",
+     "veg": false,
+     "price": "₹399"
+    }
+   ]
+  },
+  {
+   "id": "hot-pan-sizzlers",
+   "title": "Hot Pan & Sizzlers",
+   "kitchen": "continental",
+   "items": [
+    {
+     "name": "Exotic Vegetable Sizzler",
+     "veg": true,
+     "price": "₹469",
+     "desc": "Broccoli, yellow corn, peas and carrots on a bed of Fried Rice on cabbage base."
+    },
+    {
+     "name": "Vegetable Indian Sizzler",
+     "veg": true,
+     "price": "₹459",
+     "desc": "Pan fried paneer cubes along with roasted vegetables and a spicy sauce that is rich in the garlic- tomato flavour."
+    },
+    {
+     "name": "Vegetable Chinese Sizzler",
+     "veg": true,
+     "price": "₹449",
+     "desc": "Savory, spicy Chinese sizzlers with rich sauces and vibrant veggies."
+    },
+    {
+     "name": "Prawns Sizzler",
+     "veg": false,
+     "price": "₹899",
+     "desc": "Prawns cooked with garlic, chili, and a citrus or soy sauce base, served on a sizzling hot plate."
+    },
+    {
+     "name": "Grilled Chicken Sizzler",
+     "veg": false,
+     "price": "₹459",
+     "desc": "A savory dish served on a sizzling platter with grilled chicken and vegetables."
+    },
+    {
+     "name": "Garlic Pepper Chicken Sizzler",
+     "veg": false,
+     "price": "₹449",
+     "desc": "Pan-fried chicken marinated with garlic, black pepper, and other spices, served with sautéed vegetables."
+    }
+   ]
+  },
+  {
+   "id": "eggetarian",
+   "title": "Eggetarian",
+   "kitchen": "other",
+   "items": [
+    {
+     "name": "Egg Afghani",
+     "veg": false,
+     "price": "₹291"
+    },
+    {
+     "name": "Egg Dum Biryani",
+     "veg": false,
+     "price": "₹240"
+    },
+    {
+     "name": "Egg Masala",
+     "veg": false,
+     "price": "₹249"
+    },
+    {
+     "name": "Egg Chilli",
+     "veg": false,
+     "price": "₹229"
+    },
+    {
+     "name": "Egg Maratha/Curry",
+     "veg": false,
+     "price": "₹219"
+    },
+    {
+     "name": "Cheese Omelet",
+     "veg": false,
+     "price": "₹199"
+    },
+    {
+     "name": "Egg Fried Rice",
+     "veg": false,
+     "price": "₹180"
+    },
+    {
+     "name": "Masala Omelet",
+     "veg": false,
+     "price": "₹161"
+    },
+    {
+     "name": "Egg Bhurji",
+     "veg": false,
+     "price": "₹159"
+    },
+    {
+     "name": "Plain Omelet",
+     "veg": false,
+     "price": "₹129"
+    },
+    {
+     "name": "Boiled Egg Bhurji",
+     "veg": false,
+     "price": "₹139"
+    },
+    {
+     "name": "Egg Half Fry",
+     "veg": false,
+     "price": "₹129"
+    },
+    {
+     "name": "Boiled Egg/Fry",
+     "veg": false,
+     "price": "₹60"
+    }
+   ]
+  },
+  {
+   "id": "chinese-oriental-main-course",
+   "title": "Chinese & Oriental — Main Course",
+   "kitchen": "oriental",
+   "items": [
+    {
+     "name": "Thai Green Curry With Steamed Basil Rice",
+     "veg": true,
+     "price": "₹429",
+     "desc": "A dish made with a base of curry paste, coconut milk, and a combination of protein, vegetables, and fresh herbs."
+    },
+    {
+     "name": "Thai Red Curry With Steamed Basil Rice",
+     "veg": true,
+     "price": "₹429",
+     "desc": "Thai red vegetable curry is a creamy, aromatic dish featuring a medley of fresh vegetables simmered in a rich coconut sauce."
+    },
+    {
+     "name": "Paneer / Manchurian Chilly Rice Bowl",
+     "veg": true,
+     "price": "₹379",
+     "desc": "Indo-Chinese fusion dish that features crispy, sauced paneer served alongside flavorful stir-fried rice in a single bowl."
+    },
+    {
+     "name": "Veg Manchurian Rice Bowl",
+     "veg": true,
+     "price": "₹351",
+     "desc": "A popular Indo-Chinese meal consisting of a colorful combination of vegetable fried rice and crispy mixed-vegetable dumplings."
+    },
+    {
+     "name": "Mushroom Manchurian Gravy",
+     "veg": true,
+     "price": "₹249",
+     "desc": "Sliced mushrooms are dipped in a thick batter & deep fried until crisp and golden."
+    },
+    {
+     "name": "Veg Schezwan Triple Noodles",
+     "veg": true,
+     "price": "₹289",
+     "desc": "A popular Indo-Chinese dish that is a complete, hearty meal built around stir-fried noodles."
+    },
+    {
+     "name": "Veg Schezwan Noodles",
+     "veg": true,
+     "price": "₹249",
+     "desc": "Stir-fried noodles tossed with a colorful assortment of crisp vegetables and a fiery Schezwan sauce."
+    },
+    {
+     "name": "Burnt Garlic Noodles",
+     "veg": true,
+     "price": "₹239",
+     "desc": "A popular Indo-Chinese dish featuring noodles stir-fried with garlic that has been caramelized to a dark, smoky-sweet flavor."
+    },
+    {
+     "name": "Veg Hakka Noodles",
+     "veg": true,
+     "price": "₹229"
+    },
+    {
+     "name": "Veg Fried Rice",
+     "veg": true,
+     "price": "₹249",
+     "desc": "A popular dish made by stir-frying cooked rice with various vegetables, sauces like soy sauce and vinegar, and aromatics."
+    },
+    {
+     "name": "Veg Schezwan Fried Rice",
+     "veg": true,
+     "price": "₹259",
+     "desc": "Cooked rice stir-fried with mixed vegetables and a spicy Schezwan sauce."
+    },
+    {
+     "name": "Chicken Thai Curry (Red/Green)",
+     "veg": false,
+     "price": "₹499",
+     "desc": "A popular Southeast Asian dish of bite-sized chicken pieces and fresh vegetables simmered in a creamy, rich coconut milk sauce flavoured with aromatic Thai curry paste."
+    },
+    {
+     "name": "Chicken Triple Schezwan Fried Rice",
+     "veg": false,
+     "price": "₹329",
+     "desc": "A mixture of spicy Schezwan fried rice and noodles, a spicy chicken Schezwan gravy, and crispy fried noodles for garnish, often topped with an omelette."
+    },
+    {
+     "name": "Chicken Chilli Garlic Noodles",
+     "veg": false,
+     "price": "₹279",
+     "desc": "Chicken noodle stir fry with a garlic and chilli sauce."
+    },
+    {
+     "name": "Chicken Schezwan Fried Rice",
+     "veg": false,
+     "price": "₹269",
+     "desc": "Boneless strips of chicken and rice are tossed in a hot and spicy schezwan sauce and vegetables."
+    },
+    {
+     "name": "Chicken Hakka Noodles",
+     "veg": false,
+     "price": "₹264",
+     "desc": "Boiled noodles with marinated chicken, plenty of fresh, crunchy vegetables, and a savory sauce."
+    },
+    {
+     "name": "Chicken Burnt Garlic Fried Rice",
+     "veg": false,
+     "price": "₹279",
+     "desc": "A simple stir fried rice tossed with chicken and Asian sauces with a predominant flavour of garlic."
+    },
+    {
+     "name": "Chicken Fried Rice",
+     "veg": false,
+     "price": "₹239",
+     "desc": "A simple stir fried rice tossed with chicken and Asian sauces with a predominant flavour of garlic."
+    }
+   ]
+  },
+  {
+   "id": "punjabi-main-course",
+   "title": "Punjabi Main Course",
+   "kitchen": "punjabi",
+   "items": [
+    {
+     "name": "Veg Patiyala",
+     "veg": true,
+     "price": "₹389",
+     "desc": "A lip-smacking curry made with a tomato-based gravy, shredded paneer, julienne-cut mixed vegetables, cream and ghee, stuffed in a papad roll."
+    },
+    {
+     "name": "Veg Tiranga",
+     "veg": true,
+     "price": "₹399",
+     "desc": "A vegetarian dish of mixed vegetables with three different shahi / rich gravies of spicy, medium and mild/sweet flavours."
+    },
+    {
+     "name": "Paneer Sultani",
+     "veg": true,
+     "price": "₹369",
+     "desc": "Stuffed fried paneer blended with a rich and flavourful cashew nut, tomato and onion gravy."
+    },
+    {
+     "name": "Paneer Birbali",
+     "veg": true,
+     "price": "₹369",
+     "desc": "Paneer Birbali is a rich, Mughlai-inspired Indian dish featuring paneer in a creamy, flavorful gravy."
+    },
+    {
+     "name": "Paneer Rajwadi",
+     "veg": true,
+     "price": "₹369",
+     "desc": "Cooked in a creamy tomato-based sauce with butter and spices."
+    },
+    {
+     "name": "Paneer Toofani",
+     "veg": true,
+     "price": "₹329",
+     "desc": "A popular, spicy North Indian Punjabi dish featuring paneer in a rich, flavorful gravy."
+    },
+    {
+     "name": "Malai Kofta",
+     "veg": true,
+     "price": "₹349",
+     "desc": "Potato, paneer, tutti-frutti and khoya kofta served with a flavorful, creamy and delicious sweet curry."
+    },
+    {
+     "name": "Kaju Curry",
+     "veg": true,
+     "price": "₹349",
+     "desc": "A restaurant-style creamy kaju butter masala with a rich, tangy, sweet and flavorful gravy made with cashews, tomatoes, cream and spices. Also served with a sweet white gravy on request."
+    },
+    {
+     "name": "Kaju Masala",
+     "veg": true,
+     "price": "₹349",
+     "desc": "Ghee roasted cashews are cooked along with onion, tomatoes and a whole bunch of whole and ground spices to make this flavorful curry."
+    },
+    {
+     "name": "Paneer Lazeez",
+     "veg": true,
+     "price": "₹349",
+     "desc": "Finger paneer cooked with julienne bell pepper, onion, traditional indian spices and finished with cheese tomato gravy."
+    },
+    {
+     "name": "Paneer Chingari",
+     "veg": true,
+     "price": "₹369",
+     "desc": "Rich and creamy curry made with paneer, spices, onions, tomatoes, cashews and butter. Medium spicy."
+    },
+    {
+     "name": "Veg Sultani",
+     "veg": true,
+     "price": "₹349",
+     "desc": "Sardesai's Kitchen special preparation."
+    },
+    {
+     "name": "Paneer Pasanda",
+     "veg": true,
+     "price": "₹369",
+     "desc": "Made with stuffed paneer slices which are batter coated, fried and served in a smooth onion, tomato cashew gravy."
+    },
+    {
+     "name": "Veg Angara",
+     "veg": true,
+     "price": "₹349",
+     "desc": "Mixed vegetables blended with tomato, onion and white gravy. Spicy and flavourful, served on a hot pan."
+    },
+    {
+     "name": "Babycorn Mushroom Masala",
+     "veg": true,
+     "price": "₹329",
+     "desc": "Baby corn and mushroom masala is a rich, creamy dish in cashew nut paste."
+    },
+    {
+     "name": "Paneer Lababdar",
+     "veg": true,
+     "price": "₹349",
+     "desc": "Paneer Lababdar is a delicious North Indian dish made with paneer (Indian cottage cheese) cooked in a rich and creamy tomato-based gravy."
+    },
+    {
+     "name": "Paneer Khurchan",
+     "veg": true,
+     "price": "₹369",
+     "desc": "Delicious Paneer (cottage cheese) dish blended with the flavour of Nigella seeds, cream and butter."
+    },
+    {
+     "name": "Veg Deewani Handi",
+     "veg": true,
+     "price": "₹285",
+     "desc": "It is a medley of assorted vegetables cooked in a rich and creamy spinach based gravy, flavored with aromatic spices like cumin, coriander, and garam masala."
+    },
+    {
+     "name": "Paneer Musallam",
+     "veg": true,
+     "price": "₹279",
+     "desc": "Paneer Musallam prepared in creamy, mildly tangy gravy of tomato, onion and spices. A delectable dish with soft paneer chunks cooked in a rich tomato gravy."
+    },
+    {
+     "name": "Paneer Tikka Masala",
+     "veg": true,
+     "price": "₹279",
+     "desc": "Paneer Tikka Masala is a popular Indian curry where cubes of paneer (Indian cottage cheese), onions and peppers are marinated with yogurt and spices, grilled and then tossed in a creamy tomato based curry."
+    },
+    {
+     "name": "Paneer Butter Masala",
+     "veg": true,
+     "price": "₹299",
+     "desc": "Mild sweetness and tanginess from tomatoes and onions; richness of butter, cashew nuts and cream combined with the subtle aromas from dry spices."
+    },
+    {
+     "name": "Hari Makai Khas",
+     "veg": true,
+     "price": "₹279",
+     "desc": "Sardesai's Kitchen special: a rich, creamy spinach-based gravy with American corn, served with different seasonings."
+    },
+    {
+     "name": "Subz Begum Bahar",
+     "veg": true,
+     "price": "₹349",
+     "desc": "Sardesai's Kitchen special preparation."
+    },
+    {
+     "name": "Veg Chilli Milli",
+     "veg": true,
+     "price": "₹299",
+     "desc": "A flavorful, North Indian-style mixed vegetable curry with a rich and creamy tomato and cashew-based gravy."
+    },
+    {
+     "name": "Veg Kofta Curry",
+     "veg": true,
+     "price": "₹299",
+     "desc": "An exotic Indian gravy dish in two parts, kofta and curry. The koftas are balls of minced veggies and spices, fried and then added to a tangy, creamy and spicy onion-tomato curry."
+    },
+    {
+     "name": "Palak Paneer",
+     "veg": true,
+     "price": "₹269",
+     "desc": "A classic curried dish from North Indian cuisine made with fresh spinach, onions, spices, paneer and herbs."
+    },
+    {
+     "name": "Mix Veg Kolhapuri",
+     "veg": true,
+     "price": "₹249",
+     "desc": "A delicious spicy mixed vegetables dish which has its origin in Kolhapur, must try."
+    },
+    {
+     "name": "Aloo Mutter",
+     "veg": true,
+     "price": "₹249"
+    }
+   ]
+  },
+  {
+   "id": "maharashtrian-main-course",
+   "title": "Maharashtrian Main Course",
+   "kitchen": "maharashtrian",
+   "items": [
+    {
+     "name": "Baigan Saoji",
+     "veg": true,
+     "price": "₹279"
+    },
+    {
+     "name": "Veg Saoji",
+     "veg": true,
+     "price": "₹299"
+    },
+    {
+     "name": "Shev Bhaji",
+     "veg": true,
+     "price": "₹219"
+    },
+    {
+     "name": "Tawa Besan/Methi",
+     "veg": true,
+     "price": "₹219"
+    },
+    {
+     "name": "Lasuni Methi/Masala",
+     "veg": true,
+     "price": "₹219"
+    },
+    {
+     "name": "Veg Maratha",
+     "veg": true,
+     "price": "₹219"
+    },
+    {
+     "name": "Bhendi Fry/Masala",
+     "veg": true,
+     "price": "₹219"
+    },
+    {
+     "name": "Chicken Malvani Full/Half",
+     "veg": false,
+     "price": "₹1299 / ₹799",
+     "desc": "Chicken is cooked in a rich and thick coconut gravy along with a spicy malvani masala resulting in a stimulating chicken curry made in authentic Malvani style."
+    },
+    {
+     "name": "Chicken Kolhapuri Full/Half",
+     "veg": false,
+     "price": "₹1299 / ₹799",
+     "desc": "Chicken Kolhapuri is a popular spicy, rich, delicious and super flavorsome dish of curried chicken from the Kolhapuri cuisine. Chicken is marinated in fresh ground spices."
+    },
+    {
+     "name": "Chicken Saoji Full/Half",
+     "veg": false,
+     "price": "₹1299 / ₹799",
+     "desc": "The main ingredient in this chicken curry is the saoji masala. This masala is so flavourful as it is made with many fragrant and warm spices like poppy seeds, dried coconut, black pepper, coriander seeds, bay leaves, green and black cardamom, cinnamon, cloves and many more aromatic spices."
+    },
+    {
+     "name": "Chicken Maratha Full/Half",
+     "veg": false,
+     "price": "₹1299 / ₹799",
+     "desc": "Chicken Maratha is a spicy and flavorful chicken dish that's a popular part of Marathi cuisine."
+    },
+    {
+     "name": "Chicken Kharda",
+     "veg": false,
+     "price": "₹329",
+     "desc": "Prepared with authentic Indian spices. Kharda is prepared with garlic, flame-roasted green chillies."
+    },
+    {
+     "name": "Chicken Sukha",
+     "veg": false,
+     "price": "₹329",
+     "desc": "A semi-dry Konkani chicken curry made with chicken, freshly ground sukka masala, and coconut."
+    },
+    {
+     "name": "Mutton Malvani Full/Half",
+     "veg": false,
+     "price": "₹1649 / ₹899",
+     "desc": "Mutton is cooked in a rich and thick coconut gravy along with a spicy malvani masala resulting in a stimulating mutton curry made in authentic Malvani style."
+    },
+    {
+     "name": "Mutton Saoji Full/Half",
+     "veg": false,
+     "price": "₹1649 / ₹899",
+     "desc": "The main ingredient in this mutton curry is the saoji masala. This masala is so flavourful as it is made with many fragrant and warm spices like poppy seeds, dried coconut, black pepper, coriander seeds, bay leaves, green and black cardamom, cinnamon, cloves and many more aromatic spices."
+    },
+    {
+     "name": "Mutton Kolhapuri Full/Half",
+     "veg": false,
+     "price": "₹1649 / ₹899",
+     "desc": "Mutton Kolhapuri is a popular spicy, rich, delicious and super flavorsome dish of curried mutton from the Kolhapuri cuisine. Mutton is marinated in fresh ground spices."
+    },
+    {
+     "name": "Mutton Maratha Full/Half",
+     "veg": false,
+     "price": "₹1649 / ₹899",
+     "desc": "Mutton Maratha is a spicy and flavorful mutton dish that's a popular part of Marathi cuisine."
+    },
+    {
+     "name": "Mutton Kharda",
+     "veg": false,
+     "price": "₹399",
+     "desc": "Prepared with authentic Indian spices. Kharda is prepared with garlic, flame-roasted green chillies."
+    },
+    {
+     "name": "Mutton Sukha",
+     "veg": false,
+     "price": "₹399",
+     "desc": "A semi-dry Konkani mutton curry made with mutton, freshly ground sukka masala, and coconut."
+    }
+   ]
+  },
+  {
+   "id": "chicken-main-course",
+   "title": "Chicken Main Course",
+   "kitchen": "mughlai",
+   "items": [
+    {
+     "name": "Chicken Handi Full/Half",
+     "veg": false,
+     "price": "₹1299 / ₹799",
+     "desc": "Chicken handi is an Indian dish made with chicken, a creamy tomato-based gravy, and aromatic spices."
+    },
+    {
+     "name": "Murgh Musallam Full/Half",
+     "veg": false,
+     "price": "₹1374 / ₹749",
+     "desc": "It consists of whole chicken marinated in a ginger-garlic paste, stuffed with boiled eggs and seasoned with spices like saffron, cinnamon, cloves, poppy seeds, cardamom and chilli."
+    },
+    {
+     "name": "Chicken Patiala",
+     "veg": false,
+     "price": "₹549",
+     "desc": "Chicken Patiala is a popular, creamy, and nutty Punjabi dish of chicken in a gravy, often topped with an egg omelette."
+    },
+    {
+     "name": "Chicken Banjara Masala",
+     "veg": false,
+     "price": "₹489",
+     "desc": "Roasted peanuts, yoghurt, amchur powder, chilli powder, fresh coriander, vinegar, and mustard oil."
+    },
+    {
+     "name": "Chicken Mughlai",
+     "veg": false,
+     "price": "₹489",
+     "desc": "Chicken mughlai is made with chicken that's marinated in yogurt and spices, and then cooked in a creamy gravy."
+    },
+    {
+     "name": "Chicken Chettinad",
+     "veg": false,
+     "price": "₹449",
+     "desc": "It consists of chicken marinated in yogurt, turmeric and a paste of red chillies, kalpasi, coconut, poppy seeds, coriander seeds, cumin seeds, fennel seeds, black pepper, ground nuts, onions, garlic and sesame oil."
+    },
+    {
+     "name": "Butter Chicken",
+     "veg": false,
+     "price": "₹389",
+     "desc": "Chicken with a spiced tomato and butter (makhan) sauce."
+    },
+    {
+     "name": "Chicken Bhuna Masala",
+     "veg": false,
+     "price": "₹419",
+     "desc": "Chicken bhuna originates from the Bengal region of India. The dish typically consists of a base of onions, garlic, ginger and spices being fried together to form a thick coating sauce."
+    },
+    {
+     "name": "Chicken Laziz",
+     "veg": false,
+     "price": "₹449",
+     "desc": "Chicken lazeez is a dish of boneless or pre-cooked chicken in a rich, medium-spiced gravy."
+    },
+    {
+     "name": "Chicken Rara",
+     "veg": false,
+     "price": "₹449",
+     "desc": "Chicken pieces are cooked in a spicy and scrumptious chicken mince gravy."
+    },
+    {
+     "name": "Chicken Tikka Masala",
+     "veg": false,
+     "price": "₹379",
+     "desc": "Chicken tikka masala is a dish consisting of roasted marinated chicken chunks in a spiced sauce. The sauce is usually creamy and orange-coloured."
+    },
+    {
+     "name": "Chicken Curry/Masala",
+     "veg": false,
+     "price": "₹389",
+     "desc": "Chicken, Onion Tomato Gravy."
+    }
+   ]
+  },
+  {
+   "id": "mutton-main-course",
+   "title": "Mutton Main Course",
+   "kitchen": "mughlai",
+   "items": [
+    {
+     "name": "Mutton Rogan Josh",
+     "veg": false,
+     "price": "₹489",
+     "desc": "Mutton Rogan Josh is an aromatic, slow-cooked meat curry from Kashmiri cuisine, known for its tender meat and rich, deep-red gravy."
+    },
+    {
+     "name": "Mutton Rara",
+     "veg": false,
+     "price": "₹499",
+     "desc": "Rich North Indian curry that uniquely combines bone-in mutton pieces with mutton mince in a thick, flavorful, and heavily spiced gravy."
+    },
+    {
+     "name": "Mutton Kadhai",
+     "veg": false,
+     "price": "₹469",
+     "desc": "Mutton Kadai is a spicy, aromatic Mughlai dish of tender mutton with tomatoes, onions, garlic, and a rich blend of spices."
+    },
+    {
+     "name": "Mutton Korma",
+     "veg": false,
+     "price": "₹469",
+     "desc": "Tender pieces of mutton simmered in a rich, fragrant, and creamy sauce made from yogurt, nuts, and a blend of aromatic spices."
+    },
+    {
+     "name": "Mutton Curry/Masala",
+     "veg": false,
+     "price": "₹469"
+    },
+    {
+     "name": "Mutton Hyderabadi",
+     "veg": false,
+     "price": "₹469"
+    }
+   ]
+  },
+  {
+   "id": "seafood-main-course",
+   "title": "Seafood — Main Course",
+   "kitchen": "coastal",
+   "items": [
+    {
+     "name": "Prawns Curry (Goan/Kerala/Mangalorean)",
+     "veg": false,
+     "price": "APS"
+    },
+    {
+     "name": "Surmai Curry (Goan/Kerala/Mangalorean)",
+     "veg": false,
+     "price": "APS"
+    },
+    {
+     "name": "Pomfret Curry (Goan/Kerala/Mangalorean)",
+     "veg": false,
+     "price": "APS"
+    }
+   ]
+  },
+  {
+   "id": "dal",
+   "title": "Dal",
+   "kitchen": "punjabi",
+   "items": [
+    {
+     "name": "Dal Tadka",
+     "veg": true,
+     "price": "₹171"
+    },
+    {
+     "name": "Dal Fry",
+     "veg": true,
+     "price": "₹161"
+    },
+    {
+     "name": "Palak Dal",
+     "veg": true,
+     "price": "₹161"
+    },
+    {
+     "name": "Butter Lasuni Dal",
+     "veg": true,
+     "price": "₹179"
+    },
+    {
+     "name": "Dal Kolhapuri",
+     "veg": true,
+     "price": "₹189"
+    }
+   ]
+  },
+  {
+   "id": "indian-breads",
+   "title": "Indian Breads",
+   "kitchen": "punjabi",
+   "items": [
+    {
+     "name": "Tandoor Roti Plain/Butter",
+     "veg": true,
+     "price": "₹20 / ₹25"
+    },
+    {
+     "name": "Naan Plain/Butter",
+     "veg": true,
+     "price": "₹40 / ₹55"
+    },
+    {
+     "name": "Garlic Naan Plain/Butter/Cheese",
+     "veg": true,
+     "price": "₹75 / ₹79 / ₹99"
+    },
+    {
+     "name": "Kulcha Plain/Butter/Stuffed",
+     "veg": true,
+     "price": "₹55 / ₹59 / ₹119"
+    },
+    {
+     "name": "Lachha Paratha",
+     "veg": true,
+     "price": "₹45"
+    },
+    {
+     "name": "Khasta Roti",
+     "veg": true,
+     "price": "₹40"
+    },
+    {
+     "name": "Biscuit Roti Plain/Cheese",
+     "veg": true,
+     "price": "₹45 / ₹59"
+    },
+    {
+     "name": "Kashmiri Naan",
+     "veg": true,
+     "price": "₹95"
+    },
+    {
+     "name": "Missi Roti",
+     "veg": true,
+     "price": "₹35"
+    },
+    {
+     "name": "Chapati Plain/Butter",
+     "veg": true,
+     "price": "₹20 / ₹25"
+    },
+    {
+     "name": "Tawa Paratha Plain/Butter",
+     "veg": true,
+     "price": "₹25"
+    },
+    {
+     "name": "Jawari Roti",
+     "veg": true,
+     "price": "₹30"
+    },
+    {
+     "name": "Roti Basket",
+     "veg": true,
+     "price": "₹499"
+    }
+   ]
+  },
+  {
+   "id": "rice-biryani",
+   "title": "Rice & Biryani",
+   "kitchen": "mughlai",
+   "items": [
+    {
+     "name": "Steamed Rice Full/Half",
+     "veg": true,
+     "price": "₹121 / ₹69"
+    },
+    {
+     "name": "Jeera Rice Full/Half",
+     "veg": true,
+     "price": "₹141 / ₹79"
+    },
+    {
+     "name": "Lemon Rice",
+     "veg": true,
+     "price": "₹151"
+    },
+    {
+     "name": "Curd Rice Tadka",
+     "veg": true,
+     "price": "₹161"
+    },
+    {
+     "name": "Ghee Dum Rice",
+     "veg": true,
+     "price": "₹191"
+    },
+    {
+     "name": "Veg Pulao",
+     "veg": true,
+     "price": "₹221"
+    },
+    {
+     "name": "Veg Dum Biryani",
+     "veg": true,
+     "price": "₹249"
+    },
+    {
+     "name": "Hyderabadi Veg Dum Biryani",
+     "veg": true,
+     "price": "₹249"
+    },
+    {
+     "name": "Dal Khichadi",
+     "veg": true,
+     "price": "₹239"
+    }
+   ]
+  },
+  {
+   "id": "sweets-desserts",
+   "title": "Sweets & Desserts",
+   "kitchen": "other",
+   "items": [
+    {
+     "name": "Ras Angoori",
+     "veg": true,
+     "price": "₹149"
+    },
+    {
+     "name": "Ras Malai",
+     "veg": true,
+     "price": "₹149"
+    },
+    {
+     "name": "Gajar Halwa",
+     "veg": true,
+     "price": "₹139"
+    },
+    {
+     "name": "Moongdal Halwa",
+     "veg": true,
+     "price": "₹129"
+    },
+    {
+     "name": "Dry Fruit Kalakand",
+     "veg": true,
+     "price": "₹129"
+    },
+    {
+     "name": "Gulab Jamun",
+     "veg": true,
+     "price": "₹119"
+    },
+    {
+     "name": "Choco Lava",
+     "veg": true,
+     "price": "₹229"
+    },
+    {
+     "name": "Ice Cream Single Scoop",
+     "veg": true,
+     "price": "₹51"
+    },
+    {
+     "name": "Ice Cream Double Scoop",
+     "veg": true,
+     "price": "₹99"
+    },
+    {
+     "name": "Triple Sundae",
+     "veg": true,
+     "price": "₹199"
+    },
+    {
+     "name": "Dry Fruit Mastani",
+     "veg": true,
+     "price": "₹249"
+    },
+    {
+     "name": "Butterscotch Mastani",
+     "veg": true,
+     "price": "₹229"
+    },
+    {
+     "name": "Mango Mastani",
+     "veg": true,
+     "price": "₹219"
+    },
+    {
+     "name": "Fresh Fruit Mastani",
+     "veg": true,
+     "price": "₹239"
+    },
+    {
+     "name": "Bharat Special Mastani",
+     "veg": true,
+     "price": "₹259"
+    },
+    {
+     "name": "Cold Coffee With Ice-Cream",
+     "veg": true,
+     "price": "₹149"
+    },
+    {
+     "name": "Chocolate Brownie",
+     "veg": true,
+     "price": "₹249"
+    }
+   ]
+  }
+ ]
+}
