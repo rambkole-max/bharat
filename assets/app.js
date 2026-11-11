@@ -312,13 +312,14 @@
     var hash = decodeURIComponent(location.hash.slice(1)), target = hash && document.getElementById(hash);
     if (target) { var kt = target.closest(".kit"); if (kt) curK = kt.dataset.k; }
     apply();
-    if (target && !target.classList.contains("kit")) setTimeout(function () { target.scrollIntoView(); window.scrollBy(0, -140); }, 60);
+    if (target && !target.classList.contains("kit")) setTimeout(function () { target.scrollIntoView({ behavior: "auto", block: "start" }); }, 60);
+    window.addEventListener("hashchange", function () { var el = document.getElementById(decodeURIComponent(location.hash.slice(1))), kt2 = el && el.closest(".kit"); if (kt2 && kt2.dataset.k !== curK) { curK = kt2.dataset.k; q.value = ""; apply(); if (el !== kt2) el.scrollIntoView({ behavior: "auto", block: "start" }); } });
 
     var panel = $("#mylist"), bar = $("#barCount");
     var renderList = function () {
       $$(".add").forEach(function (b) { var on = inList(b.dataset.add); b.setAttribute("aria-pressed", on); b.textContent = on ? "✓" : "+"; b.setAttribute("aria-label", (on ? "Remove " : "Add ") + b.dataset.name + (on ? " from my list" : " to my list")); });
       bar.textContent = list.length ? list.length + (list.length === 1 ? " dish" : " dishes") + " on your list" : "Add dishes with +";
-      panel.hidden = false;
+      panel.hidden = false; panel.classList.toggle("empty", !list.length);
       if (!list.length) { panel.innerHTML = '<span class="kick">Your list</span><b style="font-size:20px">Nothing yet</b><p class="note" style="margin-top:6px">Tap + beside a dish to add it. Your list goes with your table request, so the kitchen knows what you are coming for.</p>'; return; }
       panel.innerHTML = '<span class="kick">Your list</span><b style="font-size:20px">' + list.length + (list.length === 1 ? " dish" : " dishes") + "</b>" +
         list.map(function (x) { return '<div class="row"><span>' + esc(x.name) + "</span><span><b>" + esc(x.price) + '</b><button type="button" data-rm="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span></div>'; }).join("") +
