@@ -28,7 +28,7 @@ KITCHENS = [
          line="Lucknow’s gateway, a nawab at ease, and slow dum handis.",
          featured=[("Chicken Mughlai", None), ("Mutton Rogan Josh", None), ("Veg Dum Biryani", None), ("Butter Chicken", None)]),
     dict(id="maharashtrian", name="Maharashtrian", title="The Maharashtrian kitchen", sub="Home ground", color="#8C2D46", ink="#8C2D46",
-         art="img/mural-maharashtra-720.webp", thumb="img/mural-maharashtra-480.webp", pin=(31, 66),
+         art="img/mural-maharashtra-720.webp", thumb="img/mural-maharashtra-480.webp", pin=(40.5, 46),
          line="Kolhapuri heat and Saoji spice from next door.",
          featured=[("Chicken Kolhapuri Full/Half", "Chicken Kolhapuri"), ("Veg Saoji", None), ("Shev Bhaji", None), ("Chicken Sukha", None)]),
     dict(id="coastal", short="Coastal", name="Coastal & Seafood", title="Coastal & Seafood", sub="Konkan to Kerala", color="#163E52", ink="#163E52",
@@ -164,7 +164,7 @@ PAGE = f"""<!DOCTYPE html>
 <meta property="og:image" content="https://bharatfinedine.com/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261116">
+<link rel="stylesheet" href="assets/site.css?v=20261117">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False, separators=(",", ":"))}</script>
 <noscript><style>.add,.search,#vegOnly,.mgrid aside,.mbar .cnt{{display:none!important}}</style></noscript>
 </head>
@@ -193,8 +193,8 @@ PAGE = f"""<!DOCTYPE html>
 </main>
 <footer class="foot"><div class="legal"><div class="wrap"><span>© 2026 Bharat Fine Dine · by Sardesai's Kitchen · FSSAI Lic. No. 11524049000056</span><span><a href="index.html">Home</a> · <a href="events.html">Events</a> · <a href="tel:+919126268181">+91 91262 68181</a></span></div></div></footer>
 <div class="mbar" aria-label="Quick actions"><a class="cnt" id="barCount" href="#mylist">Add dishes with +</a><a class="go" href="index.html#plan">Plan my table</a></div>
-<script src="assets/data.js?v=20261116" defer></script>
-<script src="assets/app.min.js?v=20261116" defer></script>
+<script src="assets/data.js?v=20261117" defer></script>
+<script src="assets/app.min.js?v=20261117" defer></script>
 </body>
 </html>
 """

@@ -11,9 +11,9 @@ Static HTML/CSS/JS. No framework. Three pages:
 Shared files: `assets/site.css` (design tokens + all components), `assets/app.js` (all behaviour, the file to edit), `assets/app.min.js` (generated; the file the pages load), `assets/data.js` (generated kitchen data).
 
 ## Deploy
-Upload `index.html`, `menu.html`, `events.html`, `assets/`, the favicons, `og-image.jpg`, `robots.txt`, `sitemap.xml`, `_headers`.
+Upload `index.html`, `menu.html`, `events.html`, `assets/`, `img/`, the favicons, `og-image.jpg`, `robots.txt`, `sitemap.xml`, `_headers`.
 
-**Do not delete `img/` or `assets/fonts/` on the server.** Those two folders are on the live host but not in this repository, and every image and font on the site comes from them. Copy them into the repo when you can, so the repo is the whole site. Back up the live site before the first deploy.
+`img/` and `assets/fonts/` are in the repo now, so the repo is the whole site. Back up the live site before the first deploy.
 
 ## Changing the menu
 1. Edit `data/menu.json` (dish name, `veg`, `price`, optional `desc`; each section has a `kitchen`).
@@ -29,7 +29,7 @@ Edit `assets/app.js`, then run `python3 tools/build.py`. The pages load `assets/
 ```
 node tools/test.js
 ```
-Runs about 600 checks in a headless browser: layout at five screen sizes, every homepage section, the booking and event flows, every dish and price against `data/menu.json`, links, and behaviour with JavaScript off. It starts its own local server and exits non-zero if anything fails. Needs Node.js and Playwright (`npm i -g playwright`, then `npx playwright install chromium`). Run it after every menu or code change. Images that are not in the repo are skipped, not checked.
+Runs about 600 checks in a headless browser: layout at five screen sizes, every homepage section, the booking and event flows, every dish and price against `data/menu.json`, links, and behaviour with JavaScript off. It starts its own local server and exits non-zero if anything fails. Needs Node.js and Playwright (`npm i -g playwright`, then `npx playwright install chromium`). Run it after every menu or code change.
 
 ## How booking works
 There is no reservation backend. "Plan my table" builds a WhatsApp message (occasion, guests, day, time, a suggested seating, any dishes on the list, a `BFD-xxxx` reference) and opens it to +91 91262 68181. Staff confirm on WhatsApp; the site says "request", never "confirmed". Slots already past today (India time) are disabled. The event planner works the same way.

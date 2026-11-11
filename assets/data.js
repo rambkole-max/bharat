@@ -131,8 +131,8 @@ window.BFD_KITCHENS = [
   "art": "img/mural-maharashtra-720.webp",
   "thumb": "img/mural-maharashtra-480.webp",
   "pin": [
-   31,
-   66
+   40.5,
+   46
   ],
   "line": "Kolhapuri heat and Saoji spice from next door.",
   "count": 19,
