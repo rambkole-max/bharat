@@ -409,3 +409,8 @@ body{-webkit-font-smoothing:antialiased}
 .find img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:var(--r-md);background:#EEE6D7}
 .find figcaption{font-size:13px;color:var(--body)}
 @media (prefers-reduced-motion:reduce){ .pwall .chip,.pwall .chip img{transition:none} }
+
+/* photo and type fixes from the alignment check */
+.node img{height:112px;object-position:50% 30%}
+.rating b,.stats b{font-family:var(--serif);font-weight:400;font-stretch:100%;letter-spacing:-.01em}
+.stats b{font-size:clamp(44px,5vw,64px)}

@@ -112,13 +112,13 @@
     var SPACES = [
       { k: "dining", name: "Fine-dine restaurant", seat: "Restaurant", img: "img/svc-dining-720.webp", desc: "Air-conditioned indoor dining across seven kitchens, with a full vegetarian menu alongside." },
       { k: "outdoor", name: "Outdoor dining", seat: "Outdoor", img: "img/svc-garden-720.webp", desc: "Open-air seating wrapped in greenery and soft light, our signature table for easy evenings." },
-      { k: "bar", name: "The Bar & Lounge", seat: "Bar & Lounge", img: "img/svc-bar-720.webp", desc: "A relaxed bar with a live-music corner, a curated pour and fair prices." },
+      { k: "bar", name: "The Bar & Lounge", seat: "Bar & Lounge", img: "img/spaces/bar-3.webp", tile: "img/spaces/thumb/bar-3.webp", desc: "A relaxed bar with a live-music corner, a curated pour and fair prices." },
       { k: "private", name: "Private dining rooms", seat: "Private room", img: "img/svc-private-720.webp", desc: "Marble-table rooms for celebrations and business lunches. Candlelight on request." },
       { k: "meeting", name: "Board & meeting rooms", seat: null, img: "img/svc-meeting-720.webp", desc: "Board rooms with screens and catering on tap, built for meetings and offsites." },
       { k: "hall", name: "Banquet halls", seat: null, img: "img/svc-hall-720.webp", desc: "Samiksha and Sanskruti: two 300+ seat halls for weddings, receptions and functions, with full catering." }
     ];
     var sp = 0, lb = $("#lb"), lbList = [], lbI = 0;
-    sTabs.innerHTML = SPACES.map(function (s, i) { return '<button type="button" class="chip" data-sp="' + i + '" aria-pressed="' + (i === 0) + '"><img src="' + s.img.replace("-720.", "-600.") + '" alt="" width="600" height="400" loading="lazy" decoding="async"><span>' + esc(s.name) + "</span></button>"; }).join("");
+    sTabs.innerHTML = SPACES.map(function (s, i) { return '<button type="button" class="chip" data-sp="' + i + '" aria-pressed="' + (i === 0) + '"><img src="' + (s.tile || s.img.replace("-720.", "-600.")) + '" alt="" width="600" height="400" loading="lazy" decoding="async"><span>' + esc(s.name) + "</span></button>"; }).join("");
     var photos = function (s) { var a = []; for (var n = 1; n <= 6; n++) a.push({ t: "img/spaces/t400/" + s.k + "-" + n + ".webp", f: "img/spaces/" + s.k + "-" + n + ".webp", alt: s.name + ", photo " + n }); return a; };
     var renderSpace = function () {
       var s = SPACES[sp];
@@ -148,7 +148,7 @@
     var SEATS = {
       "Restaurant": { title: "The fine-dine restaurant", img: "img/svc-dining-720.webp", why: ["Indoor and air-conditioned", "All seven kitchens, with a full veg menu", "Room for the whole family"] },
       "Outdoor": { title: "An outdoor table", img: "img/svc-garden-720.webp", why: ["Open-air seating among the plants", "Soft light in the evening", "Candlelight on request"] },
-      "Bar & Lounge": { title: "The Bar & Lounge", img: "img/svc-bar-720.webp", why: ["A relaxed, separate bar", "Live-music corner", "Easy for a group of friends"] },
+      "Bar & Lounge": { title: "The Bar & Lounge", img: "img/spaces/thumb/bar-3.webp", why: ["A relaxed, separate bar", "Live-music corner", "Easy for a group of friends"] },
       "Private room": { title: "A private dining room", img: "img/svc-private-720.webp", why: ["Best for groups of six or more", "A room to yourselves", "Candlelight set up on request"] }
     };
     var today = new Date(); today.setHours(0, 0, 0, 0);
