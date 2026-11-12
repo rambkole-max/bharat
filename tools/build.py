@@ -164,7 +164,7 @@ PAGE = f"""<!DOCTYPE html>
 <meta property="og:image" content="https://bharatfinedine.com/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261204">
+<link rel="stylesheet" href="assets/site.css?v=20261205">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False, separators=(",", ":"))}</script>
 <noscript><style>.add,.search,#vegOnly,.mgrid aside,.mbar .cnt{{display:none!important}}</style></noscript>
 </head>
@@ -176,8 +176,8 @@ PAGE = f"""<!DOCTYPE html>
 </div></header>
 <main id="main" class="wrap">
   <div class="mhead">
-    <div class="l"><span class="mr" lang="mr" style="font-size:24px">काय मागवायचं?</span><h1 class="h1" style="font-size:clamp(40px,4.6vw,64px)">The menu</h1></div>
-    <div class="r"><span class="lede" style="font-size:15px">Follow the wall, one stop at a time, or search all {total_items} dishes.</span>
+    <div class="l"><span class="mr mrk" lang="mr">काय मागवायचं?</span><h1 class="h2">The menu</h1></div>
+    <div class="r"><span class="note">Follow the wall, one stop at a time, or search all {total_items} dishes.</span>
       <label class="search"><span aria-hidden="true">⌕</span><span class="sr">Search dishes</span><input type="search" id="q" placeholder="Search paneer, biryani, kolhapuri" autocomplete="off"></label></div>
   </div>
   <div class="railbox"><div class="rail" id="rail" role="group" aria-label="Kitchens">{rail}<button type="button" class="chip" id="vegOnly" aria-pressed="false"><span class="mark" aria-hidden="true"></span>Veg only</button></div></div>
@@ -193,8 +193,8 @@ PAGE = f"""<!DOCTYPE html>
 </main>
 <footer class="foot"><div class="legal"><div class="wrap"><span>© 2026 Bharat Fine Dine · by Sardesai's Kitchen · FSSAI Lic. No. 11524049000056</span><span><a href="index.html">Home</a> · <a href="events.html">Events</a> · <a href="tel:+919126268181">+91 91262 68181</a></span></div></div></footer>
 <div class="mbar" aria-label="Quick actions"><a class="cnt" id="barCount" href="#mylist">Add dishes with +</a><a class="go" href="index.html#plan">Plan my table</a></div>
-<script src="assets/data.js?v=20261204" defer></script>
-<script src="assets/app.min.js?v=20261204" defer></script>
+<script src="assets/data.js?v=20261205" defer></script>
+<script src="assets/app.min.js?v=20261205" defer></script>
 </body>
 </html>
 """
