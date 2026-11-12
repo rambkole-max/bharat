@@ -187,7 +187,7 @@
     /* --- the dialog --- */
     var body = $("#pBody"), ft = $("#pFt");
     var sumLine = function () { return (P.step === 1 ? WHO[P.who].t : P.seat) + " · " + guestsTxt() + " · " + dateTxt() + (P.time && P.step > 1 ? " · " + P.time : ""); };
-    var listNames = function () { return list.map(function (x) { return x.name; }); };
+    var listNames = function () { return list.map(function (x) { return (x.q > 1 ? x.q + " × " : "") + x.name; }); };
     var message = function () {
       return "Hi Bharat Fine Dine! Table request " + P.ref + ": " + P.seat + " for " + P.guests + " on " + dateTxt() + " at " + P.time + " (" + WHO[P.who].t + "). Name: " + P.name.trim() + ". Phone: " + P.phone.trim() + "." +
         (listNames().length ? " Dishes we would like: " + listNames().join(", ") + "." : "") + (P.note.trim() ? " Note: " + P.note.trim() : "");
@@ -215,7 +215,7 @@
           '<label class="f">Your name<input class="fld" data-in="name" value="' + esc(P.name) + '" autocomplete="name"></label>' +
           '<label class="f">WhatsApp number<input class="fld" data-in="phone" value="' + esc(P.phone) + '" inputmode="tel" autocomplete="tel" placeholder="+91"></label>' +
           '<label class="f">Anything we should know? (optional)<input class="fld" data-in="note" value="' + esc(P.note) + '" placeholder="Cake at 9 pm, high chair"></label>' +
-          (list.length ? '<div class="grp"><b>Dishes going with your request</b><div class="tags">' + list.map(function (x) { return '<span class="tag">' + esc(x.name) + '<button type="button" data-act="drop" data-v="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span>'; }).join("") + "</div></div>" : '<p class="note">Want the kitchen to know what you are coming for? <a class="lnk" href="menu.html">Add dishes from the menu</a></p>');
+          (list.length ? '<div class="grp"><b>Dishes going with your request</b><div class="tags">' + list.map(function (x) { return '<span class="tag">' + (x.q > 1 ? x.q + " × " : "") + esc(x.name) + '<button type="button" data-act="drop" data-v="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span>'; }).join("") + "</div></div>" : '<p class="note">Want the kitchen to know what you are coming for? <a class="lnk" href="menu.html">Add dishes from the menu</a></p>');
         f = '<div class="row"><button type="button" class="btn line" data-act="back">Back</button><button type="button" class="btn" data-act="next" aria-disabled="' + !valid() + '">Check my request</button></div>';
       } else if (P.step === 3) {
         var rows = [["Table", P.seat], ["Date", dateTxt()], ["Time", P.time], ["Guests", P.guests + " · " + WHO[P.who].t], ["Name", P.name.trim()], ["WhatsApp", P.phone.trim()]];
@@ -322,16 +322,19 @@
       panel.hidden = false; panel.classList.toggle("empty", !list.length);
       if (!list.length) { panel.innerHTML = '<span class="kick">Your list</span><b style="font-size:20px">Nothing yet</b><p class="note" style="margin-top:6px">Tap + beside a dish to add it. Your list goes with your table request, so the kitchen knows what you are coming for.</p>'; return; }
       panel.innerHTML = '<span class="kick">Your list</span><b style="font-size:20px">' + list.length + (list.length === 1 ? " dish" : " dishes") + "</b>" +
-        list.map(function (x) { return '<div class="row"><span>' + esc(x.name) + "</span><span><b>" + esc(x.price) + '</b><button type="button" data-rm="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span></div>'; }).join("") +
+        list.map(function (x) { return '<div class="row"><span>' + esc(x.name) + '<small>' + esc(x.price) + '</small></span><span class="qty"><button type="button" data-q="-1" data-id="' + esc(x.id) + '" aria-label="One less ' + esc(x.name) + '">−</button><output aria-live="polite">' + (x.q || 1) + '</output><button type="button" data-q="1" data-id="' + esc(x.id) + '" aria-label="One more ' + esc(x.name) + '">+</button><button type="button" class="rm" data-rm="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span></div>'; }).join("") +
         '<p class="note" style="margin:8px 0 10px">Your list goes with your table request.</p><a class="btn" href="index.html#plan" style="align-self:flex-start">Plan my table</a>';
     };
     kits.addEventListener("click", function (e) {
       var b = e.target.closest(".add"); if (!b) return;
       if (inList(b.dataset.add)) list = list.filter(function (x) { return x.id !== b.dataset.add; });
-      else list.push({ id: b.dataset.add, name: b.dataset.name, price: b.dataset.price });
+      else list.push({ id: b.dataset.add, name: b.dataset.name, price: b.dataset.price, q: 1 });
       saveList(); renderList();
     });
-    panel.addEventListener("click", function (e) { var b = e.target.closest("[data-rm]"); if (!b) return; list = list.filter(function (x) { return x.id !== b.dataset.rm; }); saveList(); renderList(); });
+    panel.addEventListener("click", function (e) {
+      var qb = e.target.closest("[data-q]");
+      if (qb) { var it = list.filter(function (x) { return x.id === qb.dataset.id; })[0]; if (it) { it.q = Math.min(20, (it.q || 1) + (+qb.dataset.q)); if (it.q < 1) list = list.filter(function (x) { return x !== it; }); saveList(); renderList(); } return; }
+      var b = e.target.closest("[data-rm]"); if (!b) return; list = list.filter(function (x) { return x.id !== b.dataset.rm; }); saveList(); renderList(); });
     renderList();
   }
 

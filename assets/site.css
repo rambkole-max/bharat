@@ -419,3 +419,16 @@ body{-webkit-font-smoothing:antialiased}
 .kick{font-size:13px}
 .hint{font-size:13px}
 .head .lede{max-width:62ch}
+
+/* dish quantities in the list */
+.mylist .row{align-items:center}
+.mylist .row > span:first-child{display:flex;flex-direction:column;min-width:0}
+.mylist .row small{font-size:13px;color:var(--body)}
+.mylist .qty{display:inline-flex;align-items:center;gap:6px;flex:none}
+.mylist .qty button{width:32px;height:32px;padding:0;border-radius:50%;border:1.5px solid var(--line2);background:#fff;font-size:17px;line-height:1}
+.mylist .qty output{min-width:18px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.mylist .qty .rm{border:0;background:none;width:28px}
+
+/* phone: the mural gets the same rounded frame as desktop, and still swipes inside it */
+@media (max-width:819.98px){ .wallbox{padding:0 var(--gutter)} .wall{border-radius:var(--r-lg);border:1px solid var(--line);box-shadow:var(--shadow)} .hint{right:calc(var(--gutter) + 12px)} }
+@media (max-width:819.98px){ .pin.flip{transform:translate(-100%,-50%)} .pin.flip:hover{transform:translate(-100%,-50%)} }
