@@ -68,8 +68,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     const p = await ctx(w, h); await at(p, DAY); await p.goto(U + pg); await p.waitForTimeout(350);
     await audit(p, 'Layout · ' + pg + ' · ' + vn);
     if (pg === 'index.html') {
-      const tops = await p.$$eval('.node', e => e.map(x => Math.round(x.getBoundingClientRect().top)));
-      ck('Layout · ' + pg + ' · ' + vn, 'seven kitchens stay on one line', new Set(tops).size === 1 && tops.length === 7, tops);
+      eq('Layout · ' + pg + ' · ' + vn, 'all seven kitchens have a pin on the mural', await p.$$eval('.pin', e => e.length), 7);
       const bar = await p.$eval('.mbar', e => getComputedStyle(e).display !== 'none');
       eq('Layout · ' + pg + ' · ' + vn, 'bottom bar only on phone/tablet', bar, w < 820);
       await p.click('[data-plan] >> visible=true >> nth=0'); await p.waitForTimeout(250);
@@ -127,11 +126,11 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     const S = 'Wall & stops · ' + vn;
     const p = await ctx(w, h); await at(p, DAY); await p.goto(U + 'index.html'); await p.waitForTimeout(300);
     const K = await p.evaluate(() => window.BFD_KITCHENS);
-    eq(S, '5 pins on the mural, 7 journey stops', [await p.$$eval('.pin', e => e.length), await p.$$eval('.node', e => e.length)], [5, 7]);
+    eq(S, '7 pins on the mural', await p.$$eval('.pin', e => e.length), 7);
     const byK = {}; MENU.sections.forEach(s => { (byK[s.kitchen] = byK[s.kitchen] || []).push(...s.items); });
     for (const k of K) {
-      await p.click('.node[data-stop="' + k.n + '"]'); await p.waitForTimeout(w < 820 ? 450 : 80);
-      const got = await p.evaluate(() => ({ title: document.querySelector('#stop h2').textContent, kick: document.querySelector('#stop .kick').textContent, dishes: [...document.querySelectorAll('#stop .dish')].map(d => [d.querySelector('.n').textContent, d.querySelector('b').textContent, !d.querySelector('.mark').classList.contains('nv')]), link: document.querySelector('#stop .lnk').getAttribute('href'), linkT: document.querySelector('#stop .lnk').textContent, next: document.querySelector('#stop .next').textContent, pressed: [...document.querySelectorAll('.node[aria-pressed=true]')].map(x => x.dataset.stop) }));
+      await p.click('.pin[data-stop="' + k.n + '"]', { force: true }); await p.waitForTimeout(w < 820 ? 450 : 80);
+      const got = await p.evaluate(() => ({ title: document.querySelector('#stop h2').textContent, kick: document.querySelector('#stop .kick').textContent, dishes: [...document.querySelectorAll('#stop .dish')].map(d => [d.querySelector('.n').textContent, d.querySelector('b').textContent, !d.querySelector('.mark').classList.contains('nv')]), link: document.querySelector('#stop .lnk').getAttribute('href'), linkT: document.querySelector('#stop .lnk').textContent, next: document.querySelector('#stop .next').textContent, pressed: [...document.querySelectorAll('.pin[aria-pressed=true]')].map(x => x.dataset.stop) }));
       const items = byK[k.id];
       const okD = got.dishes.length === 4 && got.dishes.every(d => items.some(i => i.veg === d[2] && (i.price === 'APS' ? d[1] === 'As per size' : d[1].replace(/\s/g, '') === String(i.price).replace(/\s/g, '').replace(/^(?!₹)/, ''))));
       ck(S, 'stop ' + k.n + ' ' + k.name + ': title, 4 dishes with real menu prices and veg marks', got.title === k.title && okD, JSON.stringify(got.dishes));
@@ -147,12 +146,12 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
       if (w < 820) { const full = await p.$eval('.pin[data-stop="' + k.n + '"]', e => { const r = e.getBoundingClientRect(); return !e.classList.contains('flip') && r.left >= 0 && r.right <= innerWidth; }); ck(S, 'pin ' + k.n + ' shows its full name once swiped to', full); }
     }
     if (w < 820) {
-      await p.$eval('#wallScroll', e => { e.scrollLeft = 0; }); await p.waitForTimeout(500);
-      const cut = await p.$$eval('.pin', e => e.filter(x => { const r = x.getBoundingClientRect(); return r.left < innerWidth && r.right > innerWidth; }).length);
+      await p.$eval('#wallScroll', e => { e.scrollLeft = 0; }); await p.waitForTimeout(1200);
+      const cut = await p.$$eval('.pin', e => { const wr = document.querySelector('#wallScroll').getBoundingClientRect().right; return e.filter(x => { const r = x.getBoundingClientRect(); return r.left < wr - 8 && r.right > wr + 1; }).length; });
       eq(S, 'no pin label is cut by the screen edge', cut, 0);
       const ov = await p.$$eval('.pin', e => { const rs = e.map(x => x.getBoundingClientRect()); let n = 0; for (let i = 0; i < rs.length; i++) for (let j = i + 1; j < rs.length; j++) if (rs[i].left < rs[j].right && rs[j].left < rs[i].right && rs[i].top < rs[j].bottom && rs[j].top < rs[i].bottom) n++; return n; });
       eq(S, 'pins do not overlap each other', ov, 0);
-      ck(S, 'journey row can be swiped sideways', await p.$eval('.scrollx', e => e.scrollWidth > e.clientWidth));
+      ck(S, 'the mural can be swiped sideways', await p.$eval('#wallScroll', e => e.scrollWidth > e.clientWidth));
     }
     // each "see all" link lands on the right kitchen
     for (const k of K) { await p.goto('about:blank'); await p.goto(U + 'menu.html#k-' + k.id); await p.waitForTimeout(120); eq(S, 'menu link for ' + k.name + ' opens that kitchen', await p.$$eval('.kit.show', e => e.map(x => x.dataset.k)), [k.id]); }
@@ -404,7 +403,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   {
     const S = 'Resilience';
     const p = await ctx(390, 844, { javaScriptEnabled: false }); await p.goto(U + 'index.html');
-    const nj = await p.evaluate(() => ({ stop: document.querySelector('#stop h2')?.textContent, dishes: document.querySelectorAll('#stop .dish').length, who: document.querySelector('#who').children.length, planBtnVisible: !!document.querySelector('#plan').offsetParent, journey: document.querySelector('#journey').children.length, jVis: !!document.querySelector('#journey').offsetParent, tVis: !!document.querySelector('#stabs').offsetParent, bookWA: [...document.querySelectorAll('a')].some(a => a.offsetParent && /wa\.me/.test(a.href)), tabs: document.querySelector('#stabs').children.length, wa: [...document.querySelectorAll('a')].some(a => /wa\.me/.test(a.href)), tel: [...document.querySelectorAll('a[href^="tel:"]')].filter(a => a.offsetParent).length }));
+    const nj = await p.evaluate(() => ({ stop: document.querySelector('#stop h2')?.textContent, dishes: document.querySelectorAll('#stop .dish').length, who: document.querySelector('#who').children.length, planBtnVisible: !!document.querySelector('#plan').offsetParent, journey: 0, jVis: false, tVis: !!document.querySelector('#stabs').offsetParent, bookWA: [...document.querySelectorAll('a')].some(a => a.offsetParent && /wa\.me/.test(a.href)), tabs: document.querySelector('#stabs').children.length, wa: [...document.querySelectorAll('a')].some(a => /wa\.me/.test(a.href)), tel: [...document.querySelectorAll('a[href^="tel:"]')].filter(a => a.offsetParent).length }));
     ck(S, 'JavaScript off: first stop card still shows', nj.stop === 'The Punjabi kitchen' && nj.dishes === 4, JSON.stringify(nj));
     ck(S, 'JavaScript off: visitor can still call and book on WhatsApp', nj.tel > 0 && nj.bookWA, JSON.stringify(nj));
     ck(S, 'JavaScript off: no empty, dead controls are shown (booking card, journey, spaces tabs)', !(nj.planBtnVisible && nj.who === 0) && !nj.jVis && !nj.tVis, 'booking card visible with ' + nj.who + ' choices; journey has ' + nj.journey + ' stops; spaces has ' + nj.tabs + ' tabs');

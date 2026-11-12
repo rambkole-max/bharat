@@ -28,7 +28,7 @@ KITCHENS = [
          line="Lucknow’s gateway, a nawab at ease, and slow dum handis.",
          featured=[("Chicken Mughlai", None), ("Mutton Rogan Josh", None), ("Veg Dum Biryani", None), ("Butter Chicken", None)]),
     dict(id="maharashtrian", name="Maharashtrian", title="The Maharashtrian kitchen", sub="Home ground", color="#8C2D46", ink="#8C2D46",
-         art="img/mural-maharashtra-720.webp", thumb="img/mural-maharashtra-480.webp", pin=(40.5, 46),
+         art="img/mural-maharashtra-720.webp", thumb="img/mural-maharashtra-480.webp", pin=(45, 58),
          line="Kolhapuri heat and Saoji spice from next door.",
          featured=[("Chicken Kolhapuri Full/Half", "Chicken Kolhapuri"), ("Veg Saoji", None), ("Shev Bhaji", None), ("Chicken Sukha", None)]),
     dict(id="coastal", short="Coastal", name="Coastal & Seafood", title="Coastal & Seafood", sub="Konkan to Kerala", color="#163E52", ink="#163E52",
@@ -37,11 +37,11 @@ KITCHENS = [
          featured=[("Fish (Amritsari/Ajwaini/Achari/Lasuni)", "Fish Amritsari"), ("Prawns (Koliwada/Rava/Tawa/Tandoori)", "Prawns Koliwada"),
                    ("Surmai Curry (Goan/Kerala/Mangalorean)", "Surmai Curry"), ("Pomfret (Tawa/Tandoori/Rava)", "Pomfret Tawa")]),
     dict(id="continental", name="Continental", title="The Continental kitchen", sub="Beyond Bharat", color="#48532A", ink="#48532A",
-         art="img/mural-continental.webp", thumb="img/mural-continental-300.webp", pin=None,
+         art="img/mural-continental.webp", thumb="img/mural-continental-300.webp", pin=(38, 40),
          line="Grills, salads, sizzlers, pizza and pasta.",
          featured=[("Waldorf Salad", None), ("Cheese Club Sandwich", None), ("Grilled Chicken Salad", None), ("Veg Club Sandwich", None)]),
     dict(id="oriental", short="Chinese", name="Chinese & Oriental", title="Chinese & Oriental", sub="The East", color="#0F4E37", ink="#0F4E37",
-         art="img/mural-oriental.webp", thumb="img/mural-oriental-300.webp", pin=None,
+         art="img/mural-oriental.webp", thumb="img/mural-oriental-300.webp", pin=(53.5, 40),
          line="Wok-tossed starters, noodles, rice bowls and Thai curries.",
          featured=[("Veg Hakka Noodles", None), ("Burnt Garlic Noodles", None), ("Crispy Honey Chilli Chicken", None), ("Veg Spring Roll", None)]),
 ]
@@ -164,7 +164,7 @@ PAGE = f"""<!DOCTYPE html>
 <meta property="og:image" content="https://bharatfinedine.com/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261209">
+<link rel="stylesheet" href="assets/site.css?v=20261213">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False, separators=(",", ":"))}</script>
 <noscript><style>.add,.search,#vegOnly,.mgrid aside,.mbar .cnt{{display:none!important}}</style></noscript>
 </head>
@@ -193,8 +193,8 @@ PAGE = f"""<!DOCTYPE html>
 </main>
 <footer class="foot"><div class="legal"><div class="wrap"><span>© 2026 Bharat Fine Dine · by Sardesai's Kitchen · FSSAI Lic. No. 11524049000056</span><span><a href="index.html">Home</a> · <a href="events.html">Events</a> · <a href="tel:+919126268181">+91 91262 68181</a></span></div></div></footer>
 <div class="mbar" aria-label="Quick actions"><a class="cnt" id="barCount" href="#mylist">Add dishes with +</a><a class="go" href="index.html#plan">Plan my table</a></div>
-<script src="assets/data.js?v=20261209" defer></script>
-<script src="assets/app.min.js?v=20261209" defer></script>
+<script src="assets/data.js?v=20261213" defer></script>
+<script src="assets/app.min.js?v=20261213" defer></script>
 </body>
 </html>
 """

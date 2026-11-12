@@ -56,8 +56,8 @@
 </script>
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" as="image" href="img/mural-full-clean.webp" imagesrcset="img/mural-full-clean-800.webp 800w, img/mural-full-clean-1280.webp 1280w, img/mural-full-clean-1440.webp 1440w, img/mural-full-clean.webp 2000w" imagesizes="(max-width: 819.98px) 480px, 100vw" fetchpriority="high">
-<link rel="stylesheet" href="assets/site.css?v=20261209">
+<link rel="preload" as="image" href="img/mural-full-seven.webp" imagesrcset="img/mural-full-seven-800.webp 800w, img/mural-full-seven-1280.webp 1280w, img/mural-full-seven-1440.webp 1440w, img/mural-full-seven.webp 2000w" imagesizes="(max-width: 819.98px) 480px, 100vw" fetchpriority="high">
+<link rel="stylesheet" href="assets/site.css?v=20261213">
 <noscript><style>#plan,#journey,#stabs,#sThumbs,#sAct,.hint,.mbar .go{display:none!important}</style></noscript>
 </head>
 <body class="has-bar">
@@ -81,12 +81,10 @@
   </div>
 
   <section id="wall" aria-label="Our wall mural and its seven kitchens">
-    <div class="wrap"><div class="scrollx"><div class="journey" id="journey" role="group" aria-label="All seven kitchens"></div></div></div>
-
     <div class="wrap wallbox">
       <div class="wall" id="wallScroll" tabindex="0" aria-label="The mural. Swipe sideways to walk the wall.">
         <div class="wall-in">
-          <img src="img/mural-full-clean.webp" srcset="img/mural-full-clean-800.webp 800w, img/mural-full-clean-1280.webp 1280w, img/mural-full-clean-1440.webp 1440w, img/mural-full-clean.webp 2000w" sizes="(max-width: 819.98px) 480px, 100vw" alt="The Bharat Fine Dine wall mural: Punjab, Awadh, Maharashtra, Goa and Kerala" width="2000" height="875" fetchpriority="high">
+          <img src="img/mural-full-seven.webp" srcset="img/mural-full-seven-800.webp 800w, img/mural-full-seven-1280.webp 1280w, img/mural-full-seven-1440.webp 1440w, img/mural-full-seven.webp 2000w" sizes="(max-width: 819.98px) 480px, 100vw" alt="The Bharat Fine Dine mural: Punjab, Awadh, Maharashtra, Goa and Kerala, with Continental and Chinese kitchens drawn in" width="2000" height="875" fetchpriority="high">
           <div id="pins"></div>
         </div>
       </div>
@@ -119,7 +117,7 @@
 
   <section class="sec" aria-labelledby="rwH" data-rv>
     <div class="wrap split real">
-      <img src="img/spaces/thumb/dining-6.webp" srcset="img/spaces/t400/dining-6.webp 400w, img/spaces/thumb/dining-6.webp 700w, img/spaces/dining-6.webp 1400w" sizes="(min-width: 900px) 620px, calc(100vw - 32px)" class="photo" alt="The mural painted on the dining room wall at Bharat Fine Dine, above two set tables" width="1400" height="932" loading="lazy">
+      <div class="zoom"><img src="img/spaces/thumb/dining-6.webp" srcset="img/spaces/t400/dining-6.webp 400w, img/spaces/thumb/dining-6.webp 700w, img/spaces/dining-6.webp 1400w" sizes="(min-width: 900px) 620px, calc(100vw - 32px)" class="photo" alt="The mural painted on the dining room wall at Bharat Fine Dine, above two set tables" width="1400" height="932" loading="lazy"></div>
       <div class="stack">
         <span class="kick">The real wall</span>
         <h2 class="h2" id="rwH">It is painted on our <em>dining room wall</em></h2>
@@ -157,9 +155,9 @@
     </div>
   </section>
 
-  <section class="sec" aria-labelledby="rvH">
-    <div class="wrap">
-      <div class="rating"><b id="rvH">4.5★</b><span class="lede">on Google · loved in Latur</span><a class="lnk" href="https://www.google.com/maps/search/?api=1&amp;query=Bharat+Fine+Dine+by+Sardesai%27s+Kitchen+Latur" target="_blank" rel="noopener">Read the reviews on Google →</a></div>
+  <section class="sec" aria-labelledby="rvH" data-rv>
+    <div class="wrap rev">
+      <div class="rating"><b id="rvH">4.5</b><i aria-hidden="true">★★★★★</i><span class="lede">on Google · loved in Latur</span><a class="btn line" href="https://www.google.com/maps/search/?api=1&amp;query=Bharat+Fine+Dine+by+Sardesai%27s+Kitchen+Latur" target="_blank" rel="noopener">Read the reviews</a></div>
       <div class="rgrid">
         <blockquote class="card flat"><p>“Best place for lunch and dinner in Latur MIDC area. Ambience is great.”</p><cite><i>★★★★★</i> Google review</cite></blockquote>
         <blockquote class="card flat"><p>“Food quality is really the best, staff is very kind, and the ambience is good.”</p><cite><i>★★★★★</i> Google review</cite></blockquote>
@@ -222,7 +220,7 @@
   <div class="in"><img id="lbImg" src="" alt=""><div class="ctl"><button type="button" id="lbPrev" aria-label="Previous photo">←</button><span id="lbPos"></span><button type="button" id="lbNext" aria-label="Next photo">→</button><button type="button" id="lbClose">Close</button></div></div>
 </dialog>
 
-<script src="assets/data.js?v=20261209" defer></script>
-<script src="assets/app.min.js?v=20261209" defer></script>
+<script src="assets/data.js?v=20261213" defer></script>
+<script src="assets/app.min.js?v=20261213" defer></script>
 </body>
 </html>

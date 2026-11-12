@@ -131,8 +131,8 @@ window.BFD_KITCHENS = [
   "art": "img/mural-maharashtra-720.webp",
   "thumb": "img/mural-maharashtra-480.webp",
   "pin": [
-   40.5,
-   46
+   45,
+   58
   ],
   "line": "Kolhapuri heat and Saoji spice from next door.",
   "count": 19,
@@ -210,7 +210,10 @@ window.BFD_KITCHENS = [
   "ink": "#48532A",
   "art": "img/mural-continental.webp",
   "thumb": "img/mural-continental-300.webp",
-  "pin": null,
+  "pin": [
+   38,
+   40
+  ],
   "line": "Grills, salads, sizzlers, pizza and pasta.",
   "count": 38,
   "veg": 22,
@@ -247,7 +250,10 @@ window.BFD_KITCHENS = [
   "ink": "#0F4E37",
   "art": "img/mural-oriental.webp",
   "thumb": "img/mural-oriental-300.webp",
-  "pin": null,
+  "pin": [
+   53.5,
+   40
+  ],
   "line": "Wok-tossed starters, noodles, rice bowls and Thai curries.",
   "count": 43,
   "veg": 26,

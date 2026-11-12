@@ -75,15 +75,15 @@
     }).join("");
     // phone: a pin whose label would be cut by the screen edge shows only its number until swiped into view
     var flipPins = function () {
-      var w = wall.clientWidth, x0 = wall.getBoundingClientRect().left;
+      var w = wall.clientWidth, sl = wall.scrollLeft, scrolls = wall.scrollWidth > w;
       Array.prototype.forEach.call(pins.querySelectorAll(".pin"), function (b) {
-        b.classList.toggle("flip", false);
-        var r = b.getBoundingClientRect();
-        b.classList.toggle("flip", wall.scrollWidth > w && r.left - x0 < w && r.right - x0 > w - 8);
+        if (!b._w) { var had = b.classList.contains("flip"); b.classList.remove("flip"); b._w = b.offsetWidth; if (had) b.classList.add("flip"); }   // natural label width, measured once
+        var left = b.offsetLeft - 12 - sl;                                                                                                          // from layout, so a running transition cannot skew it
+        b.classList.toggle("flip", scrolls && left < w - 8 && left + b._w > w - 8);
       });
     };
     flipPins(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(flipPins); window.addEventListener("resize", flipPins); wall.addEventListener("scroll", flipPins, { passive: true });
-    journey.innerHTML = K.map(function (k) {
+    if (journey) journey.innerHTML = K.map(function (k) {
       return '<button type="button" class="node" data-stop="' + k.n + '" style="--k:' + k.color + '"><span class="dot">' + k.n + "</span>" + esc(k.name) + "</button>";
     }).join("");
     var renderStop = function () {
@@ -417,7 +417,7 @@
   /* moving between pages: a strip of the mural slides past while the next page loads */
   (function () {
     var ld = document.createElement("div"); ld.className = "ld"; ld.setAttribute("aria-hidden", "true");
-    ld.innerHTML = '<div class="ldw"><div class="ldm"></div></div><span class="mr" lang="mr">चला…</span>';
+    ld.innerHTML = '<span class="seal"><img src="img/BFD_seal_red.png" alt="" width="128" height="128"><img class="f" src="img/BFD_seal_red.png" alt="" width="128" height="128"></span><span class="mr" lang="mr">चला…</span>';
     document.body.appendChild(ld);
     document.addEventListener("click", function (e) {
       if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -425,7 +425,7 @@
       var u; try { u = new URL(a.href, location.href); } catch (er) { return; }
       if (u.origin !== location.origin || u.pathname === location.pathname) return;   // other sites and same-page links pass straight through
       e.preventDefault(); ld.classList.add("on");
-      setTimeout(function () { location.href = u.href; }, 420);                       // long enough to read as a transition, not a flash
+      setTimeout(function () { location.href = u.href; }, 650);                       // long enough to read as a transition, not a flash
     });
     window.addEventListener("pageshow", function () { ld.classList.remove("on"); });   // also when coming back with the Back button
   })();
