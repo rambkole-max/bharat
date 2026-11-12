@@ -153,7 +153,7 @@ PAGE = f"""<!DOCTYPE html>
 <title>Menu · Bharat Fine Dine, Latur | {total_items} dishes, seven kitchens</title>
 <meta name="description" content="Full menu for Bharat Fine Dine by Sardesai's Kitchen, Latur: Punjabi, tandoor, Mughlai, Maharashtrian, coastal, Continental and Chinese, plus drinks, soups and desserts. Search, filter veg, and build a list for your table.">
 <link rel="canonical" href="https://bharatfinedine.com/menu.html">
-<meta name="theme-color" content="#FAF5EC">
+<meta name="theme-color" content="#0F0D0C">
 <link rel="icon" href="BFD_favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="BFD_favicon_32.png">
 <link rel="apple-touch-icon" href="BFD_apple-touch-icon_180.png">
@@ -164,7 +164,7 @@ PAGE = f"""<!DOCTYPE html>
 <meta property="og:image" content="https://bharatfinedine.com/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261117">
+<link rel="stylesheet" href="assets/site.css?v=20261118">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False, separators=(",", ":"))}</script>
 <noscript><style>.add,.search,#vegOnly,.mgrid aside,.mbar .cnt{{display:none!important}}</style></noscript>
 </head>
@@ -193,8 +193,8 @@ PAGE = f"""<!DOCTYPE html>
 </main>
 <footer class="foot"><div class="legal"><div class="wrap"><span>© 2026 Bharat Fine Dine · by Sardesai's Kitchen · FSSAI Lic. No. 11524049000056</span><span><a href="index.html">Home</a> · <a href="events.html">Events</a> · <a href="tel:+919126268181">+91 91262 68181</a></span></div></div></footer>
 <div class="mbar" aria-label="Quick actions"><a class="cnt" id="barCount" href="#mylist">Add dishes with +</a><a class="go" href="index.html#plan">Plan my table</a></div>
-<script src="assets/data.js?v=20261117" defer></script>
-<script src="assets/app.min.js?v=20261117" defer></script>
+<script src="assets/data.js?v=20261118" defer></script>
+<script src="assets/app.min.js?v=20261118" defer></script>
 </body>
 </html>
 """

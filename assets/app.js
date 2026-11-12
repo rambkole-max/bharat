@@ -381,5 +381,11 @@
     renderEv();
   }
 
+  /* reveal sections as they scroll in; anything already on screen is left alone */
+  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { rootMargin: "0px 0px -8% 0px" });
+    $$("[data-rv]").forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add("rv"); io.observe(el); } });
+  }
+
   var yr = $("#yr"); if (yr) yr.textContent = new Date().getFullYear();
 })();
