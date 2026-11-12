@@ -84,7 +84,7 @@
     flipPins(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(flipPins); window.addEventListener("resize", flipPins); wall.addEventListener("scroll", flipPins, { passive: true });
     journey.innerHTML = K.map(function (k) {
       return '<button type="button" class="node" data-stop="' + k.n + '" style="--k:' + k.color + '"><img src="' + k.thumb + '" alt="" width="480" height="270" loading="lazy" decoding="async">' +
-        '<span class="ln"><span class="dot">' + k.n + "</span></span><b>" + esc(k.name) + "</b><small>" + esc(k.sub) + "</small><small><b>" + k.count + "</b> dishes · " + kind(k) + "</small></button>";
+        '<span class="ln"><span class="dot">' + k.n + "</span></span><b>" + esc(k.name) + "</b><small><b>" + k.count + "</b> dishes · " + kind(k) + "</small></button>";
     }).join("");
     var renderStop = function () {
       var k = K[cur - 1], nx = K[cur % K.length];

@@ -447,3 +447,6 @@ body{-webkit-font-smoothing:antialiased}
 .pin[aria-pressed="true"]{background:var(--brown);color:var(--cream)}
 .mbar{background:rgba(74,53,36,.86)}
 .rail .chip[aria-pressed="true"]{background:rgba(165,28,48,.08);border-color:var(--maroon);color:var(--maroon-h)}
+
+/* declutter */
+@media (max-width:819.98px){ .hero .cta{display:none} .foot .mid .cta{display:none} }
