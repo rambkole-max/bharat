@@ -60,6 +60,7 @@
   /* ---------- my list (shared by menu and booking) ---------- */
   var list = store.get("bfd-list", []);
   function saveList() { store.set("bfd-list", list); }
+  var onListChange = null;
   function inList(id) { return list.some(function (x) { return x.id === id; }); }
 
   /* =====================================================================
@@ -92,6 +93,8 @@
         '<h2 class="h3">' + esc(k.title) + '</h2><p class="line">' + esc(k.line) + "</p>" +
         k.dishes.map(function (d) { return '<div class="dish"><span class="mark' + (d.veg ? "" : " nv") + '" aria-hidden="true"></span><span class="n">' + esc(d.name) + '</span><span class="sr">' + (d.veg ? "Veg" : "Non-veg") + ".</span><b>" + esc(d.price) + "</b></div>"; }).join("") +
         '<a class="lnk" href="menu.html#k-' + k.id + '">See all ' + k.count + " " + esc(k.name) + " dishes →</a>";
+      var jn = $("#jNote");
+      if (jn) jn.innerHTML = "<b>" + esc(k.title) + "</b><span>" + k.dishes.map(function (d) { return esc(d.name); }).join(" · ") + '</span><a class="lnk" href="menu.html#k-' + k.id + '">See all ' + k.count + " dishes →</a>";
       $$("[data-stop]").forEach(function (b) { if (b.classList.contains("pin") || b.classList.contains("node")) b.setAttribute("aria-pressed", +b.dataset.stop === cur); });
     };
     var select = function (n, scrollWall) {
@@ -102,7 +105,6 @@
     document.addEventListener("click", function (e) {
       var b = e.target.closest && e.target.closest("[data-stop]"); if (!b) return;
       select(+b.dataset.stop, !b.classList.contains("pin"));
-      if (b.classList.contains("node") && stopEl.getBoundingClientRect().top < 0) stopEl.scrollIntoView({ block: "center" });
     });
     renderStop();
   }
@@ -143,6 +145,11 @@
      PLAN MY TABLE: card on the page, then a three-step dialog
      ===================================================================== */
   var dlg = $("#planDlg");
+  if (!dlg && $('a[href$="index.html#plan"]')) {
+    dlg = document.createElement("dialog"); dlg.className = "dlg"; dlg.id = "planDlg"; dlg.setAttribute("aria-labelledby", "pTitle");
+    dlg.innerHTML = '<div class="sheet"><div class="top"><div class="r"><b id="pTitle">Plan my table</b><button type="button" class="x" id="pClose" aria-label="Close">×</button></div><div class="prog" id="pProg"></div></div><div class="body" id="pBody"></div><div class="ft" id="pFt"></div></div>';
+    document.body.appendChild(dlg);
+  }
   if (dlg) {
     var WHO = [{ t: "Two of us", g: 2, seat: "Outdoor" }, { t: "Family", g: 5, seat: "Restaurant" }, { t: "Friends", g: 4, seat: "Bar & Lounge" }, { t: "Celebration", g: 8, seat: "Private room" }, { t: "Work", g: 6, seat: "Private room" }];
     var SEATS = {
@@ -163,6 +170,7 @@
     /* --- the card on the page --- */
     var card = $("#plan");
     var renderCard = function () {
+      if (!card) return;
       $("#who").innerHTML = WHO.map(function (w, i) { return '<button type="button" class="chip" data-who="' + i + '" aria-pressed="' + (i === P.who) + '">' + w.t + "</button>"; }).join("");
       $("#guests").textContent = P.guests;
       var d = dayDiff();
@@ -170,7 +178,7 @@
         '<button type="button" class="chip" data-day="pick" aria-pressed="' + (d > 1) + '">' + (d > 1 ? esc(dateTxt()) : "Pick a date") + "</button>";
       $("#guestNote").textContent = P.guests >= CFG.MAX_GUESTS ? "For more than " + CFG.MAX_GUESTS + ", use the event planner" : "";
     };
-    card.addEventListener("click", function (e) {
+    if (card) card.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
       if (b.dataset.who) { P.who = +b.dataset.who; P.guests = WHO[P.who].g; P.seat = WHO[P.who].seat; }
       else if (b.dataset.day === "pick") { var di = $("#datePick"); if (di.showPicker) { try { di.showPicker(); } catch (er) { di.focus(); } } else di.focus(); return; }
@@ -180,8 +188,9 @@
       renderCard();
     });
     var dp = $("#datePick"), iso = function (d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); };
-    dp.min = iso(today); dp.max = iso(new Date(today.getTime() + 60 * 86400000));
-    dp.addEventListener("change", function () { if (!dp.value) return; var d = new Date(dp.value + "T00:00"); if (d >= today) { P.date = d; P.time = null; renderCard(); } });
+    var maxDay = iso(new Date(today.getTime() + 60 * 86400000));
+    if (dp) { dp.min = iso(today); dp.max = maxDay; }
+    if (dp) dp.addEventListener("change", function () { if (!dp.value) return; var d = new Date(dp.value + "T00:00"); if (d >= today) { P.date = d; P.time = null; renderCard(); } });
     renderCard();
 
     /* --- the dialog --- */
@@ -203,11 +212,16 @@
       var h = "", f = "";
       var sum = '<div class="sum"><span>' + esc(sumLine()) + '</span><button type="button" data-act="change">Change</button></div>';
       if (P.step === 1) {
-        var s = SEATS[P.seat];
-        h = sum + '<div class="card flat sug"><img src="' + s.img + '" alt="' + esc(s.title) + '" width="720" height="480"><div class="tx"><span class="kick">We would seat you in</span><h3 class="h3">' + esc(s.title) + '</h3><ul class="why">' + s.why.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") + "</ul></div></div>" +
+        var s = SEATS[P.seat], dd = dayDiff();
+        var pick = card ? sum :
+          '<div class="grp"><b>Who’s coming?</b><div class="chips">' + WHO.map(function (w, i) { return '<button type="button" class="chip" data-act="who" data-v="' + i + '" aria-pressed="' + (i === P.who) + '">' + w.t + "</button>"; }).join("") + "</div></div>" +
+          '<div class="stepper"><b style="font-size:14px">How many?</b><div class="c"><button type="button" data-act="g" data-v="-1" aria-label="Fewer guests">−</button><output aria-live="polite">' + P.guests + '</output><button type="button" data-act="g" data-v="1" aria-label="More guests">+</button></div></div>' +
+          '<div class="grp"><b>When?</b><div class="chips">' + [["0", "Today"], ["1", "Tomorrow"]].map(function (o) { return '<button type="button" class="chip" data-act="day" data-v="' + o[0] + '" aria-pressed="' + (dd === +o[0]) + '">' + o[1] + "</button>"; }).join("") +
+          '<label class="chip datechip" aria-pressed="' + (dd > 1) + '">' + (dd > 1 ? esc(dateTxt()) : "Pick a date") + '<input type="date" data-pick min="' + iso(today) + '" max="' + maxDay + '" value="' + (dd > 1 ? iso(P.date) : "") + '" aria-label="Pick a date"></label></div></div>';
+        h = pick + '<div class="card flat sug"><img src="' + s.img + '" alt="' + esc(s.title) + '" width="720" height="480"><div class="tx"><span class="kick">We would seat you in</span><h3 class="h3">' + esc(s.title) + '</h3><ul class="why">' + s.why.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") + "</ul></div></div>" +
+          '<div class="grp"><b>Or sit somewhere else</b><div class="chips">' + Object.keys(SEATS).map(function (k) { return '<button type="button" class="chip" data-act="seat" data-v="' + esc(k) + '" aria-pressed="' + (P.seat === k) + '">' + esc(k) + "</button>"; }).join("") + "</div></div>" +
           Object.keys(CFG.SLOTS).map(function (g) { return '<div class="grp"><b>' + g + '</b><div class="chips">' + CFG.SLOTS[g].map(function (t) { return '<button type="button" class="chip" data-act="time" data-v="' + t + '" aria-pressed="' + (P.time === t) + '"' + (past(t) ? " disabled" : "") + ">" + t + "</button>"; }).join("") + "</div></div>"; }).join("") +
           (anySlot() ? "" : '<p class="err">Today’s times have passed. Tap “Change” and pick another day, or call ' + CFG.PHONE + ".</p>") +
-          '<div class="grp"><b>Or sit somewhere else</b><div class="chips">' + Object.keys(SEATS).map(function (k) { return '<button type="button" class="chip" data-act="seat" data-v="' + esc(k) + '" aria-pressed="' + (P.seat === k) + '">' + esc(k) + "</button>"; }).join("") + "</div></div>" +
           '<p class="note">More than ' + CFG.MAX_GUESTS + ' guests? <a href="events.html" class="lnk">Open the event planner</a></p>';
         f = '<span class="note">Your table is held once we reply to confirm on WhatsApp.</span><div class="row"><button type="button" class="btn" data-act="next" aria-disabled="' + !valid() + '">Request this table</button></div>';
       } else if (P.step === 2) {
@@ -228,10 +242,11 @@
         h = '<span class="mr" lang="mr" style="font-size:26px">भेटूया!</span><h3 class="h3">Request sent, ' + esc(first) + ".</h3>" +
           '<div class="sum" style="flex-direction:column;align-items:flex-start;gap:4px"><span>Waiting for our reply on WhatsApp</span><span class="note" style="font-weight:400">' + esc(P.seat + " · " + guestsTxt() + " · " + dateTxt() + " · " + P.time) + ". Reference <b>" + P.ref + "</b></span></div>" +
           '<ol class="steps"><li>We reply on WhatsApp to confirm your table.</li><li>We set it up the way you asked.</li>' + (list.length ? "<li>The kitchen gets your dish list.</li>" : "") + "</ol>" +
-          '<a class="btn ink block" href="' + calUrl() + '" target="_blank" rel="noopener">Add to calendar</a><button type="button" class="btn line block" data-act="close">Back to the wall</button>' +
+          '<a class="btn ink block" href="' + calUrl() + '" target="_blank" rel="noopener">Add to calendar</a><button type="button" class="btn line block" data-act="close">' + (card ? "Back to the wall" : "Done") + '</button>' +
           '<p class="note">WhatsApp did not open? <a class="lnk" href="' + wa(message()) + '" target="_blank" rel="noopener">Send it again</a> or call <a class="lnk" href="tel:+' + CFG.WHATSAPP + '">' + CFG.PHONE + "</a>.</p>";
       }
-      body.innerHTML = h; ft.innerHTML = f; ft.hidden = !f; body.scrollTop = 0;
+      var keep = body.dataset.step === String(P.step) ? body.scrollTop : 0;
+      body.innerHTML = h; ft.innerHTML = f; ft.hidden = !f; body.dataset.step = P.step; body.scrollTop = keep;
     };
     var open = function (seat) {
       if (seat && SEATS[seat]) P.seat = seat;
@@ -252,8 +267,12 @@
       var a = b.dataset.act, v = b.dataset.v;
       if (a === "time") P.time = v;
       else if (a === "seat") P.seat = v;
-      else if (a === "drop") { list = list.filter(function (x) { return x.id !== v; }); saveList(); }
+      else if (a === "drop") { list = list.filter(function (x) { return x.id !== v; }); saveList(); if (onListChange) onListChange(); }
       else if (a === "back") P.step--;
+      else if (a === "who") { P.who = +v; P.guests = WHO[P.who].g; P.seat = WHO[P.who].seat; }
+      else if (a === "g") P.guests = Math.min(CFG.MAX_GUESTS, Math.max(1, P.guests + (+v)));
+      else if (a === "day") { P.date = new Date(today.getTime() + (+v) * 86400000); P.time = null; }
+      else if (a === "change" && !card) P.step = 1;
       else if (a === "change" || a === "close") { close(); if (a === "change") card.scrollIntoView({ block: "center" }); return; }
       else if (a === "next") {
         if (!valid()) { var bad = body.querySelector(P.name.trim().length > 1 ? '[data-in="phone"]' : '[data-in="name"]'); if (bad) bad.focus(); return; }
@@ -266,12 +285,17 @@
       var k = e.target.dataset.in; if (!k) return; P[k] = e.target.value;
       var n = ft.querySelector('[data-act="next"]'); if (n) n.setAttribute("aria-disabled", !valid());
     });
+    body.addEventListener("change", function (e) {
+      if (!e.target.hasAttribute("data-pick") || !e.target.value) return;
+      var d = new Date(e.target.value + "T00:00"); if (d >= today) { P.date = d; P.time = null; render(); }
+    });
     $("#pClose").addEventListener("click", close);
     document.addEventListener("click", function (e) {
-      var b = e.target.closest && e.target.closest("[data-plan]"); if (!b) return;
+      /* on pages without the booking card, links to it open the booking here instead of leaving the page */
+      var b = e.target.closest && e.target.closest(card ? "[data-plan]" : '[data-plan], a[href$="index.html#plan"]'); if (!b) return;
       e.preventDefault(); open(b.dataset.plan);
     });
-    if (location.hash === "#plan") setTimeout(function () { card.scrollIntoView({ block: "center" }); }, 100);
+    if (card && location.hash === "#plan") setTimeout(function () { card.scrollIntoView({ block: "center" }); }, 100);
   }
 
   /* =====================================================================
@@ -299,7 +323,8 @@
     var go = function (id, scroll) {
       if (!all.some(function (k) { return k.dataset.k === id; })) return;
       curK = id; q.value = ""; apply();
-      if (scroll) window.scrollTo({ top: $(".railbox").offsetTop - 64 });
+      /* only scroll when the dishes have gone up under the sticky rail; from the top of the page the search stays in view */
+      if (scroll) { var rb = $(".railbox").getBoundingClientRect().bottom, gt = $(".mgrid").getBoundingClientRect().top; if (gt < rb) window.scrollTo({ top: window.scrollY + gt - rb - 8 }); }
       try { history.replaceState(null, "", "#k-" + id); } catch (e) {}
     };
     document.addEventListener("click", function (e) {
@@ -335,7 +360,7 @@
       var qb = e.target.closest("[data-q]");
       if (qb) { var it = list.filter(function (x) { return x.id === qb.dataset.id; })[0]; if (it) { it.q = Math.min(20, (it.q || 1) + (+qb.dataset.q)); if (it.q < 1) list = list.filter(function (x) { return x !== it; }); saveList(); renderList(); } return; }
       var b = e.target.closest("[data-rm]"); if (!b) return; list = list.filter(function (x) { return x.id !== b.dataset.rm; }); saveList(); renderList(); });
-    renderList();
+    renderList(); onListChange = renderList;
   }
 
   /* =====================================================================
@@ -389,6 +414,21 @@
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { rootMargin: "0px 0px -8% 0px" });
     $$("[data-rv]").forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add("rv"); io.observe(el); } });
   }
+
+  /* page loader: the seal fills while the next page loads */
+  (function () {
+    var ld = document.createElement("div"); ld.className = "ld"; ld.setAttribute("aria-hidden", "true");
+    ld.innerHTML = '<span><img src="img/BFD_seal_red.png" alt="" width="96" height="96"><img class="f" src="img/BFD_seal_red.png" alt="" width="96" height="96"></span>';
+    document.body.appendChild(ld);
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest("a[href]"); if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+      var u; try { u = new URL(a.href, location.href); } catch (er) { return; }
+      if (u.origin !== location.origin || u.pathname === location.pathname) return;   // other sites and same-page links pass straight through
+      ld.classList.add("on");
+    });
+    window.addEventListener("pageshow", function () { ld.classList.remove("on"); });   // also when coming back with the Back button
+  })();
 
   var yr = $("#yr"); if (yr) yr.textContent = new Date().getFullYear();
 })();
