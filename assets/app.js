@@ -78,10 +78,18 @@
       var w = wall.clientWidth, sl = wall.scrollLeft, scrolls = wall.scrollWidth > w;
       Array.prototype.forEach.call(pins.querySelectorAll(".pin"), function (b) {
         if (!b._w) { var had = b.classList.contains("flip"); b.classList.remove("flip"); b._w = b.offsetWidth; if (had) b.classList.add("flip"); }   // natural label width, measured once
-        var left = b.offsetLeft - 12 - sl;                                                                                                          // from layout, so a running transition cannot skew it
-        b.classList.toggle("flip", scrolls && left < w - 8 && left + b._w > w - 8);
+        var lefty = scrolls && b.offsetLeft > wall.scrollWidth * 0.7;                    // near the mural's right end the name opens to the left of its number
+        b.classList.toggle("lefty", lefty);
+        var x0 = lefty ? b.offsetLeft + 30 - b._w - sl : b.offsetLeft - 12 - sl, x1 = x0 + b._w;
+        b.classList.toggle("flip", scrolls && (lefty ? (x1 > 8 && x0 < 8) : (x0 < w - 8 && x1 > w - 8)));
       });
+      var nx = $("#wallNext"), pv = $("#wallPrev");
+      if (nx) { nx.hidden = !scrolls || sl > wall.scrollWidth - w - 12; pv.hidden = !scrolls || sl < 12; }
     };
+    var wb = wall.parentNode;
+    wb.insertAdjacentHTML("beforeend", '<button type="button" class="wnav p" id="wallPrev" aria-label="Scroll the mural left" hidden>‹</button><button type="button" class="wnav n" id="wallNext" aria-label="Scroll the mural right" hidden>›</button><span class="wtip" id="wallTip" aria-hidden="true">Swipe to see more</span>');
+    wb.addEventListener("click", function (e) { var b = e.target.closest(".wnav"); if (b) wall.scrollBy({ left: (b.id === "wallNext" ? 1 : -1) * wall.clientWidth * 0.7, behavior: "smooth" }); });
+    wall.addEventListener("scroll", function () { var t = $("#wallTip"); if (t && wall.scrollLeft > 20) t.remove(); }, { passive: true });
     flipPins(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(flipPins); window.addEventListener("resize", flipPins); wall.addEventListener("scroll", flipPins, { passive: true });
     if (journey) journey.innerHTML = K.map(function (k) {
       return '<button type="button" class="node" data-stop="' + k.n + '" style="--k:' + k.color + '"><span class="dot">' + k.n + "</span>" + esc(k.name) + "</button>";
@@ -424,8 +432,7 @@
       var a = e.target.closest && e.target.closest("a[href]"); if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
       var u; try { u = new URL(a.href, location.href); } catch (er) { return; }
       if (u.origin !== location.origin || u.pathname === location.pathname) return;   // other sites and same-page links pass straight through
-      e.preventDefault(); ld.classList.add("on");
-      setTimeout(function () { location.href = u.href; }, 650);                       // long enough to read as a transition, not a flash
+      ld.classList.add("on");                                                           // shows only for as long as the next page takes; nothing is delayed                       // long enough to read as a transition, not a flash
     });
     window.addEventListener("pageshow", function () { ld.classList.remove("on"); });   // also when coming back with the Back button
   })();

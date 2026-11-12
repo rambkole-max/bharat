@@ -354,20 +354,20 @@ dialog::backdrop{background:rgba(30,27,24,.6)}
 .fit.ok .badge{background:var(--wa-bg);color:var(--wa-fg)}
 
 /* ---------- motion ---------- */
-.rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv{opacity:0;transform:translateY(12px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
 .rv.in{opacity:1;transform:none}
 .ld{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s4);background:var(--cream);opacity:0;visibility:hidden;transition:opacity .22s var(--ease),visibility 0s .22s}
-.ld.on{opacity:1;visibility:visible;transition:opacity .22s var(--ease)}
+.ld.on{opacity:1;visibility:visible;transition:opacity .15s var(--ease) .12s}
 .ld .seal{position:relative;width:128px;height:128px}
 .ld .seal img{position:absolute;inset:0;width:128px;height:128px;opacity:.15}
 .ld .seal img.f{opacity:1;clip-path:inset(100% 0 0 0)}
-.ld.on .seal img.f{animation:ldfill .65s var(--ease) forwards}
+.ld.on .seal img.f{animation:ldfill .9s var(--ease) infinite}
 .ld.on .seal{animation:ldpop .65s var(--ease)}
 .ld .mr{font-size:24px}
 @keyframes ldfill{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
 @keyframes ldpop{from{transform:scale(.92)}to{transform:scale(1)}}
 @keyframes pagein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-main{animation:pagein .35s var(--ease) both}
+main{animation:pagein .2s var(--ease) both}
 @view-transition{navigation:auto}
 #wall,#plan,#top,#spaces,#visit,#events{scroll-margin-top:100px}
 @media (prefers-reduced-motion:reduce){ *{transition:none!important;scroll-behavior:auto!important} .rv{opacity:1;transform:none} main{animation:none} .ld.on .seal,.ld.on .seal img.f{animation:none;clip-path:none} }
@@ -427,3 +427,25 @@ main{animation:pagein .35s var(--ease) both}
 .pics{position:relative}
 .pics img{box-shadow:0 22px 50px rgba(74,53,36,.28);border:5px solid var(--card)}
 @media (min-width:900px){ .pics{gap:var(--s5)} .pics img:first-child{transform:translateY(-22px) rotate(-1.5deg)} .pics img:last-child{transform:translateY(22px) rotate(1.5deg)} }
+
+/* mural on phones: names near the right end open leftward; arrows and a tip show it scrolls */
+.pin.lefty{flex-direction:row-reverse;padding:0 6px 0 14px;transform:translate(calc(-100% + 30px),-50%)}
+.pin.lefty.flip{padding:0;transform:translate(calc(-100% + 30px),-50%)}
+.wallbox{position:relative}
+.wnav{position:absolute;top:150px;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,253,249,.94);box-shadow:0 6px 18px rgba(30,27,24,.28);font-size:26px;line-height:1;color:var(--ink);z-index:3}
+.wnav.n{right:calc(var(--gutter) + 8px)}.wnav.p{left:calc(var(--gutter) + 8px)}
+.wtip{position:absolute;right:calc(var(--gutter) + 60px);top:150px;transform:translateY(-50%);padding:7px 12px;border-radius:var(--r-pill);background:rgba(30,27,24,.82);color:var(--cream);font-size:13px;font-weight:600;pointer-events:none;z-index:3;animation:wnudge 1.6s var(--ease) 3}
+@keyframes wnudge{50%{transform:translate(-8px,-50%)}}
+@media (min-width:820px){ .wnav,.wtip{display:none} }
+@media (prefers-reduced-motion:reduce){ .wtip{animation:none} }
+
+/* phones: photos and tiles are wider than tall, so the page does not read as stretched */
+@media (max-width:899.98px){
+  .pics img,.find img{aspect-ratio:4/3}
+  .pwall .chip{width:170px;height:130px}
+  .space .big,.real .zoom{aspect-ratio:3/2}
+  .vphoto{min-height:210px}
+  .hero .h1{line-height:1.04}
+  .lede{line-height:1.5}
+}
+.pin{white-space:nowrap}
