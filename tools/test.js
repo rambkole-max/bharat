@@ -286,7 +286,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
       await p.evaluate(() => scrollTo(0, document.body.scrollHeight)); await p.waitForTimeout(150);
       const hid = await p.evaluate(() => { const bar = document.querySelector('.mbar').getBoundingClientRect(), leg = document.querySelector('.foot .legal .wrap > span:last-child').getBoundingClientRect(); return leg.bottom > bar.top; });
       ck(S2, 'bottom bar does not cover the end of the footer', !hid);
-      eq(S2, 'bottom bar: Call, Menu, Directions, Plan my table', await p.$$eval('.mbar > *', e => e.map(x => x.textContent)), ['Call', 'Menu', 'Directions', 'Plan my table']);
+      eq(S2, 'bottom bar: Call, Directions, Plan my table', await p.$$eval('.mbar > *', e => e.map(x => x.textContent)), ['Call', 'Directions', 'Plan my table']);
     }
     // header anchors land with the heading visible below the sticky header
     for (const id of ['spaces', 'visit', 'wall']) {
