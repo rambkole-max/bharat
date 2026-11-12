@@ -519,3 +519,22 @@ main{animation:pagein .35s var(--ease) both}
 /* date choice inside the booking dialog (menu and events pages) */
 .datechip{position:relative;cursor:pointer}
 .datechip input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+
+/* phone: events and Visit sections */
+@media (max-width:899.98px){
+  .band .in{gap:var(--s5)}
+  .band .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s3)}
+  .band .pics{gap:10px}
+  .band .pics img{aspect-ratio:4/5;border-radius:var(--r-md)}
+  .band .in > .card{background:none;border:0;box-shadow:none;padding:0!important;gap:var(--s2)!important}
+  .band .in > .card .kick{display:none}
+  .band .in > .card .h3{font-size:20px}
+  .band .in > .card .btn{align-self:stretch!important;background:var(--maroon);border-color:var(--maroon);color:#fff;min-height:52px;margin-top:var(--s3)!important}
+  .visit{gap:var(--s5)}
+  .visit address{font-size:16px;gap:6px}
+  .visit .cta{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .visit .cta .btn{min-height:52px}
+  .find{gap:10px;margin-top:var(--s4)}
+  .find img{aspect-ratio:4/5}
+  .find figcaption{font-size:14px}
+}
