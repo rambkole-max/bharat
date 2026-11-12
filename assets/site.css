@@ -414,3 +414,8 @@ body{-webkit-font-smoothing:antialiased}
 .node img{height:112px;object-position:50% 30%}
 .rating b,.stats b{font-family:var(--serif);font-weight:400;font-stretch:100%;letter-spacing:-.01em}
 .stats b{font-size:clamp(44px,5vw,64px)}
+
+/* readability: labels a touch larger, long intro lines capped */
+.kick{font-size:13px}
+.hint{font-size:13px}
+.head .lede{max-width:62ch}
