@@ -173,7 +173,7 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:60
 @media (min-width:1040px){ .scrollx{overflow:visible;margin:0;padding:0} .journey{min-width:0;gap:var(--s5)} }
 
 /* ---------- home: the real wall, spaces ---------- */
-.real img{aspect-ratio:4/3;object-position:50% 78%}
+.real img{aspect-ratio:8/5;object-position:50% 100%}
 .pwall{display:flex;gap:var(--s3);overflow-x:auto;scrollbar-width:none;margin:0 calc(-1 * var(--gutter)) var(--s6);padding:4px var(--gutter)}
 .pwall::-webkit-scrollbar{display:none}
 .pwall .chip{position:relative;flex:none;width:150px;height:190px;min-height:0;padding:0;border:0;border-radius:var(--r-sm);overflow:hidden;background:#1E1B18;white-space:normal}
