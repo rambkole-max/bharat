@@ -251,7 +251,7 @@ window.BFD_KITCHENS = [
   "art": "img/mural-oriental.webp",
   "thumb": "img/mural-oriental-300.webp",
   "pin": [
-   53.5,
+   51.5,
    40
   ],
   "line": "Wok-tossed starters, noodles, rice bowls and Thai curries.",

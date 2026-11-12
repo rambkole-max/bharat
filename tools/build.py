@@ -41,7 +41,7 @@ KITCHENS = [
          line="Grills, salads, sizzlers, pizza and pasta.",
          featured=[("Waldorf Salad", None), ("Cheese Club Sandwich", None), ("Grilled Chicken Salad", None), ("Veg Club Sandwich", None)]),
     dict(id="oriental", short="Chinese", name="Chinese & Oriental", title="Chinese & Oriental", sub="The East", color="#0F4E37", ink="#0F4E37",
-         art="img/mural-oriental.webp", thumb="img/mural-oriental-300.webp", pin=(53.5, 40),
+         art="img/mural-oriental.webp", thumb="img/mural-oriental-300.webp", pin=(51.5, 40),
          line="Wok-tossed starters, noodles, rice bowls and Thai curries.",
          featured=[("Veg Hakka Noodles", None), ("Burnt Garlic Noodles", None), ("Crispy Honey Chilli Chicken", None), ("Veg Spring Roll", None)]),
 ]
