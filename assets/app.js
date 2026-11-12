@@ -84,8 +84,7 @@
     };
     flipPins(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(flipPins); window.addEventListener("resize", flipPins); wall.addEventListener("scroll", flipPins, { passive: true });
     journey.innerHTML = K.map(function (k) {
-      return '<button type="button" class="node" data-stop="' + k.n + '" style="--k:' + k.color + '"><img src="' + k.thumb + '" alt="" width="480" height="270" loading="lazy" decoding="async">' +
-        '<span class="ln"><span class="dot">' + k.n + "</span></span><b>" + esc(k.name) + "</b><small><b>" + k.count + "</b> dishes · " + kind(k) + "</small></button>";
+      return '<button type="button" class="node" data-stop="' + k.n + '" style="--k:' + k.color + '"><span class="dot">' + k.n + "</span>" + esc(k.name) + "</button>";
     }).join("");
     var renderStop = function () {
       var k = K[cur - 1], nx = K[cur % K.length];
@@ -415,17 +414,18 @@
     $$("[data-rv]").forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add("rv"); io.observe(el); } });
   }
 
-  /* page loader: the seal fills while the next page loads */
+  /* moving between pages: a strip of the mural slides past while the next page loads */
   (function () {
     var ld = document.createElement("div"); ld.className = "ld"; ld.setAttribute("aria-hidden", "true");
-    ld.innerHTML = '<span><img src="img/BFD_seal_red.png" alt="" width="96" height="96"><img class="f" src="img/BFD_seal_red.png" alt="" width="96" height="96"></span>';
+    ld.innerHTML = '<div class="ldw"><div class="ldm"></div></div><span class="mr" lang="mr">चला…</span>';
     document.body.appendChild(ld);
     document.addEventListener("click", function (e) {
       if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest && e.target.closest("a[href]"); if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
       var u; try { u = new URL(a.href, location.href); } catch (er) { return; }
       if (u.origin !== location.origin || u.pathname === location.pathname) return;   // other sites and same-page links pass straight through
-      ld.classList.add("on");
+      e.preventDefault(); ld.classList.add("on");
+      setTimeout(function () { location.href = u.href; }, 420);                       // long enough to read as a transition, not a flash
     });
     window.addEventListener("pageshow", function () { ld.classList.remove("on"); });   // also when coming back with the Back button
   })();

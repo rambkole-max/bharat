@@ -57,7 +57,7 @@
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="img/mural-full-clean.webp" imagesrcset="img/mural-full-clean-800.webp 800w, img/mural-full-clean-1280.webp 1280w, img/mural-full-clean-1440.webp 1440w, img/mural-full-clean.webp 2000w" imagesizes="(max-width: 819.98px) 480px, 100vw" fetchpriority="high">
-<link rel="stylesheet" href="assets/site.css?v=20261206">
+<link rel="stylesheet" href="assets/site.css?v=20261209">
 <noscript><style>#plan,#journey,#stabs,#sThumbs,#sAct,.hint,.mbar .go{display:none!important}</style></noscript>
 </head>
 <body class="has-bar">
@@ -81,6 +81,8 @@
   </div>
 
   <section id="wall" aria-label="Our wall mural and its seven kitchens">
+    <div class="wrap"><div class="scrollx"><div class="journey" id="journey" role="group" aria-label="All seven kitchens"></div></div></div>
+
     <div class="wrap wallbox">
       <div class="wall" id="wallScroll" tabindex="0" aria-label="The mural. Swipe sideways to walk the wall.">
         <div class="wall-in">
@@ -115,15 +117,7 @@
     </div>
   </section>
 
-  <section class="sec" aria-labelledby="jH">
-    <div class="wrap">
-      <div class="head"><h2 class="h2" id="jH">Seven kitchens, <em>one wall</em></h2></div>
-      <div class="scrollx"><div class="journey" id="journey"></div></div>
-      <p class="jnote" id="jNote" aria-live="polite"></p>
-    </div>
-  </section>
-
-  <section class="sec tight" aria-labelledby="rwH" data-rv>
+  <section class="sec" aria-labelledby="rwH" data-rv>
     <div class="wrap split real">
       <img src="img/spaces/thumb/dining-6.webp" srcset="img/spaces/t400/dining-6.webp 400w, img/spaces/thumb/dining-6.webp 700w, img/spaces/dining-6.webp 1400w" sizes="(min-width: 900px) 620px, calc(100vw - 32px)" class="photo" alt="The mural painted on the dining room wall at Bharat Fine Dine, above two set tables" width="1400" height="932" loading="lazy">
       <div class="stack">
@@ -175,21 +169,27 @@
   </section>
 
   <section class="sec" id="visit" aria-labelledby="vH" data-rv>
-    <div class="wrap split top visit">
-      <div class="stack">
-        <h2 class="h2" id="vH">Visit us</h2>
-        <address><span>Plot No. B-37, MIDC Area, Latur, Maharashtra 413531</span><span>Open daily · 11 AM – 11 PM · On-site parking</span><span><a href="tel:+919126268181">+91 91262 68181</a> · <a href="mailto:hello@bharatfinedine.com">hello@bharatfinedine.com</a></span></address>
-        <div class="cta"><a class="btn line" href="https://www.google.com/maps/dir/?api=1&amp;destination=18.4099037,76.5422986" target="_blank" rel="noopener">Get directions</a><a class="btn line" href="tel:+919126268181">Call us</a></div>
-        <div class="faq">
-          <h3 class="h3">Before you visit</h3>
-          <details><summary>Do you serve both veg and non-veg?</summary><p>Yes. There’s a full vegetarian menu alongside the non-veg one. Tell us your preference when you book.</p></details>
-          <details><summary>Is it good for kids and families?</summary><p>Very. Children are looked after, there are private rooms for big families, and nobody is rushed.</p></details>
-          <details><summary>Can you set up a birthday or anniversary?</summary><p>Yes. Candlelight can be set up in a private dining room. Just mention it when you plan your table.</p></details>
+    <div class="wrap">
+      <div class="card vcard">
+        <div class="vphoto">
+          <img src="img/spaces/thumb/outdoor-4.webp" srcset="img/spaces/thumb/outdoor-4.webp 700w, img/spaces/outdoor-4.webp 1400w" sizes="(min-width: 900px) 560px, 100vw" alt="The entrance, with the Sardesai's Kitchen and Bharat Fine Dine signs" width="1400" height="932" loading="lazy">
+          <figure><img src="img/spaces/t400/outdoor-5.webp" alt="The Bharat Fine Dine building seen from the road, behind a row of trees" width="400" height="266" loading="lazy"><figcaption>From the road</figcaption></figure>
         </div>
-      </div>
-      <div class="find">
-        <figure><img class="photo" src="img/spaces/thumb/outdoor-5.webp" srcset="img/spaces/t400/outdoor-5.webp 400w, img/spaces/thumb/outdoor-5.webp 700w" sizes="(min-width: 820px) 260px, 46vw" alt="The Bharat Fine Dine building seen from the road, behind a row of trees" width="700" height="466" loading="lazy"><figcaption>From the road</figcaption></figure>
-        <figure><img class="photo" src="img/spaces/thumb/outdoor-4.webp" srcset="img/spaces/t400/outdoor-4.webp 400w, img/spaces/thumb/outdoor-4.webp 700w" sizes="(min-width: 820px) 260px, 46vw" alt="The entrance, with the Sardesai's Kitchen and Bharat Fine Dine signs" width="700" height="466" loading="lazy"><figcaption>At the entrance</figcaption></figure>
+        <div class="vtx">
+          <h2 class="h2" id="vH">Visit us</h2>
+          <dl class="vinfo">
+            <div><dt>Address</dt><dd>Plot No. B-37, MIDC Area, Latur, Maharashtra 413531</dd></div>
+            <div><dt>Hours</dt><dd>Open daily · 11 AM – 11 PM · On-site parking</dd></div>
+            <div><dt>Contact</dt><dd><address><a href="tel:+919126268181">+91 91262 68181</a><br><a href="mailto:hello@bharatfinedine.com">hello@bharatfinedine.com</a></address></dd></div>
+          </dl>
+          <div class="cta"><a class="btn" href="https://www.google.com/maps/dir/?api=1&amp;destination=18.4099037,76.5422986" target="_blank" rel="noopener">Get directions</a><a class="btn line" href="tel:+919126268181">Call us</a></div>
+          <div class="faq">
+            <h3 class="h3">Before you visit</h3>
+            <details><summary>Do you serve both veg and non-veg?</summary><p>Yes. There’s a full vegetarian menu alongside the non-veg one. Tell us your preference when you book.</p></details>
+            <details><summary>Is it good for kids and families?</summary><p>Very. Children are looked after, there are private rooms for big families, and nobody is rushed.</p></details>
+            <details><summary>Can you set up a birthday or anniversary?</summary><p>Yes. Candlelight can be set up in a private dining room. Just mention it when you plan your table.</p></details>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -222,7 +222,7 @@
   <div class="in"><img id="lbImg" src="" alt=""><div class="ctl"><button type="button" id="lbPrev" aria-label="Previous photo">←</button><span id="lbPos"></span><button type="button" id="lbNext" aria-label="Next photo">→</button><button type="button" id="lbClose">Close</button></div></div>
 </dialog>
 
-<script src="assets/data.js?v=20261206" defer></script>
-<script src="assets/app.min.js?v=20261206" defer></script>
+<script src="assets/data.js?v=20261209" defer></script>
+<script src="assets/app.min.js?v=20261209" defer></script>
 </body>
 </html>
