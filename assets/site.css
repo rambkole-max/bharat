@@ -432,3 +432,18 @@ body{-webkit-font-smoothing:antialiased}
 /* phone: the mural gets the same rounded frame as desktop, and still swipes inside it */
 @media (max-width:819.98px){ .wallbox{padding:0 var(--gutter)} .wall{border-radius:var(--r-lg);border:1px solid var(--line);box-shadow:var(--shadow)} .hint{right:calc(var(--gutter) + 12px)} }
 @media (max-width:819.98px){ .pin.flip{transform:translate(-100%,-50%)} .pin.flip:hover{transform:translate(-100%,-50%)} }
+
+/* button colours: maroon only for booking a table; outline for the rest; green where WhatsApp opens; warm brown in place of black */
+:root{--brown:#4A3524;--edge:#A47424;--wa:#0F7A45;--wa-h:#0B6338}
+.btn.line{border-color:var(--edge);color:var(--ink);font-weight:600}
+.btn.line:hover{background:var(--butter);border-color:var(--edge);color:var(--ink)}
+.btn.ink{background:var(--brown);border-color:var(--brown)}
+.btn.ink:hover{background:#38271A;border-color:#38271A}
+.btn.wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.btn.wa:hover{background:var(--wa-h);border-color:var(--wa-h)}
+.btn.wa::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--wa-ico) center/contain no-repeat;mask:var(--wa-ico) center/contain no-repeat;--wa-ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.700 6.700 0 0 1-3.300-2.900c-.2-.4.2-.4.6-1.200.1-.200 0-.300 0-.500l-.8-1.800c-.2-.500-.4-.400-.6-.400h-.500c-.2 0-.5.100-.7.300-.2.300-.9.900-.9 2.200s.9 2.500 1.100 2.700c.1.200 1.900 2.900 4.600 4 1.700.700 2.300.800 3.200.600.500-.100 1.500-.600 1.700-1.200.200-.600.200-1.100.200-1.200-.100-.100-.300-.200-.500-.300z'/%3E%3C/svg%3E")}
+.chip[aria-pressed="true"],.chip.on{background:rgba(165,28,48,.08);border-color:var(--maroon);color:var(--maroon-h)}
+.pwall .chip[aria-pressed="true"]{background:#1E1B18}
+.pin[aria-pressed="true"]{background:var(--brown);color:var(--cream)}
+.mbar{background:rgba(74,53,36,.86)}
+.rail .chip[aria-pressed="true"]{background:rgba(165,28,48,.08);border-color:var(--maroon);color:var(--maroon-h)}

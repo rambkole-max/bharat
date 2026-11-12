@@ -222,7 +222,7 @@
         if (list.length) rows.push(["Dishes noted", listNames().join(", ")]);
         h = '<h3 class="h3" style="font-size:20px">Check and send</h3><div class="card flat tbl">' + rows.map(function (r) { return "<div><span>" + r[0] + "</span><b>" + esc(r[1]) + "</b></div>"; }).join("") + "</div>" +
           '<div class="grp"><b style="font-size:13px;color:var(--body)">The message we will open in WhatsApp</b><div class="bubble">' + esc(message()) + "</div></div>";
-        f = '<span class="note">Your table is held once we reply to confirm.</span><div class="row"><button type="button" class="btn line" data-act="back">Back</button><a class="btn" id="pSend" href="' + wa(message()) + '" target="_blank" rel="noopener">Send on WhatsApp</a></div>';
+        f = '<span class="note">Your table is held once we reply to confirm.</span><div class="row"><button type="button" class="btn line" data-act="back">Back</button><a class="btn wa" id="pSend" href="' + wa(message()) + '" target="_blank" rel="noopener">Send on WhatsApp</a></div>';
       } else {
         var first = P.name.trim().split(" ")[0] || "friend";
         h = '<span class="mr" lang="mr" style="font-size:26px">भेटूया!</span><h3 class="h3">Request sent, ' + esc(first) + ".</h3>" +

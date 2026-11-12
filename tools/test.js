@@ -280,7 +280,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     const faq = await p.$$eval('.faq details', e => e.length); let opened = 0;
     for (let i = 0; i < faq; i++) { await p.click('.faq details >> nth=' + i + ' >> summary'); if (await p.$eval('.faq details >> nth=' + i, d => d.open && d.querySelector('p').offsetHeight > 10)) opened++; }
     eq(S2, 'all 6 questions open and show an answer', [faq, opened], [6, 6]);
-    eq(S2, 'directions link points at the restaurant', await p.getAttribute('#visit a.btn.ink', 'href'), 'https://www.google.com/maps/dir/?api=1&destination=18.4099037,76.5422986');
+    eq(S2, 'directions link points at the restaurant', await p.getAttribute('#visit .cta a.btn >> nth=0', 'href'), 'https://www.google.com/maps/dir/?api=1&destination=18.4099037,76.5422986');
     eq(S2, 'footer year is current', await p.textContent('#yr'), '2026');
     if (w < 820) {
       await p.evaluate(() => scrollTo(0, document.body.scrollHeight)); await p.waitForTimeout(150);
