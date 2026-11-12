@@ -84,7 +84,7 @@
     flipPins(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(flipPins); window.addEventListener("resize", flipPins); wall.addEventListener("scroll", flipPins, { passive: true });
     journey.innerHTML = K.map(function (k) {
       return '<button type="button" class="node" data-stop="' + k.n + '" style="--k:' + k.color + '"><img src="' + k.thumb + '" alt="" width="480" height="270" loading="lazy" decoding="async">' +
-        '<span class="ln"><span class="dot">' + k.n + "</span></span><b>" + esc(k.name) + "</b><small>" + esc(k.sub) + "</small><small><b>" + k.count + "</b> dishes · " + kind(k) + "</small></button>";
+        '<span class="ln"><span class="dot">' + k.n + "</span></span><b>" + esc(k.name) + "</b><small><b>" + k.count + "</b> dishes · " + kind(k) + "</small></button>";
     }).join("");
     var renderStop = function () {
       var k = K[cur - 1], nx = K[cur % K.length];
@@ -112,13 +112,13 @@
     var SPACES = [
       { k: "dining", name: "Fine-dine restaurant", seat: "Restaurant", img: "img/svc-dining-720.webp", desc: "Air-conditioned indoor dining across seven kitchens, with a full vegetarian menu alongside." },
       { k: "outdoor", name: "Outdoor dining", seat: "Outdoor", img: "img/svc-garden-720.webp", desc: "Open-air seating wrapped in greenery and soft light, our signature table for easy evenings." },
-      { k: "bar", name: "The Bar & Lounge", seat: "Bar & Lounge", img: "img/svc-bar-720.webp", desc: "A relaxed bar with a live-music corner, a curated pour and fair prices." },
+      { k: "bar", name: "The Bar & Lounge", seat: "Bar & Lounge", img: "img/spaces/bar-3.webp", tile: "img/spaces/thumb/bar-3.webp", desc: "A relaxed bar with a live-music corner, a curated pour and fair prices." },
       { k: "private", name: "Private dining rooms", seat: "Private room", img: "img/svc-private-720.webp", desc: "Marble-table rooms for celebrations and business lunches. Candlelight on request." },
       { k: "meeting", name: "Board & meeting rooms", seat: null, img: "img/svc-meeting-720.webp", desc: "Board rooms with screens and catering on tap, built for meetings and offsites." },
       { k: "hall", name: "Banquet halls", seat: null, img: "img/svc-hall-720.webp", desc: "Samiksha and Sanskruti: two 300+ seat halls for weddings, receptions and functions, with full catering." }
     ];
     var sp = 0, lb = $("#lb"), lbList = [], lbI = 0;
-    sTabs.innerHTML = SPACES.map(function (s, i) { return '<button type="button" class="chip" data-sp="' + i + '" aria-pressed="' + (i === 0) + '">' + esc(s.name) + "</button>"; }).join("");
+    sTabs.innerHTML = SPACES.map(function (s, i) { return '<button type="button" class="chip" data-sp="' + i + '" aria-pressed="' + (i === 0) + '"><img src="' + (s.tile || s.img.replace("-720.", "-600.")) + '" alt="" width="600" height="400" loading="lazy" decoding="async"><span>' + esc(s.name) + "</span></button>"; }).join("");
     var photos = function (s) { var a = []; for (var n = 1; n <= 6; n++) a.push({ t: "img/spaces/t400/" + s.k + "-" + n + ".webp", f: "img/spaces/" + s.k + "-" + n + ".webp", alt: s.name + ", photo " + n }); return a; };
     var renderSpace = function () {
       var s = SPACES[sp];
@@ -148,7 +148,7 @@
     var SEATS = {
       "Restaurant": { title: "The fine-dine restaurant", img: "img/svc-dining-720.webp", why: ["Indoor and air-conditioned", "All seven kitchens, with a full veg menu", "Room for the whole family"] },
       "Outdoor": { title: "An outdoor table", img: "img/svc-garden-720.webp", why: ["Open-air seating among the plants", "Soft light in the evening", "Candlelight on request"] },
-      "Bar & Lounge": { title: "The Bar & Lounge", img: "img/svc-bar-720.webp", why: ["A relaxed, separate bar", "Live-music corner", "Easy for a group of friends"] },
+      "Bar & Lounge": { title: "The Bar & Lounge", img: "img/spaces/thumb/bar-3.webp", why: ["A relaxed, separate bar", "Live-music corner", "Easy for a group of friends"] },
       "Private room": { title: "A private dining room", img: "img/svc-private-720.webp", why: ["Best for groups of six or more", "A room to yourselves", "Candlelight set up on request"] }
     };
     var today = new Date(); today.setHours(0, 0, 0, 0);
@@ -187,7 +187,7 @@
     /* --- the dialog --- */
     var body = $("#pBody"), ft = $("#pFt");
     var sumLine = function () { return (P.step === 1 ? WHO[P.who].t : P.seat) + " · " + guestsTxt() + " · " + dateTxt() + (P.time && P.step > 1 ? " · " + P.time : ""); };
-    var listNames = function () { return list.map(function (x) { return x.name; }); };
+    var listNames = function () { return list.map(function (x) { return (x.q > 1 ? x.q + " × " : "") + x.name; }); };
     var message = function () {
       return "Hi Bharat Fine Dine! Table request " + P.ref + ": " + P.seat + " for " + P.guests + " on " + dateTxt() + " at " + P.time + " (" + WHO[P.who].t + "). Name: " + P.name.trim() + ". Phone: " + P.phone.trim() + "." +
         (listNames().length ? " Dishes we would like: " + listNames().join(", ") + "." : "") + (P.note.trim() ? " Note: " + P.note.trim() : "");
@@ -215,14 +215,14 @@
           '<label class="f">Your name<input class="fld" data-in="name" value="' + esc(P.name) + '" autocomplete="name"></label>' +
           '<label class="f">WhatsApp number<input class="fld" data-in="phone" value="' + esc(P.phone) + '" inputmode="tel" autocomplete="tel" placeholder="+91"></label>' +
           '<label class="f">Anything we should know? (optional)<input class="fld" data-in="note" value="' + esc(P.note) + '" placeholder="Cake at 9 pm, high chair"></label>' +
-          (list.length ? '<div class="grp"><b>Dishes going with your request</b><div class="tags">' + list.map(function (x) { return '<span class="tag">' + esc(x.name) + '<button type="button" data-act="drop" data-v="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span>'; }).join("") + "</div></div>" : '<p class="note">Want the kitchen to know what you are coming for? <a class="lnk" href="menu.html">Add dishes from the menu</a></p>');
+          (list.length ? '<div class="grp"><b>Dishes going with your request</b><div class="tags">' + list.map(function (x) { return '<span class="tag">' + (x.q > 1 ? x.q + " × " : "") + esc(x.name) + '<button type="button" data-act="drop" data-v="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span>'; }).join("") + "</div></div>" : '<p class="note">Want the kitchen to know what you are coming for? <a class="lnk" href="menu.html">Add dishes from the menu</a></p>');
         f = '<div class="row"><button type="button" class="btn line" data-act="back">Back</button><button type="button" class="btn" data-act="next" aria-disabled="' + !valid() + '">Check my request</button></div>';
       } else if (P.step === 3) {
         var rows = [["Table", P.seat], ["Date", dateTxt()], ["Time", P.time], ["Guests", P.guests + " · " + WHO[P.who].t], ["Name", P.name.trim()], ["WhatsApp", P.phone.trim()]];
         if (list.length) rows.push(["Dishes noted", listNames().join(", ")]);
         h = '<h3 class="h3" style="font-size:20px">Check and send</h3><div class="card flat tbl">' + rows.map(function (r) { return "<div><span>" + r[0] + "</span><b>" + esc(r[1]) + "</b></div>"; }).join("") + "</div>" +
           '<div class="grp"><b style="font-size:13px;color:var(--body)">The message we will open in WhatsApp</b><div class="bubble">' + esc(message()) + "</div></div>";
-        f = '<span class="note">Your table is held once we reply to confirm.</span><div class="row"><button type="button" class="btn line" data-act="back">Back</button><a class="btn" id="pSend" href="' + wa(message()) + '" target="_blank" rel="noopener">Send on WhatsApp</a></div>';
+        f = '<span class="note">Your table is held once we reply to confirm.</span><div class="row"><button type="button" class="btn line" data-act="back">Back</button><a class="btn wa" id="pSend" href="' + wa(message()) + '" target="_blank" rel="noopener">Send on WhatsApp</a></div>';
       } else {
         var first = P.name.trim().split(" ")[0] || "friend";
         h = '<span class="mr" lang="mr" style="font-size:26px">भेटूया!</span><h3 class="h3">Request sent, ' + esc(first) + ".</h3>" +
@@ -322,16 +322,19 @@
       panel.hidden = false; panel.classList.toggle("empty", !list.length);
       if (!list.length) { panel.innerHTML = '<span class="kick">Your list</span><b style="font-size:20px">Nothing yet</b><p class="note" style="margin-top:6px">Tap + beside a dish to add it. Your list goes with your table request, so the kitchen knows what you are coming for.</p>'; return; }
       panel.innerHTML = '<span class="kick">Your list</span><b style="font-size:20px">' + list.length + (list.length === 1 ? " dish" : " dishes") + "</b>" +
-        list.map(function (x) { return '<div class="row"><span>' + esc(x.name) + "</span><span><b>" + esc(x.price) + '</b><button type="button" data-rm="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span></div>'; }).join("") +
+        list.map(function (x) { return '<div class="row"><span>' + esc(x.name) + '<small>' + esc(x.price) + '</small></span><span class="qty"><button type="button" data-q="-1" data-id="' + esc(x.id) + '" aria-label="One less ' + esc(x.name) + '">−</button><output aria-live="polite">' + (x.q || 1) + '</output><button type="button" data-q="1" data-id="' + esc(x.id) + '" aria-label="One more ' + esc(x.name) + '">+</button><button type="button" class="rm" data-rm="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span></div>'; }).join("") +
         '<p class="note" style="margin:8px 0 10px">Your list goes with your table request.</p><a class="btn" href="index.html#plan" style="align-self:flex-start">Plan my table</a>';
     };
     kits.addEventListener("click", function (e) {
       var b = e.target.closest(".add"); if (!b) return;
       if (inList(b.dataset.add)) list = list.filter(function (x) { return x.id !== b.dataset.add; });
-      else list.push({ id: b.dataset.add, name: b.dataset.name, price: b.dataset.price });
+      else list.push({ id: b.dataset.add, name: b.dataset.name, price: b.dataset.price, q: 1 });
       saveList(); renderList();
     });
-    panel.addEventListener("click", function (e) { var b = e.target.closest("[data-rm]"); if (!b) return; list = list.filter(function (x) { return x.id !== b.dataset.rm; }); saveList(); renderList(); });
+    panel.addEventListener("click", function (e) {
+      var qb = e.target.closest("[data-q]");
+      if (qb) { var it = list.filter(function (x) { return x.id === qb.dataset.id; })[0]; if (it) { it.q = Math.min(20, (it.q || 1) + (+qb.dataset.q)); if (it.q < 1) list = list.filter(function (x) { return x !== it; }); saveList(); renderList(); } return; }
+      var b = e.target.closest("[data-rm]"); if (!b) return; list = list.filter(function (x) { return x.id !== b.dataset.rm; }); saveList(); renderList(); });
     renderList();
   }
 
@@ -379,6 +382,12 @@
     });
     var d0 = new Date(); $("#evDate").min = d0.getFullYear() + "-" + ("0" + (d0.getMonth() + 1)).slice(-2) + "-" + ("0" + d0.getDate()).slice(-2);
     renderEv();
+  }
+
+  /* reveal sections as they scroll in; anything already on screen is left alone */
+  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { rootMargin: "0px 0px -8% 0px" });
+    $$("[data-rv]").forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add("rv"); io.observe(el); } });
   }
 
   var yr = $("#yr"); if (yr) yr.textContent = new Date().getFullYear();

@@ -55,8 +55,9 @@
 }
 </script>
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="img/mural-full-clean.webp" imagesrcset="img/mural-full-clean-800.webp 800w, img/mural-full-clean-1280.webp 1280w, img/mural-full-clean-1440.webp 1440w, img/mural-full-clean.webp 2000w" imagesizes="(max-width: 819.98px) 480px, 100vw" fetchpriority="high">
-<link rel="stylesheet" href="assets/site.css?v=20261117">
+<link rel="stylesheet" href="assets/site.css?v=20261128">
 <noscript><style>#plan,#journey,#stabs,#sThumbs,#sAct,.hint,.mbar .go{display:none!important}</style></noscript>
 </head>
 <body class="has-bar">
@@ -73,10 +74,13 @@
 
 <main id="main">
   <div class="wrap hero" id="top">
-    <h1 class="h1">Walk the wall. Eat your way across Bharat.</h1>
-    <div class="side">
+    <div class="copy">
       <span class="status" data-status><i></i><span>Open daily · 11 AM – 11 PM · Latur MIDC</span></span>
+      <h1 class="h1">Walk the wall. Eat your way <em>across Bharat.</em></h1>
+    </div>
+    <div class="side">
       <p class="lede">Seven kitchens along one mural. Pick a stop to see what it cooks.</p>
+      <div class="cta"><a class="btn d" href="#plan" data-plan>Plan my table</a><a class="btn line d" href="menu.html">See the menu</a></div>
     </div>
   </div>
 
@@ -88,7 +92,6 @@
           <div id="pins"></div>
         </div>
       </div>
-      <span class="hint" aria-hidden="true">Swipe across Bharat →</span>
     </div>
     <div class="river"></div>
 
@@ -99,7 +102,7 @@
         <!--stop:end-->
       </article>
 
-      <noscript><div class="card plan"><span class="kick">Plan my table</span><h2 class="h3">Message or call us to book.</h2><a class="btn block" href="https://wa.me/919126268181?text=Hi%20Bharat%20Fine%20Dine!%20I%20would%20like%20to%20book%20a%20table." target="_blank" rel="noopener">Book on WhatsApp</a><a class="btn line block" href="tel:+919126268181">Call +91 91262 68181</a></div></noscript>
+      <noscript><div class="card plan"><span class="kick">Plan my table</span><h2 class="h3">Message or call us to book.</h2><a class="btn wa block" href="https://wa.me/919126268181?text=Hi%20Bharat%20Fine%20Dine!%20I%20would%20like%20to%20book%20a%20table." target="_blank" rel="noopener">Book on WhatsApp</a><a class="btn line block" href="tel:+919126268181">Call +91 91262 68181</a></div></noscript>
       <section class="card plan" id="plan" aria-labelledby="planH">
         <span class="kick">Plan my table</span>
         <h2 class="h3" id="planH">Tell us who is coming. We will pick the table.</h2>
@@ -119,48 +122,59 @@
 
   <section class="sec" aria-labelledby="jH" style="border-top:0">
     <div class="wrap">
-      <div class="head"><span class="kick">The journey</span><h2 class="h2" id="jH">Seven kitchens, one wall</h2></div>
+      <div class="head"><h2 class="h2" id="jH">Seven kitchens, <em>one wall</em></h2></div>
       <div class="scrollx"><div class="journey" id="journey"></div></div>
     </div>
   </section>
 
-  <section class="sec" id="spaces" aria-labelledby="spH">
+  <section class="sec" aria-labelledby="rwH" data-rv style="padding-top:0">
+    <div class="wrap real">
+      <img src="img/spaces/thumb/dining-6.webp" srcset="img/spaces/t400/dining-6.webp 400w, img/spaces/thumb/dining-6.webp 700w, img/spaces/dining-6.webp 1400w" sizes="(min-width: 900px) 620px, calc(100vw - 32px)" alt="The mural painted on the dining room wall at Bharat Fine Dine, above two set tables" width="1400" height="932" loading="lazy">
+      <div class="tx">
+        <span class="kick">The real wall</span>
+        <h2 class="h2" id="rwH">It is painted on our <em>dining room wall</em></h2>
+        <p class="lede">The mural on this page is not a drawing made for the website. It runs along the wall of our restaurant, from the Golden Temple to the Kerala backwaters. Every kitchen on our menu is a scene on it.</p>
+        <a class="btn line" href="#plan" data-plan="Restaurant">Book a table beside it</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="spaces" aria-labelledby="spH" data-rv>
     <div class="wrap">
-      <div class="head"><span class="kick">Eating out</span><h2 class="h2" id="spH">Our spaces</h2><p class="lede">Every hall is air-conditioned. Tap a space to see it.</p></div>
-      <div class="tabs" id="stabs" role="group" aria-label="Spaces"></div>
+      <div class="head"><h2 class="h2" id="spH">Our spaces</h2><p class="lede">Every hall is air-conditioned. Tap a photo to look inside.</p></div>
+      <div class="tabs pwall" id="stabs" role="group" aria-label="Spaces"></div>
       <div class="space">
         <img class="big" id="sImg" src="img/svc-dining-720.webp" alt="Fine-dine restaurant" width="1200" height="798" loading="lazy">
         <div class="tx">
           <h3 class="h3" id="sName">Fine-dine restaurant</h3>
           <p class="lede" id="sDesc">Air-conditioned indoor dining across seven kitchens, with a full vegetarian menu alongside.</p>
           <div class="thumbs" id="sThumbs" style="width:100%"></div>
-          <a class="btn" id="sAct" href="#plan" data-plan="Restaurant">Plan a table here</a>
+          <a class="btn line" id="sAct" href="#plan" data-plan="Restaurant">Plan a table here</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="band" id="events" aria-labelledby="evH">
+  <section class="band" id="events" aria-labelledby="evH" data-rv>
     <div class="river"></div>
     <div class="wrap sec in">
       <div style="display:flex;flex-direction:column;gap:var(--s5)">
-        <div class="head" style="margin:0"><span class="kick">Celebrating or meeting</span><h2 class="h2" id="evH">Your biggest days, and your business days.</h2></div>
+        <div class="head" style="margin:0"><h2 class="h2" id="evH">Your biggest days, and your business days.</h2></div>
         <div class="stats"><div><b>300+</b><span>Seats in each hall</span></div><div><b>2</b><span>Banquet halls</span></div><div><b>4</b><span>Private rooms</span></div></div>
-        <p class="lede">Weddings and birthdays in two banquet halls, meetings in AV-ready board rooms, and a coordinator for every event.</p>
         <div class="pics"><img src="img/svc-hall-720.webp" alt="Samiksha banquet hall set for a function" width="1200" height="798" loading="lazy"><img src="img/hall-sanskruti-720.webp" alt="Sanskruti banquet hall" width="1400" height="932" loading="lazy"></div>
       </div>
       <div class="card" style="padding:28px;display:flex;flex-direction:column;gap:var(--s3)">
         <span class="kick">Event planner</span>
         <h3 class="h3">Tell us the day and the guest count.</h3>
-        <ol class="steps"><li>Pick the event and how many are coming.</li><li>See which hall or room fits.</li><li>Send it to our coordinator on WhatsApp.</li></ol>
-        <a class="btn" href="events.html" style="align-self:flex-start;margin-top:6px">Open the event planner</a>
+        <p class="lede">See which hall or room fits, then send it to our coordinator on WhatsApp.</p>
+        <a class="btn line" href="events.html" style="align-self:flex-start;margin-top:6px">Open the event planner</a>
       </div>
     </div>
   </section>
 
   <section class="sec" aria-labelledby="rvH" style="border-top:0">
     <div class="wrap">
-      <div class="rating"><b id="rvH">4.5★</b><span class="lede">on Google · loved in Latur</span></div>
+      <div class="rating"><b id="rvH">4.5★</b><span class="lede">on Google · loved in Latur</span><a class="lnk" href="https://www.google.com/maps/search/?api=1&amp;query=Bharat+Fine+Dine+by+Sardesai%27s+Kitchen+Latur" target="_blank" rel="noopener">Read the reviews on Google →</a></div>
       <div class="rgrid">
         <blockquote class="card flat"><p>“Best place for lunch and dinner in Latur MIDC area. Ambience is great.”</p><cite><i>★★★★★</i> Google review</cite></blockquote>
         <blockquote class="card flat"><p>“Food quality is really the best, staff is very kind, and the ambience is good.”</p><cite><i>★★★★★</i> Google review</cite></blockquote>
@@ -169,21 +183,22 @@
     </div>
   </section>
 
-  <section class="sec" id="visit" aria-labelledby="vH">
+  <section class="sec" id="visit" aria-labelledby="vH" data-rv>
     <div class="wrap visit">
       <div>
-        <span class="kick">Finding us</span><h2 class="h2" id="vH" style="margin-top:8px">Visit us</h2>
+        <h2 class="h2" id="vH">Visit us</h2>
         <address><span>Plot No. B-37, MIDC Area, Latur, Maharashtra 413531</span><span>Open daily · 11 AM – 11 PM · On-site parking</span><span><a href="tel:+919126268181">+91 91262 68181</a> · <a href="mailto:hello@bharatfinedine.com">hello@bharatfinedine.com</a></span></address>
-        <div class="cta"><a class="btn ink" href="https://www.google.com/maps/dir/?api=1&amp;destination=18.4099037,76.5422986" target="_blank" rel="noopener">Get directions</a><a class="btn line" href="tel:+919126268181">Call us</a></div>
+        <div class="cta"><a class="btn line" href="https://www.google.com/maps/dir/?api=1&amp;destination=18.4099037,76.5422986" target="_blank" rel="noopener">Get directions</a><a class="btn line" href="tel:+919126268181">Call us</a></div>
+        <div class="find">
+          <figure><img src="img/spaces/thumb/outdoor-5.webp" srcset="img/spaces/t400/outdoor-5.webp 400w, img/spaces/thumb/outdoor-5.webp 700w" sizes="(min-width: 820px) 260px, 46vw" alt="The Bharat Fine Dine building seen from the road, behind a row of trees" width="700" height="466" loading="lazy"><figcaption>From the road</figcaption></figure>
+          <figure><img src="img/spaces/thumb/outdoor-4.webp" srcset="img/spaces/t400/outdoor-4.webp 400w, img/spaces/thumb/outdoor-4.webp 700w" sizes="(min-width: 820px) 260px, 46vw" alt="The entrance, with the Sardesai's Kitchen and Bharat Fine Dine signs" width="700" height="466" loading="lazy"><figcaption>Look for these signs at the entrance</figcaption></figure>
+        </div>
       </div>
       <div class="faq">
         <h3 class="h3" style="font-size:20px;padding-bottom:10px">Before you visit</h3>
         <details><summary>Do you serve both veg and non-veg?</summary><p>Yes. There’s a full vegetarian menu alongside the non-veg one. Tell us your preference when you book.</p></details>
         <details><summary>Is it good for kids and families?</summary><p>Very. Children are looked after, there are private rooms for big families, and nobody is rushed.</p></details>
         <details><summary>Can you set up a birthday or anniversary?</summary><p>Yes. Candlelight can be set up in a private dining room. Just mention it when you plan your table.</p></details>
-        <details><summary>Is there a bar?</summary><p>Yes, a relaxed, separate bar with a live-music corner and fair prices.</p></details>
-        <details><summary>Can you host weddings and corporate meetings?</summary><p>Yes. We have two banquet halls, Samiksha and Sanskruti, each seating 300+, and our AV-ready board rooms suit meetings and offsites. Use the <a href="events.html">event planner</a>.</p></details>
-        <details><summary>Is parking available?</summary><p>Yes, on-site parking at the venue in Latur MIDC.</p></details>
       </div>
     </div>
   </section>
@@ -203,7 +218,7 @@
   <div class="legal"><div class="wrap"><span>© <span id="yr">2026</span> Bharat Fine Dine · by Sardesai's Kitchen · FSSAI Lic. No. 11524049000056</span><span><a href="https://www.instagram.com/bharatfinedine_by_sardesais" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/bharatfinedine" target="_blank" rel="noopener">Facebook</a> · Website by Drishtim</span></div></div>
 </footer>
 
-<div class="mbar" aria-label="Quick actions"><a href="tel:+919126268181">Call</a><a href="menu.html">Menu</a><a href="https://www.google.com/maps/dir/?api=1&amp;destination=18.4099037,76.5422986" target="_blank" rel="noopener">Directions</a><button type="button" class="go" data-plan>Plan my table</button></div>
+<div class="mbar" aria-label="Quick actions"><a href="tel:+919126268181">Call</a><a href="https://www.google.com/maps/dir/?api=1&amp;destination=18.4099037,76.5422986" target="_blank" rel="noopener">Directions</a><button type="button" class="go" data-plan>Plan my table</button></div>
 
 <dialog class="dlg" id="planDlg" aria-labelledby="pTitle">
   <div class="sheet">
@@ -217,7 +232,7 @@
   <div class="in"><img id="lbImg" src="" alt=""><div class="ctl"><button type="button" id="lbPrev" aria-label="Previous photo">←</button><span id="lbPos"></span><button type="button" id="lbNext" aria-label="Next photo">→</button><button type="button" id="lbClose">Close</button></div></div>
 </dialog>
 
-<script src="assets/data.js?v=20261117" defer></script>
-<script src="assets/app.min.js?v=20261117" defer></script>
+<script src="assets/data.js?v=20261128" defer></script>
+<script src="assets/app.min.js?v=20261128" defer></script>
 </body>
 </html>
