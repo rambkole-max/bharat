@@ -118,7 +118,7 @@
       { k: "hall", name: "Banquet halls", seat: null, img: "img/svc-hall-720.webp", desc: "Samiksha and Sanskruti: two 300+ seat halls for weddings, receptions and functions, with full catering." }
     ];
     var sp = 0, lb = $("#lb"), lbList = [], lbI = 0;
-    sTabs.innerHTML = SPACES.map(function (s, i) { return '<button type="button" class="chip" data-sp="' + i + '" aria-pressed="' + (i === 0) + '">' + esc(s.name) + "</button>"; }).join("");
+    sTabs.innerHTML = SPACES.map(function (s, i) { return '<button type="button" class="chip" data-sp="' + i + '" aria-pressed="' + (i === 0) + '"><img src="' + s.img.replace("-720.", "-600.") + '" alt="" width="600" height="400" loading="lazy" decoding="async"><span>' + esc(s.name) + "</span></button>"; }).join("");
     var photos = function (s) { var a = []; for (var n = 1; n <= 6; n++) a.push({ t: "img/spaces/t400/" + s.k + "-" + n + ".webp", f: "img/spaces/" + s.k + "-" + n + ".webp", alt: s.name + ", photo " + n }); return a; };
     var renderSpace = function () {
       var s = SPACES[sp];
