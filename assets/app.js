@@ -144,7 +144,7 @@
      PLAN MY TABLE: card on the page, then a three-step dialog
      ===================================================================== */
   var dlg = $("#planDlg");
-  if (!dlg && $('a[href$="index.html#plan"]')) {
+  if (!dlg) {   // menu and events pages do not carry the dialog; it is built here so booking never leaves the page
     dlg = document.createElement("dialog"); dlg.className = "dlg"; dlg.id = "planDlg"; dlg.setAttribute("aria-labelledby", "pTitle");
     dlg.innerHTML = '<div class="sheet"><div class="top"><div class="r"><b id="pTitle">Plan my table</b><button type="button" class="x" id="pClose" aria-label="Close">×</button></div><div class="prog" id="pProg"></div></div><div class="body" id="pBody"></div><div class="ft" id="pFt"></div></div>';
     document.body.appendChild(dlg);
@@ -291,7 +291,7 @@
     $("#pClose").addEventListener("click", close);
     document.addEventListener("click", function (e) {
       /* on pages without the booking card, links to it open the booking here instead of leaving the page */
-      var b = e.target.closest && e.target.closest(card ? "[data-plan]" : '[data-plan], a[href$="index.html#plan"]'); if (!b) return;
+      var b = e.target.closest && e.target.closest('[data-plan], a[href$="#plan"]'); if (!b) return;
       e.preventDefault(); open(b.dataset.plan);
     });
     if (card && location.hash === "#plan") setTimeout(function () { card.scrollIntoView({ block: "center" }); }, 100);
@@ -347,7 +347,7 @@
       if (!list.length) { panel.innerHTML = '<span class="kick">Your list</span><b style="font-size:20px">Nothing yet</b><p class="note" style="margin-top:6px">Tap + beside a dish to add it. Your list goes with your table request, so the kitchen knows what you are coming for.</p>'; return; }
       panel.innerHTML = '<span class="kick">Your list</span><b style="font-size:20px">' + list.length + (list.length === 1 ? " dish" : " dishes") + "</b>" +
         list.map(function (x) { return '<div class="row"><span>' + esc(x.name) + '<small>' + esc(x.price) + '</small></span><span class="qty"><button type="button" data-q="-1" data-id="' + esc(x.id) + '" aria-label="One less ' + esc(x.name) + '">−</button><output aria-live="polite">' + (x.q || 1) + '</output><button type="button" data-q="1" data-id="' + esc(x.id) + '" aria-label="One more ' + esc(x.name) + '">+</button><button type="button" class="rm" data-rm="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span></div>'; }).join("") +
-        '<p class="note" style="margin:8px 0 10px">Your list goes with your table request.</p><a class="btn" href="index.html#plan" style="align-self:flex-start">Plan my table</a>';
+        '<p class="note" style="margin:8px 0 10px">Your list goes with your table request.</p><button type="button" class="btn" data-plan style="align-self:flex-start">Plan my table</button>';
     };
     kits.addEventListener("click", function (e) {
       var b = e.target.closest(".add"); if (!b) return;

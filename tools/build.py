@@ -164,7 +164,7 @@ PAGE = f"""<!DOCTYPE html>
 <meta property="og:image" content="https://bharatfinedine.com/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261213">
+<link rel="stylesheet" href="assets/site.css?v=20261214">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False, separators=(",", ":"))}</script>
 <noscript><style>.add,.search,#vegOnly,.mgrid aside,.mbar .cnt{{display:none!important}}</style></noscript>
 </head>
@@ -172,7 +172,7 @@ PAGE = f"""<!DOCTYPE html>
 <a class="skip" href="#main">Skip to content</a>
 <header class="hdr"><div class="wrap">
   <a href="index.html"><img src="img/BFD_logo_horizontal_dark.png" alt="Bharat Fine Dine, home" width="124" height="46"></a>
-  <nav aria-label="Main"><a class="l" href="index.html#wall">The wall</a><a class="l" href="index.html#spaces">Spaces</a><a class="l" href="events.html">Events</a><a class="l" href="index.html#visit">Visit</a><a class="btn" href="index.html#plan">Plan my table</a></nav>
+  <nav aria-label="Main"><a class="l" href="index.html#wall">The wall</a><a class="l" href="index.html#spaces">Spaces</a><a class="l" href="events.html">Events</a><a class="l" href="index.html#visit">Visit</a><a class="btn" href="index.html#plan" data-plan>Plan my table</a></nav>
 </div></header>
 <main id="main" class="wrap">
   <div class="mhead">
@@ -192,9 +192,9 @@ PAGE = f"""<!DOCTYPE html>
   </div>
 </main>
 <footer class="foot"><div class="legal"><div class="wrap"><span>© 2026 Bharat Fine Dine · by Sardesai's Kitchen · FSSAI Lic. No. 11524049000056</span><span><a href="index.html">Home</a> · <a href="events.html">Events</a> · <a href="tel:+919126268181">+91 91262 68181</a></span></div></div></footer>
-<div class="mbar" aria-label="Quick actions"><a class="cnt" id="barCount" href="#mylist">Add dishes with +</a><a class="go" href="index.html#plan">Plan my table</a></div>
-<script src="assets/data.js?v=20261213" defer></script>
-<script src="assets/app.min.js?v=20261213" defer></script>
+<div class="mbar" aria-label="Quick actions"><a class="cnt" id="barCount" href="#mylist">Add dishes with +</a><a class="go" href="index.html#plan" data-plan>Plan my table</a></div>
+<script src="assets/data.js?v=20261214" defer></script>
+<script src="assets/app.min.js?v=20261214" defer></script>
 </body>
 </html>
 """
