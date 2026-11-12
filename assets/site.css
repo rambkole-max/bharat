@@ -347,22 +347,21 @@ body{-webkit-font-smoothing:antialiased}
 /* glass bottom bar on phones */
 .mbar{background:rgba(30,27,24,.82);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(250,245,236,.14)}
 
-/* hero with a dish photo */
-.hero{display:grid;gap:var(--s6);align-items:center;padding-top:var(--s6);padding-bottom:var(--s7)}
+/* hero */
+.hero{display:grid;gap:var(--s5);align-items:end;padding-top:var(--s6);padding-bottom:var(--s6)}
 .hero .copy{display:flex;flex-direction:column;gap:var(--s5);align-items:flex-start;min-width:0}
 .hero .h1{flex:none}
-.hero .lede{font-size:17px;max-width:54ch}
+.hero .side{display:flex;flex-direction:column;gap:var(--s4);align-items:flex-start;min-width:0;flex:none}
+.hero .lede{font-size:17px;max-width:44ch}
 .hero .cta{display:flex;flex-wrap:wrap;gap:10px}
-.hero .cta .btn{min-height:54px;padding:0 26px;font-size:16px}
+.hero .cta .btn{min-height:52px;padding:0 24px;font-size:16px}
 .status{padding:7px 14px 7px 12px;border:1px solid var(--line);border-radius:var(--r-pill);background:var(--card);font-weight:500}
 .status i{box-shadow:0 0 0 4px rgba(46,125,50,.16)}
 .status.closed i{box-shadow:0 0 0 4px rgba(165,28,48,.14)}
-.hero .shot{position:relative;min-width:0}
-.hero .shot img{width:100%;aspect-ratio:16/11;object-fit:cover;border-radius:var(--r-lg);box-shadow:var(--shadow);background:#1E1B18}
-.hero .fact{position:absolute;display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:18px;background:rgba(255,253,249,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);box-shadow:0 10px 30px rgba(30,27,24,.16);font-size:13px;color:var(--body)}
-.hero .fact b{font-family:var(--serif);font-size:30px;line-height:1;font-weight:400;color:var(--ink)}
-.hero .fact.a{left:-8px;bottom:24px}.hero .fact.b{right:-6px;top:24px}
-@media (min-width:900px){ .hero{grid-template-columns:1.15fr .85fr;gap:var(--s8);padding-top:var(--s7);padding-bottom:var(--s8)} .hero .shot img{aspect-ratio:4/4.6} .hero .fact.a{left:-28px}.hero .fact.b{right:-20px} }
+.facts{display:flex;gap:var(--s5);padding-top:var(--s2);font-size:13px;color:var(--body)}
+.facts span{display:flex;flex-direction:column;gap:2px}
+.facts b{font-family:var(--serif);font-size:30px;line-height:1;font-weight:400;color:var(--ink)}
+@media (min-width:900px){ .hero{grid-template-columns:1.5fr 1fr;gap:var(--s8);padding-top:var(--s7);padding-bottom:var(--s7)} }
 
 /* the mural, framed */
 .wallbox{max-width:1232px;margin:0 auto}
