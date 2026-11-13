@@ -158,6 +158,7 @@
         im.alt = p.altText || (cap ? cap.slice(0, 110) : "Instagram post from Bharat Fine Dine");
         a.appendChild(im);
         if (p.mediaType === "VIDEO") { var v = document.createElement("i"); v.setAttribute("aria-hidden", "true"); a.appendChild(v); }
+        if (p.likeCount > 0) { var lk = document.createElement("em"); lk.textContent = "♥ " + p.likeCount; lk.setAttribute("aria-label", p.likeCount + " likes"); a.appendChild(lk); }
         var c = document.createElement("span"), d8 = when(p.timestamp);
         if (d8) { var sm = document.createElement("small"); sm.textContent = (n === 0 ? "Latest · " : "") + d8; c.appendChild(sm); }
         if (head) { var b = document.createElement("b"); b.textContent = head; c.appendChild(b); }
