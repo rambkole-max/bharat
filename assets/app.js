@@ -489,6 +489,7 @@
     var to = parseFloat(m[1]), dec = m[1].indexOf(".") > -1 ? 1 : 0, tail = m[2], t0 = null;
     var step = function (t) { if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 900), v = to * (1 - Math.pow(1 - p, 3)); el.textContent = v.toFixed(dec) + tail; if (p < 1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
+    setTimeout(function () { el.textContent = m[1] + tail; }, 1100);   // whatever happens to the animation, the real figure is what stays on the page
   };
   if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     var co = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); co.unobserve(e.target); } }); }, { threshold: 0.6 });
