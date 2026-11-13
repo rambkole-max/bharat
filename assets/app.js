@@ -149,7 +149,7 @@
       var grid = $("#igGrid"), when = function (t) { var x = new Date(t); return isNaN(x) ? "" : x.toLocaleDateString("en-IN", { day: "numeric", month: "short" }); };
       if (/^https:\/\/[a-z0-9.-]*behold\.pictures\//.test(d.profilePictureUrl || "")) { var av = $("#igAv"); av.src = d.profilePictureUrl; av.classList.add("pic"); }
       posts.forEach(function (p, n) {
-        var sz = p.sizes || {}, src = ((n === 0 ? sz.large || sz.medium : sz.medium || sz.small) || {}).mediaUrl || p.thumbnailUrl || p.mediaUrl;
+        var sz = p.sizes || {}, src = (sz.medium || sz.small || {}).mediaUrl || p.thumbnailUrl || p.mediaUrl;
         if (!/^https:\/\//.test(src) || !/^https:\/\/(www\.)?instagram\.com\//.test(p.permalink)) return;
         var cap = (p.prunedCaption || p.caption || "").replace(/\s+/g, " ").trim();
         var head = (cap.match(/^.{3,90}?[.!?](?=\s|$)/) || [cap.slice(0, 70)])[0];          // the first sentence is the post's headline
