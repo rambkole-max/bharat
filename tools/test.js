@@ -64,7 +64,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   const DAY = '2026-11-11T07:40:00Z';   // 13:10 India time, a Wednesday
 
   /* ============ 1. layout audit, every page, every size ============ */
-  for (const [vn, w, h] of VP) for (const pg of ['index.html', 'menu.html', 'events.html']) {
+  for (const [vn, w, h] of VP) for (const pg of ['index.html', 'menu.html', 'events.html', 'spaces.html', 'visit.html']) {
     const p = await ctx(w, h); await at(p, DAY); await p.goto(U + pg); await p.waitForTimeout(350);
     await audit(p, 'Layout · ' + pg + ' · ' + vn);
     if (pg === 'index.html') {
@@ -87,10 +87,10 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   /* ============ 2. header, hero, links ============ */
   {
     const p = await ctx(1440, 900); await at(p, DAY); await p.goto(U + 'index.html'); await p.waitForTimeout(300);
-    eq('Header', 'desktop nav items', await p.$$eval('.hdr nav a', e => e.filter(x => x.offsetParent).map(x => x.textContent.trim())), ['The wall', 'Spaces', 'Events', 'Visit', 'Food menu', 'Plan my table']);
+    eq('Header', 'desktop nav items', await p.$$eval('.hdr nav a', e => e.filter(x => x.offsetParent).map(x => x.textContent.trim())), ['Menu', 'Spaces', 'Events', 'Visit', 'Plan my table']);
     eq('Header', 'stays pinned on scroll', await p.evaluate(async () => { scrollTo(0, 2000); await new Promise(r => setTimeout(r, 100)); return Math.round(document.querySelector('.hdr').getBoundingClientRect().top); }), 0);
     // every internal link resolves
-    for (const pg of ['index.html', 'menu.html', 'events.html']) {
+    for (const pg of ['index.html', 'menu.html', 'events.html', 'spaces.html', 'visit.html']) {
       await p.goto(U + pg); await p.waitForTimeout(200);
       const links = await p.$$eval('a[href]', e => e.map(x => x.getAttribute('href')));
       const bad = [];
@@ -253,32 +253,33 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   /* ============ 5. spaces + lightbox, events band, reviews, visit, footer ============ */
   for (const [vn, w, h] of [['phone', 390, 844], ['desktop', 1440, 900]]) {
     const S = 'Spaces · ' + vn; const p = await ctx(w, h); await at(p, DAY); await p.goto(U + 'index.html'); await p.waitForTimeout(300);
-    const tabs = await p.$$eval('#stabs .chip', e => e.map(x => x.textContent));
-    const head = await p.textContent('#spH');
-    ck(S, 'heading count matches the number of spaces shown', (head.toLowerCase().includes('seven') ? 7 : tabs.length) === tabs.length && tabs.length === 6, 'heading "' + head + '" but ' + tabs.length + ' tabs: ' + tabs.join(', '));
-    const want = [['Restaurant', 'Plan a table here'], ['Outdoor', 'Plan a table here'], ['Bar & Lounge', 'Plan a table here'], ['Private room', 'Plan a table here'], [null, 'Open the event planner'], [null, 'Open the event planner']];
-    for (let i = 0; i < tabs.length; i++) {
-      await p.click('#stabs [data-sp="' + i + '"]', { force: true });
-      const s = await p.evaluate(() => ({ n: document.querySelector('#sName').textContent, d: document.querySelector('#sDesc').textContent.length, alt: document.querySelector('#sImg').alt, th: document.querySelectorAll('#sThumbs button').length, a: document.querySelector('#sAct').textContent, href: document.querySelector('#sAct').getAttribute('href'), seat: document.querySelector('#sAct').dataset.plan || null, pr: [...document.querySelectorAll('#stabs [aria-pressed=true]')].length }));
-      ck(S, tabs[i] + ': name, text, photo, 4 thumbnails, right button', s.n === tabs[i] && s.d > 30 && s.alt === tabs[i] && s.th === 4 && s.a === want[i][1] && s.seat === want[i][0] && s.pr === 1 && s.href === (want[i][0] ? '#plan' : 'events.html'), JSON.stringify(s));
-      if (want[i][0]) { await p.click('#sAct'); await p.waitForTimeout(120); const SE = { 'Restaurant': 'The fine-dine restaurant', 'Outdoor': 'An outdoor table', 'Bar & Lounge': 'The Bar & Lounge', 'Private room': 'A private dining room' }; eq(S, tabs[i] + ': "Plan a table here" opens booking with that space', await p.textContent('#pBody .sug h3'), SE[want[i][0]]); await p.click('#pClose'); }
-    }
-    await p.click('#stabs [data-sp="2"]', { force: true }); await p.click('#sThumbs [data-ph="1"]'); await p.waitForTimeout(100);
-    eq(S, 'thumbnail opens the photo viewer on that photo', [await p.$eval('#lb', d => d.open), await p.textContent('#lbPos'), await p.getAttribute('#lbImg', 'src')], [true, '2 / 6', 'img/spaces/bar-2.webp']);
-    await p.click('#lbPrev'); await p.click('#lbPrev'); eq(S, 'previous wraps round to the last photo', await p.textContent('#lbPos'), '6 / 6');
-    await p.click('#lbNext'); eq(S, 'next wraps round to the first', await p.textContent('#lbPos'), '1 / 6');
-    await p.keyboard.press('ArrowRight'); eq(S, 'arrow keys move between photos', await p.textContent('#lbPos'), '2 / 6');
-    ck(S, 'viewer photo has a description for screen readers', (await p.getAttribute('#lbImg', 'alt')).length > 5);
-    await p.click('#lbClose'); eq(S, 'Close shuts the viewer', await p.$eval('#lb', d => d.open), false);
-    await p.click('#sThumbs [data-ph="0"]'); await p.keyboard.press('Escape'); eq(S, 'Esc shuts the viewer', await p.$eval('#lb', d => d.open), false);
-
+    const tiles = await p.$$eval('#spaces .pwall a', e => e.map(x => x.getAttribute('href')));
+    eq(S, 'homepage shows six space tiles linking to the Spaces page', tiles, ['dining', 'outdoor', 'bar', 'private', 'meeting', 'hall'].map(k => 'spaces.html#sp-' + k));
+    await p.goto(U + 'spaces.html'); await p.waitForTimeout(300);
+    await p.addStyleTag({ content: '.rv{opacity:1!important;transform:none!important}' });
+    eq(S, 'Spaces page: six sections, six photos each', [await p.$$eval('.sp', e => e.length), await p.$$eval('.gal button', e => e.length)], [6, 36]);
+    const SE = { 'Restaurant': 'The fine-dine restaurant', 'Outdoor': 'An outdoor table', 'Bar & Lounge': 'The Bar & Lounge', 'Private room': 'A private dining room' };
+    for (const seat of Object.keys(SE)) { await p.click('.sp [data-plan="' + seat + '"]'); await p.waitForTimeout(450); eq(S, seat + ': "Plan a table here" opens booking on this page with that space', [await p.evaluate(() => location.pathname), await p.textContent('#pBody .sug h3')], ['/spaces.html', SE[seat]]); await p.click('#pClose'); await p.waitForTimeout(150); }
+    eq(S, 'meeting rooms and halls point to the event planner', await p.$$eval('.sp a.btn', e => e.map(x => x.getAttribute('href'))), ['events.html', 'events.html']);
+    await p.click('.gal [data-lbk="bar"][data-lbn="2"]'); await p.waitForTimeout(400);
+    eq(S, 'a gallery photo opens the viewer on that photo', [await p.$eval('dialog.lb', d => d.open), await p.textContent('dialog.lb span'), await p.getAttribute('dialog.lb img', 'src')], [true, '2 / 6', 'img/spaces/bar-2.webp']);
+    await p.click('dialog.lb [data-d="-1"]'); await p.click('dialog.lb [data-d="-1"]'); eq(S, 'previous wraps round to the last photo', await p.textContent('dialog.lb span'), '6 / 6');
+    await p.click('dialog.lb [data-d="1"]'); eq(S, 'next wraps round to the first', await p.textContent('dialog.lb span'), '1 / 6');
+    await p.keyboard.press('ArrowRight'); eq(S, 'arrow keys move between photos', await p.textContent('dialog.lb span'), '2 / 6');
+    ck(S, 'viewer photo has a description for screen readers', (await p.getAttribute('dialog.lb img', 'alt')).length > 5);
+    await p.mouse.click(8, 8); await p.waitForTimeout(150); eq(S, 'tapping outside the photo shuts the viewer', await p.$eval('dialog.lb', d => d.open), false);
+    await p.click('.gal [data-lbk="hall"][data-lbn="1"]'); await p.waitForTimeout(300); await p.click('dialog.lb [data-d="0"]'); eq(S, 'Close shuts the viewer', await p.$eval('dialog.lb', d => d.open), false);
+    await p.goto(U + 'visit.html'); await p.waitForTimeout(300); await p.addStyleTag({ content: '.rv{opacity:1!important;transform:none!important}' });
+    const fq = await p.$$eval('.faq details', e => e.length); let op = 0;
+    for (let i = 0; i < fq; i++) { await p.click('.faq details >> nth=' + i + ' >> summary'); if (await p.$eval('.faq details >> nth=' + i, d => d.open && d.querySelector('p').offsetHeight > 10)) op++; }
+    eq(S, 'Visit page: all 7 questions open and show an answer', [fq, op], [7, 7]);
+    eq(S, 'Visit page: directions link points at the restaurant', await p.getAttribute('.vcard .cta a.btn >> nth=0', 'href'), 'https://www.google.com/maps/dir/?api=1&destination=18.4099037,76.5422986');
+    await p.goto(U + 'index.html'); await p.waitForTimeout(300);
     const S2 = 'Lower sections · ' + vn;
     eq(S2, 'events band button goes to the event planner', await p.getAttribute('#events a.btn', 'href'), 'events.html');
     eq(S2, 'three reviews shown', await p.$$eval('.rgrid blockquote', e => e.length), 3);
     const stats = await p.$$eval('.stats b', e => e.map(x => x.textContent)); eq(S2, 'event stats present', stats, ['300+', '2', '4']);
-    const faq = await p.$$eval('.faq details', e => e.length); let opened = 0;
-    for (let i = 0; i < faq; i++) { await p.click('.faq details >> nth=' + i + ' >> summary'); if (await p.$eval('.faq details >> nth=' + i, d => d.open && d.querySelector('p').offsetHeight > 10)) opened++; }
-    eq(S2, 'all 3 questions open and show an answer', [faq, opened], [3, 3]);
+    eq(S2, 'homepage Visit card links to the Visit page', await p.getAttribute('.vcard a.lnk', 'href'), 'visit.html');
     eq(S2, 'directions link points at the restaurant', await p.getAttribute('#visit .cta a.btn >> nth=0', 'href'), 'https://www.google.com/maps/dir/?api=1&destination=18.4099037,76.5422986');
     eq(S2, 'footer year is current', await p.textContent('#yr'), '2026');
     if (w < 820) {
@@ -395,7 +396,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     eq(S, 'after sending: thanks note shows, error hides, lead counted', [await p.$eval('#evDone', e => e.hidden), await p.$eval('#evErr', e => e.hidden), await p.evaluate(() => [...window.dataLayer].some(a => a[0] === 'event' && a[1] === 'generate_lead'))], [false, true, true]);
     await p.fill('#evDate', ''); const m2 = decodeURIComponent((await p.getAttribute('#evSend', 'href')).split('text=')[1]); ck(S, 'no date chosen reads "date to be decided"', m2.includes('date to be decided'), m2);
     eq(S, 'past dates cannot be picked', await p.getAttribute('#evDate', 'min'), '2026-11-11');
-    ck(S, 'header has a way to book a table or see the menu', (await p.$$eval('.hdr a', e => e.filter(x => x.offsetParent).map(x => x.textContent.trim()))).includes('Food menu'));
+    ck(S, 'header has a way to book a table or see the menu', (await p.$$eval('.hdr a', e => e.filter(x => x.offsetParent).map(x => x.textContent.trim()))).includes('Plan my table'));
     await p.context().close();
   }
 
@@ -403,7 +404,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   {
     const S = 'Resilience';
     const p = await ctx(390, 844, { javaScriptEnabled: false }); await p.goto(U + 'index.html');
-    const nj = await p.evaluate(() => ({ stop: document.querySelector('#stop h2')?.textContent, dishes: document.querySelectorAll('#stop .dish').length, who: document.querySelector('#who').children.length, planBtnVisible: !!document.querySelector('#plan').offsetParent, journey: 0, jVis: false, tVis: !!document.querySelector('#stabs').offsetParent, bookWA: [...document.querySelectorAll('a')].some(a => a.offsetParent && /wa\.me/.test(a.href)), tabs: document.querySelector('#stabs').children.length, wa: [...document.querySelectorAll('a')].some(a => /wa\.me/.test(a.href)), tel: [...document.querySelectorAll('a[href^="tel:"]')].filter(a => a.offsetParent).length }));
+    const nj = await p.evaluate(() => ({ stop: document.querySelector('#stop h2')?.textContent, dishes: document.querySelectorAll('#stop .dish').length, who: document.querySelector('#who').children.length, planBtnVisible: !!document.querySelector('#plan').offsetParent, journey: 0, jVis: false, tVis: false, bookWA: [...document.querySelectorAll('a')].some(a => a.offsetParent && /wa\.me/.test(a.href)), tabs: 0, wa: [...document.querySelectorAll('a')].some(a => /wa\.me/.test(a.href)), tel: [...document.querySelectorAll('a[href^="tel:"]')].filter(a => a.offsetParent).length }));
     ck(S, 'JavaScript off: first stop card still shows', nj.stop === 'The Punjabi kitchen' && nj.dishes === 4, JSON.stringify(nj));
     ck(S, 'JavaScript off: visitor can still call and book on WhatsApp', nj.tel > 0 && nj.bookWA, JSON.stringify(nj));
     ck(S, 'JavaScript off: no empty, dead controls are shown (booking card, journey, spaces tabs)', !(nj.planBtnVisible && nj.who === 0) && !nj.jVis && !nj.tVis, 'booking card visible with ' + nj.who + ' choices; journey has ' + nj.journey + ' stops; spaces has ' + nj.tabs + ' tabs');

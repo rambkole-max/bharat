@@ -117,6 +117,20 @@
     renderStop();
   }
 
+  /* phone menu closes when you tap anywhere else */
+  var mn = $(".mnav"); if (mn) document.addEventListener("click", function (e) { if (mn.open && !e.target.closest(".mnav summary")) mn.open = false; });
+
+  /* photo viewer for galleries marked data-lbk (space) and data-lbn (photo number); built on the fly */
+  if ($("[data-lbk]")) {
+    var g = document.createElement("dialog"); g.className = "lb"; g.setAttribute("aria-label", "Photo viewer");
+    g.innerHTML = '<div class="in"><img alt=""><div class="ctl"><button type="button" data-d="-1" aria-label="Previous photo">←</button><span></span><button type="button" data-d="1" aria-label="Next photo">→</button><button type="button" data-d="0">Close</button></div></div>';
+    document.body.appendChild(g);
+    var gk = "", gn = 1, gname = "", gshow = function () { var im = $("img", g); im.src = "img/spaces/" + gk + "-" + gn + ".webp"; im.alt = gname + ", photo " + gn; $("span", g).textContent = gn + " / 6"; };
+    document.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("[data-lbk]"); if (!b) return; gk = b.dataset.lbk; gn = +b.dataset.lbn; gname = b.dataset.lbname; gshow(); g.showModal(); });
+    g.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { if (b.dataset.d === "0") return g.close(); gn = (gn - 1 + (+b.dataset.d) + 6) % 6 + 1; gshow(); } else if (!e.target.closest("img")) g.close(); });
+    g.addEventListener("keydown", function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { gn = (gn - 1 + (e.key === "ArrowRight" ? 1 : -1) + 6) % 6 + 1; gshow(); } });
+  }
+
   var sTabs = $("#stabs");
   if (sTabs) {
     var SPACES = [
