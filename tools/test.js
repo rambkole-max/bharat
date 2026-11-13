@@ -129,6 +129,15 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     const p = await ctx(w, h); await at(p, DAY); await p.goto(U + 'index.html'); await p.waitForTimeout(300);
     const K = await p.evaluate(() => window.BFD_KITCHENS);
     eq(S, '7 pins on the mural', await p.$$eval('.pin', e => e.length), 7);
+    if (w >= 820) {   // a pin must stay under the cursor when hovered, or the click misses it
+      const moved = [];
+      for (const k of K.filter(x => x.pin)) {
+        const sel = '.pin[data-stop="' + k.n + '"]', at = () => p.$eval(sel, e => { const r = e.getBoundingClientRect(); return [r.left, r.width]; });
+        const a0 = await at(); await p.mouse.move(a0[0] + a0[1] / 2, (await p.$eval(sel, e => { const r = e.getBoundingClientRect(); return r.top + r.height / 2; }))); await p.waitForTimeout(320);
+        const a1 = await at(); if (Math.abs(a1[0] - a0[0]) > 12) moved.push(k.name + ' moved ' + Math.round(a1[0] - a0[0]) + 'px');
+      }
+      await p.mouse.move(5, 5); eq(S, 'no pin jumps away when hovered', moved.join('; '), '');
+    }
     const byK = {}; MENU.sections.forEach(s => { (byK[s.kitchen] = byK[s.kitchen] || []).push(...s.items); });
     for (const k of K) {
       await p.click('.pin[data-stop="' + k.n + '"]', { force: true }); await p.waitForTimeout(w < 820 ? 450 : 80);

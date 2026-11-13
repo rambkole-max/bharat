@@ -658,3 +658,6 @@ body{background-image:radial-gradient(900px 520px at 100% -4%,#F6E7C6 0,transpar
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.3s}
 @media (prefers-reduced-motion:reduce){ .wall-in,.pics::after{animation:none} .wall-in{transition:none} @view-transition{navigation:none} }
 @media (max-width:819.98px){ .pin.flip{transform:translate(-12px,-50%)} .pin.lefty.flip{transform:translate(calc(-100% + 30px),-50%)} }
+/* a pin whose name opens to the left keeps its place when hovered or pressed */
+.pin.lefty:active{transform:translate(calc(-100% + 30px),-50%) scale(.96)}
+@media (min-width:820px){ .pin.lefty:hover{transform:translate(calc(-100% + 30px),calc(-50% - 3px)) scale(1.05)} .pin.lefty:active{transform:translate(calc(-100% + 30px),-50%) scale(.98)} }
