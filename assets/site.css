@@ -357,11 +357,11 @@ dialog::backdrop{background:rgba(30,27,24,.6)}
 .rv{opacity:0;transform:translateY(12px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
 .rv.in{opacity:1;transform:none}
 .ld{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s4);background:var(--cream);opacity:0;visibility:hidden;transition:opacity .22s var(--ease),visibility 0s .22s}
-.ld.on{opacity:1;visibility:visible;transition:opacity .15s var(--ease) .12s}
+.ld.on{opacity:1;visibility:visible;transition:opacity .12s var(--ease)}
 .ld .seal{position:relative;width:128px;height:128px}
 .ld .seal img{position:absolute;inset:0;width:128px;height:128px;opacity:.15}
 .ld .seal img.f{opacity:1;clip-path:inset(100% 0 0 0)}
-.ld.on .seal img.f{animation:ldfill .9s var(--ease) infinite}
+.ld.on .seal img.f{animation:ldfill .38s cubic-bezier(.3,0,.2,1) forwards}
 .ld.on .seal{animation:ldpop .65s var(--ease)}
 .ld .mr{font-size:24px}
 @keyframes ldfill{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
@@ -404,7 +404,6 @@ main{animation:pagein .2s var(--ease) both}
 @media (min-width:900px){ .duo{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:var(--s5);margin-top:-44px;padding-left:calc(var(--gutter) + var(--s5));padding-right:calc(var(--gutter) + var(--s5))} .stop,.plan{padding:24px 28px} }
 .vinfo address{font-style:normal}
 @media (max-width:819.98px){ .pin{height:42px} .pin.flip{min-width:42px} }
-@media (max-width:899.98px){ .zoom img{transform:none} }
 
 /* ---------- home: reviews, with depth ---------- */
 .rev{display:grid;gap:var(--s6)}
@@ -449,3 +448,48 @@ main{animation:pagein .2s var(--ease) both}
   .lede{line-height:1.5}
 }
 .pin{white-space:nowrap}
+
+/* ---------- booking on phones: a sheet that rises from the bottom, with the page still visible above it ---------- */
+@media (max-width:819.98px){
+  .dlg{width:100vw;height:auto;max-height:88dvh;margin:auto 0 0 0}
+  .dlg .sheet{height:auto;max-height:88dvh;border-radius:24px 24px 0 0;overflow:hidden;box-shadow:0 -12px 40px rgba(0,0,0,.3)}
+  .dlg .top{position:relative;padding-top:18px}
+  .dlg .top::before{content:"";position:absolute;top:8px;left:50%;width:40px;height:4px;margin-left:-20px;border-radius:2px;background:var(--line2)}
+  .dlg[open] .sheet{animation:sheetup .32s var(--ease)}
+}
+@media (min-width:820px){ .dlg[open] .sheet{animation:sheetpop .26s var(--ease)} }
+dialog[open]::backdrop{animation:fadein .25s ease}
+@keyframes sheetup{from{transform:translateY(100%)}to{transform:none}}
+@keyframes sheetpop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+
+/* ---------- photo viewer ---------- */
+.lb[open]{animation:fadein .2s ease}
+.lb[open] img{animation:sheetpop .28s var(--ease)}
+.lb .in{cursor:zoom-out}.lb img,.lb .ctl{cursor:default}
+
+/* ---------- life: small motion on the things people touch ---------- */
+.btn:active,.chip:active,.add:active,.stepper button:active,.pin:active,.wnav:active{transform:scale(.96)}
+.pin:active{transform:translate(-12px,-50%) scale(.96)}
+.chip,.add,.stepper button{transition:transform .15s var(--ease),background .2s,color .2s,border-color .2s}
+.pin[aria-pressed="true"] .dot{position:relative}
+.pin[aria-pressed="true"] .dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--k);animation:ring 1.8s ease-out infinite}
+@keyframes ring{from{transform:scale(.8);opacity:.9}to{transform:scale(1.9);opacity:0}}
+.swap > *{animation:rise .34s var(--ease) both}
+.stop.swap > :nth-child(2){animation-delay:.03s}.stop.swap > :nth-child(3){animation-delay:.06s}.stop.swap > :nth-child(4){animation-delay:.09s}.stop.swap > :nth-child(5){animation-delay:.12s}.stop.swap > :nth-child(6){animation-delay:.15s}.stop.swap > :nth-child(7){animation-delay:.18s}.stop.swap > :nth-child(8){animation-delay:.21s}
+img.swap{animation:fadein .4s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.rgrid blockquote:hover,.fit:hover{box-shadow:0 26px 60px rgba(30,27,24,.16)}
+.rv .rgrid blockquote,.rv .pwall .chip,.rv .stats > div{opacity:0;transform:translateY(14px);transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.rv.in .rgrid blockquote,.rv.in .pwall .chip,.rv.in .stats > div{opacity:1;transform:none}
+.rv.in .rgrid blockquote:nth-child(2),.rv.in .pwall .chip:nth-child(2),.rv.in .stats > div:nth-child(2){transition-delay:.08s}
+.rv.in .rgrid blockquote:nth-child(3),.rv.in .pwall .chip:nth-child(3),.rv.in .stats > div:nth-child(3){transition-delay:.16s}
+.rv.in .pwall .chip:nth-child(4){transition-delay:.24s}.rv.in .pwall .chip:nth-child(5){transition-delay:.32s}.rv.in .pwall .chip:nth-child(6){transition-delay:.4s}
+@media (min-width:900px){ .rv.in .rgrid blockquote:nth-child(2){transform:translateY(28px)} }
+.zoom img{transition:transform 1.2s var(--ease)}
+.rv .zoom img{transform:scale(1.22)}.rv.in .zoom img{transform:scale(1.1)}
+.item{transition:background .2s}
+.add[aria-pressed="true"]{animation:pop .28s var(--ease)}
+@keyframes pop{50%{transform:scale(1.18)}}
+@media (prefers-reduced-motion:reduce){ .swap > *,img.swap,.dlg[open] .sheet,.lb[open],.lb[open] img,.add[aria-pressed="true"],.pin[aria-pressed="true"] .dot::after{animation:none} .rv .rgrid blockquote,.rv .pwall .chip,.rv .stats > div{opacity:1;transform:none} }

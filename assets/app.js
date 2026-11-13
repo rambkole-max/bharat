@@ -96,6 +96,7 @@
     }).join("");
     var renderStop = function () {
       var k = K[cur - 1], nx = K[cur % K.length];
+      stopEl.classList.remove("swap"); void stopEl.offsetWidth; stopEl.classList.add("swap");
       stopEl.innerHTML = '<div class="top"><span class="kick" style="--k:' + k.ink + '">Stop ' + k.n + " of " + K.length + '<span class="rg"> · ' + esc(k.sub) + '</span></span><button type="button" class="next" data-stop="' + nx.n + '">' + (cur < K.length ? "Next: " : "Back to: ") + esc(nx.name) + " →</button></div>" +
         '<h2 class="h3">' + esc(k.title) + '</h2><p class="line">' + esc(k.line) + "</p>" +
         k.dishes.map(function (d) { return '<div class="dish"><span class="mark' + (d.veg ? "" : " nv") + '" aria-hidden="true"></span><span class="n">' + esc(d.name) + '</span><span class="sr">' + (d.veg ? "Veg" : "Non-veg") + ".</span><b>" + esc(d.price) + "</b></div>"; }).join("") +
@@ -131,6 +132,7 @@
     var photos = function (s) { var a = []; for (var n = 1; n <= 6; n++) a.push({ t: "img/spaces/t400/" + s.k + "-" + n + ".webp", f: "img/spaces/" + s.k + "-" + n + ".webp", alt: s.name + ", photo " + n }); return a; };
     var renderSpace = function () {
       var s = SPACES[sp];
+      var si = $("#sImg"); if (si.getAttribute("src") !== s.img) { si.classList.remove("swap"); void si.offsetWidth; si.classList.add("swap"); }
       $("#sImg").src = s.img; $("#sImg").alt = s.name; $("#sName").textContent = s.name; $("#sDesc").textContent = s.desc;
       $("#sThumbs").innerHTML = photos(s).slice(0, 4).map(function (p, i) { return '<button type="button" data-ph="' + i + '" aria-label="Open ' + esc(p.alt) + '"><img src="' + p.t + '" alt="" width="400" height="266" loading="lazy"></button>'; }).join("");
       var a = $("#sAct");
@@ -144,6 +146,7 @@
     $("#lbPrev").addEventListener("click", function () { lbI = (lbI - 1 + lbList.length) % lbList.length; lbShow(); });
     $("#lbNext").addEventListener("click", function () { lbI = (lbI + 1) % lbList.length; lbShow(); });
     $("#lbClose").addEventListener("click", function () { lb.close(); });
+    lb.addEventListener("click", function (e) { if (!e.target.closest("img, button")) lb.close(); });
     lb.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") $("#lbNext").click(); if (e.key === "ArrowLeft") $("#lbPrev").click(); });
     renderSpace();
   }
@@ -416,6 +419,18 @@
     renderEv();
   }
 
+  /* figures count up the first time they are seen */
+  var countUp = function (el) {
+    var m = el.textContent.match(/^([\d.]+)(.*)$/); if (!m) return;
+    var to = parseFloat(m[1]), dec = m[1].indexOf(".") > -1 ? 1 : 0, tail = m[2], t0 = null;
+    var step = function (t) { if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 900), v = to * (1 - Math.pow(1 - p, 3)); el.textContent = v.toFixed(dec) + tail; if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  };
+  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var co = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); co.unobserve(e.target); } }); }, { threshold: 0.6 });
+    $$(".stats b, .rating b").forEach(function (el) { co.observe(el); });
+  }
+
   /* reveal sections as they scroll in; anything already on screen is left alone */
   if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { rootMargin: "0px 0px -8% 0px" });
@@ -432,7 +447,8 @@
       var a = e.target.closest && e.target.closest("a[href]"); if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
       var u; try { u = new URL(a.href, location.href); } catch (er) { return; }
       if (u.origin !== location.origin || u.pathname === location.pathname) return;   // other sites and same-page links pass straight through
-      ld.classList.add("on");                                                           // shows only for as long as the next page takes; nothing is delayed                       // long enough to read as a transition, not a flash
+      e.preventDefault(); ld.classList.add("on");
+      setTimeout(function () { location.href = u.href; }, 380);                         // long enough to see the seal fill once                       // long enough to read as a transition, not a flash
     });
     window.addEventListener("pageshow", function () { ld.classList.remove("on"); });   // also when coming back with the Back button
   })();

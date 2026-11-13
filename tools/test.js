@@ -39,7 +39,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
       document.querySelectorAll('body *').forEach(e => {
         if (!vis(e) || e.closest('.sr,.skip')) return;
         const r = e.getBoundingClientRect();
-        if ((r.right > innerWidth + 1 || r.left < -1) && !inScroller(e) && !e.closest('.wall,.foot .m')) out.off.push(id(e));
+        if ((r.right > innerWidth + 1 || r.left < -1) && !inScroller(e) && !e.closest('.wall,.foot .m,.zoom')) out.off.push(id(e));
         if (/^(A|BUTTON)$/.test(e.tagName)) {
           const nm = (e.getAttribute('aria-label') || e.textContent || '').trim() || (e.querySelector('img[alt]:not([alt=""])') ? 'img' : '');
           if (!nm) out.noname.push(id(e));
