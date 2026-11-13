@@ -117,6 +117,29 @@
     renderStop();
   }
 
+  /* Instagram row: latest six posts from the feed link on #ig; stays hidden if there is no link or the feed fails */
+  var ig = $("#ig");
+  if (ig && /^https:\/\/feeds\.behold\.so\//.test(ig.dataset.feed || "") && window.fetch) {
+    fetch(ig.dataset.feed).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (d) {
+      var posts = (d.posts || d || []).filter(function (p) { return p && p.permalink && (p.sizes || p.thumbnailUrl || p.mediaType === "IMAGE"); }).slice(0, 6);
+      if (posts.length < 3) return;
+      var grid = $("#igGrid");
+      posts.forEach(function (p) {
+        var src = (p.sizes && (p.sizes.medium || p.sizes.small || {}).mediaUrl) || p.thumbnailUrl || p.mediaUrl;
+        if (!/^https:\/\//.test(src) || !/^https:\/\/(www\.)?instagram\.com\//.test(p.permalink)) return;
+        var cap = (p.prunedCaption || p.caption || "").replace(/\s+/g, " ").trim();
+        var a = document.createElement("a"); a.href = p.permalink; a.target = "_blank"; a.rel = "noopener";
+        var im = document.createElement("img"); im.src = src; im.loading = "lazy"; im.decoding = "async"; im.width = 700; im.height = 700;
+        im.alt = p.altText || (cap ? cap.slice(0, 110) : "Instagram post from Bharat Fine Dine");
+        a.appendChild(im);
+        if (p.mediaType === "VIDEO") { var v = document.createElement("i"); v.setAttribute("aria-hidden", "true"); a.appendChild(v); }
+        if (cap) { var c = document.createElement("span"); c.textContent = cap.length > 70 ? cap.slice(0, 68).trim() + "…" : cap; a.appendChild(c); }
+        grid.appendChild(a);
+      });
+      if (grid.children.length >= 3) ig.hidden = false;
+    }).catch(function () {});
+  }
+
   /* phone menu closes when you tap anywhere else */
   var mn = $(".mnav"); if (mn) document.addEventListener("click", function (e) { if (mn.open && !e.target.closest(".mnav summary")) mn.open = false; });
 
