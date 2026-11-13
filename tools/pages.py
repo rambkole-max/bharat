@@ -27,7 +27,7 @@ def page(slug, title, desc, body, bar=True):
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:url" content="https://bharatfinedine.com/{slug}.html">
-<meta property="og:image" content="https://bharatfinedine.com/og-image.jpg">
+<meta property="og:image" content="https://bharatfinedine.com/og-bharat.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>

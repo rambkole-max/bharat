@@ -11,7 +11,7 @@ Static HTML/CSS/JS. No framework. Three pages:
 Shared files: `assets/site.css` (design tokens + all components), `assets/app.js` (all behaviour, the file to edit), `assets/app.min.js` (generated; the file the pages load), `assets/data.js` (generated kitchen data).
 
 ## Deploy
-Upload `index.html`, `menu.html`, `events.html`, `assets/`, `img/`, the favicons, `og-image.jpg`, `robots.txt`, `sitemap.xml`, `_headers`.
+Upload `index.html`, `menu.html`, `events.html`, `assets/`, `img/`, the favicons, `spaces.html`, `visit.html`, `og-bharat.jpg`, `robots.txt`, `sitemap.xml`, `_headers`.
 
 `img/` and `assets/fonts/` are in the repo now, so the repo is the whole site. Back up the live site before the first deploy.
 
