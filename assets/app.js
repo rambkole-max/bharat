@@ -144,19 +144,24 @@
   var ig = $("#ig");
   if (ig && /^https:\/\/feeds\.behold\.so\//.test(ig.dataset.feed || "") && window.fetch) {
     fetch(ig.dataset.feed).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (d) {
-      var posts = (d.posts || d || []).filter(function (p) { return p && p.permalink && (p.sizes || p.thumbnailUrl || p.mediaType === "IMAGE"); }).slice(0, 6);
+      var posts = (d.posts || d || []).filter(function (p) { return p && p.permalink && (p.sizes || p.thumbnailUrl || p.mediaType === "IMAGE"); }).slice(0, 5);
       if (posts.length < 3) return;
-      var grid = $("#igGrid");
-      posts.forEach(function (p) {
-        var src = (p.sizes && (p.sizes.medium || p.sizes.small || {}).mediaUrl) || p.thumbnailUrl || p.mediaUrl;
+      var grid = $("#igGrid"), when = function (t) { var x = new Date(t); return isNaN(x) ? "" : x.toLocaleDateString("en-IN", { day: "numeric", month: "short" }); };
+      if (/^https:\/\/[a-z0-9.-]*behold\.pictures\//.test(d.profilePictureUrl || "")) { var av = $("#igAv"); av.src = d.profilePictureUrl; av.classList.add("pic"); }
+      posts.forEach(function (p, n) {
+        var sz = p.sizes || {}, src = ((n === 0 ? sz.large || sz.medium : sz.medium || sz.small) || {}).mediaUrl || p.thumbnailUrl || p.mediaUrl;
         if (!/^https:\/\//.test(src) || !/^https:\/\/(www\.)?instagram\.com\//.test(p.permalink)) return;
         var cap = (p.prunedCaption || p.caption || "").replace(/\s+/g, " ").trim();
+        var head = (cap.match(/^.{3,90}?[.!?](?=\s|$)/) || [cap.slice(0, 70)])[0];          // the first sentence is the post's headline
         var a = document.createElement("a"); a.href = p.permalink; a.target = "_blank"; a.rel = "noopener";
         var im = document.createElement("img"); im.src = src; im.loading = "lazy"; im.decoding = "async"; im.width = 700; im.height = 700;
         im.alt = p.altText || (cap ? cap.slice(0, 110) : "Instagram post from Bharat Fine Dine");
         a.appendChild(im);
         if (p.mediaType === "VIDEO") { var v = document.createElement("i"); v.setAttribute("aria-hidden", "true"); a.appendChild(v); }
-        if (cap) { var c = document.createElement("span"); c.textContent = cap.length > 70 ? cap.slice(0, 68).trim() + "…" : cap; a.appendChild(c); }
+        var c = document.createElement("span"), d8 = when(p.timestamp);
+        if (d8) { var sm = document.createElement("small"); sm.textContent = (n === 0 ? "Latest · " : "") + d8; c.appendChild(sm); }
+        if (head) { var b = document.createElement("b"); b.textContent = head; c.appendChild(b); }
+        a.appendChild(c);
         grid.appendChild(a);
       });
       if (grid.children.length >= 3) ig.hidden = false;
