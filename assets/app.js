@@ -54,7 +54,8 @@
   function isOpen() { var h = istParts().h; return h >= CFG.OPEN_HOUR && h < CFG.CLOSE_HOUR; }
   $$("[data-status]").forEach(function (el) {
     var open = isOpen(); el.classList.toggle("closed", !open);
-    var t = $("span", el); if (t) t.textContent = (open ? "Open now · till 11 PM" : "Closed now · opens 11 AM") + " · Latur MIDC";
+    var p = istParts(), m = p.h * 60 + p.m;
+    var t = $("span", el); if (t) t.textContent = !open ? "Closed now · opens 11 AM" : m < 720 ? "Open now · lunch tables from 12" : m < 870 ? "Open now · lunch tables till 2:30" : m < 1140 ? "Open now · dinner tables from 7" : m < 1320 ? "Open now · dinner tables till 10" : "Open now · till 11 tonight";
   });
 
   /* ---------- my list (shared by menu and booking) ---------- */
@@ -74,14 +75,16 @@
       return '<button type="button" class="pin" data-stop="' + k.n + '" style="left:' + k.pin[0] + "%;top:" + k.pin[1] + '%"><span class="dot" style="--k:' + k.color + '">' + k.n + "</span>" + esc(k.name) + "</button>";
     }).join("");
     // phone: a pin whose label would be cut by the screen edge shows only its number until swiped into view
+    var wide = window.matchMedia("(min-width:820px)");   // wide screens show the whole mural; narrower ones swipe it
+    var pan0 = $(".wall-in", wall);
     var flipPins = function () {
-      var w = wall.clientWidth, sl = wall.scrollLeft, scrolls = wall.scrollWidth > w;
+      var w = wall.clientWidth, sl = wall.scrollLeft, scrolls = !wide.matches;
       Array.prototype.forEach.call(pins.querySelectorAll(".pin"), function (b) {
         if (!b._w) { var had = b.classList.contains("flip"); b.classList.remove("flip"); b._w = b.offsetWidth; if (had) b.classList.add("flip"); }   // natural label width, measured once
-        var lefty = scrolls && b.offsetLeft > wall.scrollWidth * 0.7;                    // near the mural's right end the name opens to the left of its number
+        var lefty = b.offsetLeft > pan0.offsetWidth * (scrolls ? 0.7 : 0.8);          // near the mural's right end the name opens to the left of its number
         b.classList.toggle("lefty", lefty);
-        var x0 = lefty ? b.offsetLeft + 30 - b._w - sl : b.offsetLeft - 12 - sl, x1 = x0 + b._w;
-        b.classList.toggle("flip", scrolls && (lefty ? (x1 > 8 && x0 < 8) : (x0 < w - 8 && x1 > w - 8)));
+        // phone: only the chosen stop (and the one being swiped to) shows its name; the rest are numbered dots, so nothing is cut or overlaps
+        b.classList.toggle("flip", scrolls && b.getAttribute("aria-pressed") !== "true" && !b.classList.contains("near"));
       });
       var nx = $("#wallNext"), pv = $("#wallPrev");
       if (nx) { nx.hidden = !scrolls || sl > wall.scrollWidth - w - 12; pv.hidden = !scrolls || sl < 12; }
@@ -94,8 +97,9 @@
     if (journey) journey.innerHTML = K.map(function (k) {
       return '<button type="button" class="node" data-stop="' + k.n + '" style="--k:' + k.color + '"><span class="dot">' + k.n + "</span>" + esc(k.name) + "</button>";
     }).join("");
-    var renderStop = function () {
+    var renderStop = function (dir) {
       var k = K[cur - 1], nx = K[cur % K.length];
+      stopEl.dataset.dir = dir || "";
       stopEl.classList.remove("swap"); void stopEl.offsetWidth; stopEl.classList.add("swap");
       stopEl.innerHTML = '<div class="top"><span class="kick" style="--k:' + k.ink + '">Stop ' + k.n + " of " + K.length + '<span class="rg"> · ' + esc(k.sub) + '</span></span><button type="button" class="next" data-stop="' + nx.n + '">' + (cur < K.length ? "Next: " : "Back to: ") + esc(nx.name) + " →</button></div>" +
         '<h2 class="h3">' + esc(k.title) + '</h2><p class="line">' + esc(k.line) + "</p>" +
@@ -105,14 +109,33 @@
       if (jn) jn.innerHTML = "<b>" + esc(k.title) + "</b><span>" + k.dishes.map(function (d) { return esc(d.name); }).join(" · ") + '</span><a class="lnk" href="menu.html#k-' + k.id + '">See all ' + k.count + " dishes →</a>";
       $$("[data-stop]").forEach(function (b) { if (b.classList.contains("pin") || b.classList.contains("node")) b.setAttribute("aria-pressed", +b.dataset.stop === cur); });
     };
-    var select = function (n, scrollWall) {
-      cur = n; renderStop();
-      var k = K[n - 1];
-      if (scrollWall && k.pin && wall.scrollWidth > wall.clientWidth) wall.scrollTo({ left: Math.max(0, wall.scrollWidth * k.pin[0] / 100 - wall.clientWidth / 2) });
+    /* walking the wall: on a phone the mural is swiped and the kitchen under the middle of the screen becomes the stop;
+       on a wide screen choosing a stop glides the mural towards that scene. Either way the rest of the mural fades back a little. */
+    var pan = $(".wall-in", wall), swipes = function () { return !wide.matches; };
+    var byX = K.filter(function (k) { return k.pin; }).sort(function (a, b) { return a.pin[0] - b.pin[0]; });
+    var anchor = function (k) { return Math.max(0, Math.min(wall.scrollWidth - wall.clientWidth, wall.scrollWidth * k.pin[0] / 100 - wall.clientWidth / 2)); };
+    var nearest = function () { var sl = wall.scrollLeft, best = null, bd = 1e9; byX.forEach(function (k) { var d = Math.abs(anchor(k) - sl); if (d < bd) { bd = d; best = k; } }); return best; };
+    var auto = 0, settle = 0, mark = function (k) { $$(".pin", pins).forEach(function (b) { b.classList.toggle("near", !!k && +b.dataset.stop === k.n && k.n !== cur); }); flipPins(); };
+    var select = function (n, bySwipe) {
+      var prev = K[cur - 1], k = K[n - 1];
+      var dir = n === cur ? "" : (k.pin && prev.pin ? k.pin[0] < prev.pin[0] : n < cur) ? "back" : "fwd";
+      cur = n; renderStop(dir); mark(null); flipPins();
+      if (!k.pin) return;
+      pan.style.setProperty("--fx", k.pin[0] + "%"); pan.style.setProperty("--fy", k.pin[1] + "%"); pan.classList.add("cam");
+      if (!bySwipe && swipes()) {
+        clearTimeout(settle); auto = 1; setTimeout(function () { auto = 0; }, 900);
+        wall.scrollTo({ left: anchor(k), behavior: "smooth" });
+      }
     };
+    wall.addEventListener("scroll", function () {
+      if (!swipes()) return;
+      if (!auto) mark(nearest());
+      clearTimeout(settle);
+      settle = setTimeout(function () { if (auto) { auto = 0; return; } var k = nearest(); if (k && k.n !== cur) select(k.n, true); }, 140);
+    }, { passive: true });
     document.addEventListener("click", function (e) {
       var b = e.target.closest && e.target.closest("[data-stop]"); if (!b) return;
-      select(+b.dataset.stop, !b.classList.contains("pin"));
+      select(+b.dataset.stop);
     });
     renderStop();
   }
@@ -145,11 +168,15 @@
 
   /* photo viewer for galleries marked data-lbk (space) and data-lbn (photo number); built on the fly */
   if ($("[data-lbk]")) {
-    var g = document.createElement("dialog"); g.className = "lb"; g.setAttribute("aria-label", "Photo viewer");
+    var g = document.createElement("dialog"); g.className = "lb g"; g.setAttribute("aria-label", "Photo viewer");
     g.innerHTML = '<div class="in"><img alt=""><div class="ctl"><button type="button" data-d="-1" aria-label="Previous photo">←</button><span></span><button type="button" data-d="1" aria-label="Next photo">→</button><button type="button" data-d="0">Close</button></div></div>';
     document.body.appendChild(g);
     var gk = "", gn = 1, gname = "", gshow = function () { var im = $("img", g); im.src = "img/spaces/" + gk + "-" + gn + ".webp"; im.alt = gname + ", photo " + gn; $("span", g).textContent = gn + " / 6"; };
-    document.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("[data-lbk]"); if (!b) return; gk = b.dataset.lbk; gn = +b.dataset.lbn; gname = b.dataset.lbname; gshow(); g.showModal(); });
+    document.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("[data-lbk]"); if (!b) return; gk = b.dataset.lbk; gn = +b.dataset.lbn; gname = b.dataset.lbname; gshow(); g.showModal();
+      var im = $("img", g), r0 = b.getBoundingClientRect(), r1 = im.getBoundingClientRect();
+      im.style.backgroundImage = "url(img/spaces/t400/" + gk + "-" + gn + ".webp)";
+      if (im.animate && r1.width && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) im.animate([{ transformOrigin: "0 0", transform: "translate(" + (r0.left - r1.left) + "px," + (r0.top - r1.top) + "px) scale(" + r0.width / r1.width + "," + r0.height / r1.height + ")" }, { transformOrigin: "0 0", transform: "none" }], { duration: 360, easing: "cubic-bezier(.2,.75,.2,1)" });
+    });
     g.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { if (b.dataset.d === "0") return g.close(); gn = (gn - 1 + (+b.dataset.d) + 6) % 6 + 1; gshow(); } else if (!e.target.closest("img")) g.close(); });
     g.addEventListener("keydown", function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { gn = (gn - 1 + (e.key === "ArrowRight" ? 1 : -1) + 6) % 6 + 1; gshow(); } });
   }
@@ -484,6 +511,7 @@
       var a = e.target.closest && e.target.closest("a[href]"); if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
       var u; try { u = new URL(a.href, location.href); } catch (er) { return; }
       if (u.origin !== location.origin || u.pathname === location.pathname) return;   // other sites and same-page links pass straight through
+      if ("onpagereveal" in window) { setTimeout(function () { ld.classList.add("on"); }, 450); return; }   // this browser cross-fades between pages by itself
       e.preventDefault(); ld.classList.add("on");
       setTimeout(function () { location.href = u.href; }, 380);                         // long enough to see the seal fill once                       // long enough to read as a transition, not a flash
     });

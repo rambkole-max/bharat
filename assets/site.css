@@ -557,55 +557,78 @@ img.swap{animation:fadein .4s ease}
 @media (min-width:900px){ .igrid{grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--s3)} }
 @media (hover:none){ .igrid span{display:none} }
 
-/* ---------- shape and depth: softer corners, arches, floating panels, a bento of rooms ---------- */
+/* ---------- shape and depth: two shapes only, the doorway arch from the mural and the round seal ---------- */
 :root{--r:28px;--r-sm:18px;--r-md:28px;--r-lg:28px;--blob:#F1E2C0}
 body{background-image:radial-gradient(900px 520px at 100% -4%,#F6E7C6 0,transparent 62%),radial-gradient(700px 520px at -12% 34%,rgba(165,28,48,.05),transparent 62%);background-repeat:no-repeat}
 .btn:not(.line):not(.wa){box-shadow:0 10px 22px rgba(165,28,48,.26)}
 .btn:hover{transform:translateY(-2px)}
 .stack > .kick,.phead > .kick{align-self:flex-start;padding:7px 14px;border-radius:var(--r-pill);background:var(--tint)}
 
-/* coloured sections float as rounded panels, not full-width stripes */
 .band,.sec.dark{width:calc(100% - 24px);max-width:1320px;margin:0 auto var(--gap);border-radius:32px;overflow:hidden}
-.sec.dark{box-shadow:0 30px 70px rgba(30,27,24,.28)}
+.sec.dark{box-shadow:0 30px 70px rgba(30,27,24,.28);margin-bottom:0}
 .band{box-shadow:inset 0 0 0 1px rgba(164,116,36,.22)}
 @media (min-width:900px){ .band,.sec.dark{width:calc(100% - 48px);border-radius:44px} }
 
-/* photos: a leaf corner and a solid block behind, so they stop looking like plain rectangles */
-.zoom{border-radius:var(--r) var(--r) var(--r) 110px;box-shadow:-14px 14px 0 var(--blob)}
-.sp .lead{border-radius:110px var(--r) var(--r) var(--r);box-shadow:-14px 14px 0 var(--blob),var(--shadow)}
-.sp.alt .lead{border-radius:var(--r) 110px var(--r) var(--r);box-shadow:14px 14px 0 var(--cream),var(--shadow)}
-.sp.alt .lead{box-shadow:14px 14px 0 #F3E9D6,var(--shadow)}
-@media (max-width:899.98px){ .zoom,.sp .lead,.sp.alt .lead{box-shadow:-8px 8px 0 var(--blob)} .zoom{border-bottom-left-radius:72px} .sp .lead{border-top-left-radius:72px} .sp.alt .lead{border-top-right-radius:72px;box-shadow:8px 8px 0 #F3E9D6} }
-
-/* events: two doorway arches, stepped */
+/* arch */
+.zoom,.sp .lead{border-radius:50% 50% var(--r) var(--r) / 34% 34% var(--r) var(--r)}
+.zoom,.sp .lead{box-shadow:-12px 12px 0 var(--blob)}
+.sp.alt .lead{box-shadow:12px 12px 0 #F3E9D6}
 .pics{align-items:start}
-.pics img:first-child{border-radius:999px 999px var(--r) var(--r)}
-.pics img:last-child{border-radius:var(--r) var(--r) 999px 999px;margin-top:var(--s7)}
+.pics img{aspect-ratio:4/5;border-radius:999px 999px var(--r) var(--r);transform:none;rotate:none}
+.pics img:last-child{margin-top:var(--s7)}
+/* seal */
+.pics::after{content:"";position:absolute;left:50%;bottom:-20px;width:96px;height:96px;margin-left:-48px;border-radius:50%;background:var(--card) url(../img/BFD_seal_red.png) center/80% no-repeat;box-shadow:0 10px 26px rgba(74,53,36,.3);animation:spin 44s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* figures as tiles */
 .stats{gap:var(--s3);border:0}
 .stats > div,.stats > div + div{padding:var(--s4);border:0;border-radius:var(--r-sm);background:rgba(255,253,248,.75);box-shadow:inset 0 0 0 1px rgba(164,116,36,.2)}
 
-/* rooms: a bento, one large tile and five smaller */
+/* rooms: a bento, one large arched tile and five smaller */
 .pwall.big{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:118px;gap:var(--s3);overflow:visible;margin:0;padding:0}
-.pwall.big .chip{width:auto;height:auto;border-radius:var(--r-sm)}
-.pwall.big .chip:nth-child(1){grid-column:span 2;grid-row:span 2;border-radius:var(--r)}
+.pwall.big .chip{width:auto;height:auto;border-radius:var(--r-sm);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.pwall.big .chip:hover{transform:translateY(-4px);box-shadow:0 18px 36px rgba(30,27,24,.22)}
+.pwall.big .chip:nth-child(1){grid-column:span 2;grid-row:span 2;border-radius:50% 50% var(--r) var(--r) / 30% 30% var(--r) var(--r)}
 .pwall.big .chip:nth-child(6){grid-column:span 2}
 .pwall.big .chip span{font-size:15px}
 @media (min-width:900px){
   .pwall.big{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:180px;gap:var(--s4)}
   .pwall.big .chip{border-radius:var(--r)}
-  .pwall.big .chip:nth-child(1){grid-column:span 2;grid-row:span 2;border-radius:110px var(--r) var(--r) var(--r)}
+  .pwall.big .chip:nth-child(1){grid-column:span 2;grid-row:span 2}
   .pwall.big .chip:nth-child(2),.pwall.big .chip:nth-child(3),.pwall.big .chip:nth-child(4){grid-column:span 2}
   .pwall.big .chip:nth-child(6){grid-column:span 1}
   .pwall.big .chip:nth-child(1) span{font-size:22px;font-family:var(--serif);font-weight:400;padding:60px 24px 20px}
-  .rgrid blockquote:nth-child(odd){rotate:-1.4deg}
-  .rgrid blockquote:nth-child(even){rotate:1.2deg}
-  .rgrid blockquote{transition:rotate .3s var(--ease),box-shadow .3s var(--ease)}
-  .rgrid blockquote:hover{rotate:0deg}
 }
-.igrid a{border-radius:var(--r-sm)}
-.igrid a:first-child{border-top-left-radius:56px}
-.igrid a:last-child{border-bottom-right-radius:56px}
-.pics img{aspect-ratio:4/5}
-.sec.dark{margin-bottom:0}
+.igrid a,.gal button{transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.igrid a:hover,.gal button:hover{transform:translateY(-4px);box-shadow:0 16px 30px rgba(30,27,24,.2)}
+
+/* ---------- the wall walks ---------- */
+@property --fx{syntax:"<percentage>";inherits:true;initial-value:50%}
+@property --fy{syntax:"<percentage>";inherits:true;initial-value:50%}
+.wall-in{transition:--fx 1s var(--ease),--fy 1s var(--ease),scale 1s var(--ease)}
+.wall-in::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at var(--fx) var(--fy),rgba(250,245,236,0) 0,rgba(250,245,236,0) 16%,rgba(250,245,236,.5) 52%);opacity:0;transition:opacity .7s var(--ease)}
+.wall-in.cam::after{opacity:1}
+.pin{z-index:2;transition:transform .25s var(--ease),background .25s,color .25s,box-shadow .25s}
+.pin.near{box-shadow:0 0 0 3px var(--cream),0 0 0 5px var(--brown),0 6px 16px rgba(30,27,24,.3)}
+@media (min-width:820px){
+  .wall-in{transform-origin:var(--fx) var(--fy);scale:1.02;animation:drift 26s ease-in-out infinite alternate}
+  .wall-in.cam{scale:1.07}
+  .wall:hover .wall-in{animation-play-state:paused}
+  .pin:hover{transform:translate(-12px,calc(-50% - 3px)) scale(1.05);box-shadow:0 12px 24px rgba(30,27,24,.3)}
+}
+@keyframes drift{from{translate:-.5% 0}to{translate:.5% 0}}
+.stop.swap[data-dir="fwd"] > *{animation-name:fromR}
+.stop.swap[data-dir="back"] > *{animation-name:fromL}
+@keyframes fromR{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+@keyframes fromL{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+
+/* photo viewer: the photo grows out of the tile that was tapped */
+.lb.g img{width:min(100%,117vh);max-height:none;aspect-ratio:3/2;object-fit:cover;background-size:cover;background-position:center}
+.lb.g[open] img{animation:none}
+
+/* pages cross-fade; the header and the bottom bar stay where they are */
+@view-transition{navigation:auto}
+.hdr{view-transition-name:hdr}
+.mbar{view-transition-name:mbar}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.3s}
+@media (prefers-reduced-motion:reduce){ .wall-in,.pics::after{animation:none} .wall-in{transition:none} @view-transition{navigation:none} }
+@media (max-width:819.98px){ .pin.flip{transform:translate(-12px,-50%)} .pin.lefty.flip{transform:translate(calc(-100% + 30px),-50%)} }

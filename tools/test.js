@@ -22,6 +22,8 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   async function ctx(w, h, opt = {}) {
     const c = await b.newContext(Object.assign({ viewport: { width: w, height: h }, timezoneId: 'Asia/Kolkata', locale: 'en-IN' }, opt));
     const p = await c.newPage();
+    // the mural drifts slowly when idle and pauses under a cursor; hold it still so clicks land where a person's would
+    await p.addInitScript(() => document.addEventListener('DOMContentLoaded', () => { const s = document.createElement('style'); s.textContent = '.wall-in{animation:none!important}'; document.head.appendChild(s); }));
     p.on('console', m => { if (m.type() === 'error' && !/404|Failed to load resource/.test(m.text())) errs.push(m.text()); });
     p.on('pageerror', e => errs.push('PAGEERR ' + e.message));
     await p.route('**/img/**', r => { const u = r.request().url(); imgs.add(u.replace(U, '')); const f = REPO + u.replace(U, '').split('?')[0]; fs.existsSync(f) ? r.continue() : r.fulfill({ status: 404, body: '' }); });   // img/ may not be in the repo
@@ -147,7 +149,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     }
     if (w < 820) {
       await p.$eval('#wallScroll', e => { e.scrollLeft = 0; }); await p.waitForTimeout(1200);
-      const cut = await p.$$eval('.pin', e => { const wr = document.querySelector('#wallScroll').getBoundingClientRect().right; return e.filter(x => { const r = x.getBoundingClientRect(); return r.left < wr - 8 && r.right > wr + 1; }).length; });
+      const cut = await p.$$eval('.pin:not(.flip)', e => { const wr = document.querySelector('#wallScroll').getBoundingClientRect().right; return e.filter(x => { const r = x.getBoundingClientRect(); return r.left < wr - 8 && r.right > wr + 1; }).length; });
       eq(S, 'no pin label is cut by the screen edge', cut, 0);
       const ov = await p.$$eval('.pin', e => { const rs = e.map(x => x.getBoundingClientRect()); let n = 0; for (let i = 0; i < rs.length; i++) for (let j = i + 1; j < rs.length; j++) if (rs[i].left < rs[j].right && rs[j].left < rs[i].right && rs[i].top < rs[j].bottom && rs[j].top < rs[i].bottom) n++; return n; });
       eq(S, 'pins do not overlap each other', ov, 0);
