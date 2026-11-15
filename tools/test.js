@@ -217,7 +217,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     eq(S, 'summary rows are right', rows, [['Table', 'Bar & Lounge'], ['Date', 'Tomorrow, 12 Nov'], ['Time', '7:30 pm'], ['Guests', '19 · Two of us'], ['Name', 'Asha <b>K</b>'], ['WhatsApp', '+91 98765 43210']]);
     const href = await p.getAttribute('#pSend', 'href'); const msg = decodeURIComponent(href.split('text=')[1]);
     ck(S, 'WhatsApp link goes to the restaurant number', href.startsWith('https://wa.me/919126268181?text='), href.slice(0, 50));
-    ck(S, 'message carries table, guests, day, time, name, phone, note and a BFD reference', /^Hi Bharat Fine Dine! Table request BFD-\d{4}: Bar & Lounge for 19 on Tomorrow, 12 Nov at 7:30 pm \(Two of us\)\. Name: Asha <b>K<\/b>\. Phone: \+91 98765 43210\. Note: Cake at 9 & a high chair$/.test(msg), msg);
+    ck(S, 'message carries table, guests, day, time, name, phone, note and a BFD reference', /^Hi Bharat Fine Dine! Table request BFD-\d{4}: Bar & Lounge for 19 on Thu, 12 Nov \(tomorrow\) at 7:30 pm \(Two of us\)\. Name: Asha <b>K<\/b>\. Phone: \+91 98765 43210\. Note: Cake at 9 & a high chair$/.test(msg), msg);
     eq(S, 'message on screen is the message that is sent', await p.textContent('#pBody .bubble'), msg);
     // back keeps values
     await p.click('#pFt [data-act=back]'); eq(S, 'Back keeps what was typed', [await p.inputValue('[data-in=name]'), await p.inputValue('[data-in=phone]'), await p.inputValue('[data-in=note]')], ['Asha <b>K</b>', '+91 98765 43210', 'Cake at 9 & a high chair']);

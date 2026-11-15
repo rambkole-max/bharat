@@ -275,10 +275,12 @@
 
     /* --- the dialog --- */
     var body = $("#pBody"), ft = $("#pFt");
+    // the WhatsApp message always names the weekday and date, so it still reads right when staff open it later
+    var msgDate = function () { var d = dayDiff(); return P.date.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" }) + (d === 0 ? " (today)" : d === 1 ? " (tomorrow)" : ""); };
     var sumLine = function () { return (P.step === 1 ? WHO[P.who].t : P.seat) + " · " + guestsTxt() + " · " + dateTxt() + (P.time && P.step > 1 ? " · " + P.time : ""); };
     var listNames = function () { return list.map(function (x) { return (x.q > 1 ? x.q + " × " : "") + x.name; }); };
     var message = function () {
-      return "Hi Bharat Fine Dine! Table request " + P.ref + ": " + P.seat + " for " + P.guests + " on " + dateTxt() + " at " + P.time + " (" + WHO[P.who].t + "). Name: " + P.name.trim() + ". Phone: " + P.phone.trim() + "." +
+      return "Hi Bharat Fine Dine! Table request " + P.ref + ": " + P.seat + " for " + P.guests + " on " + msgDate() + " at " + P.time + " (" + WHO[P.who].t + "). Name: " + P.name.trim() + ". Phone: " + P.phone.trim() + "." +
         (listNames().length ? " Dishes we would like: " + listNames().join(", ") + "." : "") + (P.note.trim() ? " Note: " + P.note.trim() : "");
     };
     var calUrl = function () {
