@@ -76,7 +76,7 @@ jump = "".join(f'<a class="chip" href="#sp-{s["k"]}">{e(s["name"])}</a>' for s i
 secs = []
 for i, s in enumerate(SPACES):
     gal = "".join(f'<button type="button" data-lbk="{s["k"]}" data-lbn="{n}" data-lbname="{e(s["name"])}" aria-label="Open {e(s["name"])}, photo {n}">'
-                  f'<img src="img/spaces/t400/{s["k"]}-{n}.webp" alt="" width="400" height="266" loading="lazy"></button>' for n in range(1, 7))
+                  f'<img src="img/spaces/t400/{s["k"]}-{n}.webp" alt="{e(s["name"])} at Bharat Fine Dine, MIDC Area, Latur (photo {n})" width="400" height="266" loading="lazy"></button>' for n in range(1, 7))
     act = (f'<button type="button" class="btn" data-plan="{e(s["seat"])}">Plan a table here</button>' if s["seat"]
            else '<a class="btn" href="events.html">Open the event planner</a>')
     facts = "".join(f"<li>{e(f)}</li>" for f in s["facts"])
@@ -100,8 +100,8 @@ body = f'''  <div class="wrap phead">
     <div class="chips jump">{jump}</div>
   </div>
 ''' + "\n".join(secs)
-(ROOT / "spaces.html").write_text(page("spaces", "Spaces · Bharat Fine Dine, Latur | Dining, garden, bar, halls",
-    "Six spaces at Bharat Fine Dine, Latur MIDC: fine-dine restaurant, outdoor dining, bar and lounge, private dining rooms, board rooms and two banquet halls. See photos and plan a table.", body), encoding="utf-8")
+(ROOT / "spaces.html").write_text(page("spaces", "Photos & Spaces · Bharat Fine Dine, Latur | Dining, bar, halls",
+    "Photos of Bharat Fine Dine, MIDC Area, Latur: the fine-dine restaurant, outdoor garden dining, bar and lounge, private rooms, board rooms and two banquet halls.", body), encoding="utf-8")
 
 # ---------------- visit ----------------
 FAQ = [

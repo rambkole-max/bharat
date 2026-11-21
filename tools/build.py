@@ -150,8 +150,8 @@ PAGE = f"""<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Menu · Bharat Fine Dine, Latur | {total_items} dishes, seven kitchens</title>
-<meta name="description" content="Full menu for Bharat Fine Dine by Sardesai's Kitchen, Latur: Punjabi, tandoor, Mughlai, Maharashtrian, coastal, Continental and Chinese, plus drinks, soups and desserts. Search, filter veg, and build a list for your table.">
+<title>Menu · Bharat Fine Dine, Latur | Veg &amp; non-veg, {total_items} dishes</title>
+<meta name="description" content="Full veg and non-veg menu for Bharat Fine Dine by Sardesai's Kitchen, Latur: Punjabi, tandoor, Mughlai, Maharashtrian, coastal, Continental and Chinese, plus drinks, soups and desserts. Search, filter veg, and build a list for your table.">
 <link rel="canonical" href="https://bharatfinedine.com/menu.html">
 <meta name="theme-color" content="#FAF5EC">
 <link rel="icon" href="BFD_favicon.ico" sizes="any">
