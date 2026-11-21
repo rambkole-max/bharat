@@ -54,12 +54,14 @@
   function isOpen() { var h = istParts().h; return h >= CFG.OPEN_HOUR && h < CFG.CLOSE_HOUR; }
   $$("[data-status]").forEach(function (el) {
     var open = isOpen(); el.classList.toggle("closed", !open);
-    var t = $("span", el); if (t) t.textContent = (open ? "Open now · till 11 PM" : "Closed now · opens 11 AM") + " · Latur MIDC";
+    var p = istParts(), m = p.h * 60 + p.m;
+    var t = $("span", el); if (t) t.textContent = !open ? "Closed now · opens 11 AM" : m < 720 ? "Open now · lunch tables from 12" : m < 870 ? "Open now · lunch tables till 2:30" : m < 1140 ? "Open now · dinner tables from 7" : m < 1320 ? "Open now · dinner tables till 10" : "Open now · till 11 tonight";
   });
 
   /* ---------- my list (shared by menu and booking) ---------- */
   var list = store.get("bfd-list", []);
   function saveList() { store.set("bfd-list", list); }
+  var onListChange = null;
   function inList(id) { return list.some(function (x) { return x.id === id; }); }
 
   /* =====================================================================
@@ -73,38 +75,116 @@
       return '<button type="button" class="pin" data-stop="' + k.n + '" style="left:' + k.pin[0] + "%;top:" + k.pin[1] + '%"><span class="dot" style="--k:' + k.color + '">' + k.n + "</span>" + esc(k.name) + "</button>";
     }).join("");
     // phone: a pin whose label would be cut by the screen edge shows only its number until swiped into view
+    var wide = window.matchMedia("(min-width:820px)");   // wide screens show the whole mural; narrower ones swipe it
+    var pan0 = $(".wall-in", wall);
     var flipPins = function () {
-      var w = wall.clientWidth, x0 = wall.getBoundingClientRect().left;
+      var w = wall.clientWidth, sl = wall.scrollLeft, scrolls = !wide.matches;
       Array.prototype.forEach.call(pins.querySelectorAll(".pin"), function (b) {
-        b.classList.toggle("flip", false);
-        var r = b.getBoundingClientRect();
-        b.classList.toggle("flip", wall.scrollWidth > w && r.left - x0 < w && r.right - x0 > w - 8);
+        if (!b._w) { var had = b.classList.contains("flip"); b.classList.remove("flip"); b._w = b.offsetWidth; if (had) b.classList.add("flip"); }   // natural label width, measured once
+        var lefty = b.offsetLeft > pan0.offsetWidth * (scrolls ? 0.7 : 0.8);          // near the mural's right end the name opens to the left of its number
+        b.classList.toggle("lefty", lefty);
+        // phone: only the chosen stop (and the one being swiped to) shows its name; the rest are numbered dots, so nothing is cut or overlaps
+        b.classList.toggle("flip", scrolls && b.getAttribute("aria-pressed") !== "true" && !b.classList.contains("near"));
       });
+      var nx = $("#wallNext"), pv = $("#wallPrev");
+      if (nx) { nx.hidden = !scrolls || sl > wall.scrollWidth - w - 12; pv.hidden = !scrolls || sl < 12; }
     };
+    var wb = wall.parentNode;
+    wb.insertAdjacentHTML("beforeend", '<button type="button" class="wnav p" id="wallPrev" aria-label="Scroll the mural left" hidden>‹</button><button type="button" class="wnav n" id="wallNext" aria-label="Scroll the mural right" hidden>›</button><span class="wtip" id="wallTip" aria-hidden="true">Swipe to see more</span>');
+    wb.addEventListener("click", function (e) { var b = e.target.closest(".wnav"); if (b) wall.scrollBy({ left: (b.id === "wallNext" ? 1 : -1) * wall.clientWidth * 0.7, behavior: "smooth" }); });
+    wall.addEventListener("scroll", function () { var t = $("#wallTip"); if (t && wall.scrollLeft > 20) t.remove(); }, { passive: true });
     flipPins(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(flipPins); window.addEventListener("resize", flipPins); wall.addEventListener("scroll", flipPins, { passive: true });
-    journey.innerHTML = K.map(function (k) {
-      return '<button type="button" class="node" data-stop="' + k.n + '" style="--k:' + k.color + '"><img src="' + k.thumb + '" alt="" width="480" height="270" loading="lazy" decoding="async">' +
-        '<span class="ln"><span class="dot">' + k.n + "</span></span><b>" + esc(k.name) + "</b><small><b>" + k.count + "</b> dishes · " + kind(k) + "</small></button>";
+    if (journey) journey.innerHTML = K.map(function (k) {
+      return '<button type="button" class="node" data-stop="' + k.n + '" style="--k:' + k.color + '"><span class="dot">' + k.n + "</span>" + esc(k.name) + "</button>";
     }).join("");
-    var renderStop = function () {
+    var renderStop = function (dir) {
       var k = K[cur - 1], nx = K[cur % K.length];
+      stopEl.dataset.dir = dir || "";
+      stopEl.classList.remove("swap"); void stopEl.offsetWidth; stopEl.classList.add("swap");
       stopEl.innerHTML = '<div class="top"><span class="kick" style="--k:' + k.ink + '">Stop ' + k.n + " of " + K.length + '<span class="rg"> · ' + esc(k.sub) + '</span></span><button type="button" class="next" data-stop="' + nx.n + '">' + (cur < K.length ? "Next: " : "Back to: ") + esc(nx.name) + " →</button></div>" +
         '<h2 class="h3">' + esc(k.title) + '</h2><p class="line">' + esc(k.line) + "</p>" +
         k.dishes.map(function (d) { return '<div class="dish"><span class="mark' + (d.veg ? "" : " nv") + '" aria-hidden="true"></span><span class="n">' + esc(d.name) + '</span><span class="sr">' + (d.veg ? "Veg" : "Non-veg") + ".</span><b>" + esc(d.price) + "</b></div>"; }).join("") +
         '<a class="lnk" href="menu.html#k-' + k.id + '">See all ' + k.count + " " + esc(k.name) + " dishes →</a>";
+      var jn = $("#jNote");
+      if (jn) jn.innerHTML = "<b>" + esc(k.title) + "</b><span>" + k.dishes.map(function (d) { return esc(d.name); }).join(" · ") + '</span><a class="lnk" href="menu.html#k-' + k.id + '">See all ' + k.count + " dishes →</a>";
       $$("[data-stop]").forEach(function (b) { if (b.classList.contains("pin") || b.classList.contains("node")) b.setAttribute("aria-pressed", +b.dataset.stop === cur); });
     };
-    var select = function (n, scrollWall) {
-      cur = n; renderStop();
-      var k = K[n - 1];
-      if (scrollWall && k.pin && wall.scrollWidth > wall.clientWidth) wall.scrollTo({ left: Math.max(0, wall.scrollWidth * k.pin[0] / 100 - wall.clientWidth / 2) });
+    /* walking the wall: on a phone the mural is swiped and the kitchen under the middle of the screen becomes the stop;
+       on a wide screen choosing a stop glides the mural towards that scene. Either way the rest of the mural fades back a little. */
+    var pan = $(".wall-in", wall), swipes = function () { return !wide.matches; };
+    var byX = K.filter(function (k) { return k.pin; }).sort(function (a, b) { return a.pin[0] - b.pin[0]; });
+    var anchor = function (k) { return Math.max(0, Math.min(wall.scrollWidth - wall.clientWidth, wall.scrollWidth * k.pin[0] / 100 - wall.clientWidth / 2)); };
+    var nearest = function () { var sl = wall.scrollLeft, best = null, bd = 1e9; byX.forEach(function (k) { var d = Math.abs(anchor(k) - sl); if (d < bd) { bd = d; best = k; } }); return best; };
+    var auto = 0, settle = 0, mark = function (k) { $$(".pin", pins).forEach(function (b) { b.classList.toggle("near", !!k && +b.dataset.stop === k.n && k.n !== cur); }); flipPins(); };
+    var select = function (n, bySwipe) {
+      var prev = K[cur - 1], k = K[n - 1];
+      var dir = n === cur ? "" : (k.pin && prev.pin ? k.pin[0] < prev.pin[0] : n < cur) ? "back" : "fwd";
+      cur = n; renderStop(dir); mark(null); flipPins();
+      if (!k.pin) return;
+      pan.style.setProperty("--fx", k.pin[0] + "%"); pan.style.setProperty("--fy", k.pin[1] + "%"); pan.classList.add("cam");
+      if (!bySwipe && swipes()) {
+        clearTimeout(settle); auto = 1; setTimeout(function () { auto = 0; }, 900);
+        wall.scrollTo({ left: anchor(k), behavior: "smooth" });
+      }
     };
+    wall.addEventListener("scroll", function () {
+      if (!swipes()) return;
+      if (!auto) mark(nearest());
+      clearTimeout(settle);
+      settle = setTimeout(function () { if (auto) { auto = 0; return; } var k = nearest(); if (k && k.n !== cur) select(k.n, true); }, 140);
+    }, { passive: true });
     document.addEventListener("click", function (e) {
       var b = e.target.closest && e.target.closest("[data-stop]"); if (!b) return;
-      select(+b.dataset.stop, !b.classList.contains("pin"));
-      if (b.classList.contains("node") && stopEl.getBoundingClientRect().top < 0) stopEl.scrollIntoView({ block: "center" });
+      select(+b.dataset.stop);
     });
     renderStop();
+  }
+
+  /* Instagram row: latest six posts from the feed link on #ig; stays hidden if there is no link or the feed fails */
+  var ig = $("#ig");
+  if (ig && /^https:\/\/feeds\.behold\.so\//.test(ig.dataset.feed || "") && window.fetch) {
+    fetch(ig.dataset.feed).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (d) {
+      var posts = (d.posts || d || []).filter(function (p) { return p && p.permalink && (p.sizes || p.thumbnailUrl || p.mediaType === "IMAGE"); }).slice(0, 5);
+      if (posts.length < 3) return;
+      var grid = $("#igGrid"), when = function (t) { var x = new Date(t); return isNaN(x) ? "" : x.toLocaleDateString("en-IN", { day: "numeric", month: "short" }); };
+      if (/^https:\/\/[a-z0-9.-]*behold\.pictures\//.test(d.profilePictureUrl || "")) { var av = $("#igAv"); av.src = d.profilePictureUrl; av.classList.add("pic"); }
+      posts.forEach(function (p, n) {
+        var sz = p.sizes || {}, src = (sz.medium || sz.small || {}).mediaUrl || p.thumbnailUrl || p.mediaUrl;
+        if (!/^https:\/\//.test(src) || !/^https:\/\/(www\.)?instagram\.com\//.test(p.permalink)) return;
+        var cap = (p.prunedCaption || p.caption || "").replace(/\s+/g, " ").trim();
+        var head = (cap.match(/^.{3,90}?[.!?](?=\s|$)/) || [cap.slice(0, 70)])[0];          // the first sentence is the post's headline
+        var a = document.createElement("a"); a.href = p.permalink; a.target = "_blank"; a.rel = "noopener";
+        var im = document.createElement("img"); im.src = src; im.loading = "lazy"; im.decoding = "async"; im.width = 700; im.height = 700;
+        im.alt = p.altText || (cap ? cap.slice(0, 110) : "Instagram post from Bharat Fine Dine");
+        a.appendChild(im);
+        if (p.mediaType === "VIDEO") { var v = document.createElement("i"); v.setAttribute("aria-hidden", "true"); a.appendChild(v); }
+        if (p.likeCount > 0) { var lk = document.createElement("em"); lk.textContent = "♥ " + p.likeCount; lk.setAttribute("aria-label", p.likeCount + " likes"); a.appendChild(lk); }
+        var c = document.createElement("span"), d8 = when(p.timestamp);
+        if (d8) { var sm = document.createElement("small"); sm.textContent = (n === 0 ? "Latest · " : "") + d8; c.appendChild(sm); }
+        if (head) { var b = document.createElement("b"); b.textContent = head; c.appendChild(b); }
+        a.appendChild(c);
+        grid.appendChild(a);
+      });
+      if (grid.children.length >= 3) ig.hidden = false;
+    }).catch(function () {});
+  }
+
+  /* phone menu closes when you tap anywhere else */
+  var mn = $(".mnav"); if (mn) document.addEventListener("click", function (e) { if (mn.open && !e.target.closest(".mnav summary")) mn.open = false; });
+
+  /* photo viewer for galleries marked data-lbk (space) and data-lbn (photo number); built on the fly */
+  if ($("[data-lbk]")) {
+    var g = document.createElement("dialog"); g.className = "lb g"; g.setAttribute("aria-label", "Photo viewer");
+    g.innerHTML = '<div class="in"><img alt=""><div class="ctl"><button type="button" data-d="-1" aria-label="Previous photo">←</button><span></span><button type="button" data-d="1" aria-label="Next photo">→</button><button type="button" data-d="0">Close</button></div></div>';
+    document.body.appendChild(g);
+    var gk = "", gn = 1, gname = "", gshow = function () { var im = $("img", g); im.src = "img/spaces/" + gk + "-" + gn + ".webp"; im.alt = gname + ", photo " + gn; $("span", g).textContent = gn + " / 6"; };
+    document.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("[data-lbk]"); if (!b) return; gk = b.dataset.lbk; gn = +b.dataset.lbn; gname = b.dataset.lbname; gshow(); g.showModal();
+      var im = $("img", g), r0 = b.getBoundingClientRect(), r1 = im.getBoundingClientRect();
+      im.style.backgroundImage = "url(img/spaces/t400/" + gk + "-" + gn + ".webp)";
+      if (im.animate && r1.width && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) im.animate([{ transformOrigin: "0 0", transform: "translate(" + (r0.left - r1.left) + "px," + (r0.top - r1.top) + "px) scale(" + r0.width / r1.width + "," + r0.height / r1.height + ")" }, { transformOrigin: "0 0", transform: "none" }], { duration: 360, easing: "cubic-bezier(.2,.75,.2,1)" });
+    });
+    g.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { if (b.dataset.d === "0") return g.close(); gn = (gn - 1 + (+b.dataset.d) + 6) % 6 + 1; gshow(); } else if (!e.target.closest("img")) g.close(); });
+    g.addEventListener("keydown", function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { gn = (gn - 1 + (e.key === "ArrowRight" ? 1 : -1) + 6) % 6 + 1; gshow(); } });
   }
 
   var sTabs = $("#stabs");
@@ -122,6 +202,7 @@
     var photos = function (s) { var a = []; for (var n = 1; n <= 6; n++) a.push({ t: "img/spaces/t400/" + s.k + "-" + n + ".webp", f: "img/spaces/" + s.k + "-" + n + ".webp", alt: s.name + ", photo " + n }); return a; };
     var renderSpace = function () {
       var s = SPACES[sp];
+      var si = $("#sImg"); if (si.getAttribute("src") !== s.img) { si.classList.remove("swap"); void si.offsetWidth; si.classList.add("swap"); }
       $("#sImg").src = s.img; $("#sImg").alt = s.name; $("#sName").textContent = s.name; $("#sDesc").textContent = s.desc;
       $("#sThumbs").innerHTML = photos(s).slice(0, 4).map(function (p, i) { return '<button type="button" data-ph="' + i + '" aria-label="Open ' + esc(p.alt) + '"><img src="' + p.t + '" alt="" width="400" height="266" loading="lazy"></button>'; }).join("");
       var a = $("#sAct");
@@ -135,6 +216,7 @@
     $("#lbPrev").addEventListener("click", function () { lbI = (lbI - 1 + lbList.length) % lbList.length; lbShow(); });
     $("#lbNext").addEventListener("click", function () { lbI = (lbI + 1) % lbList.length; lbShow(); });
     $("#lbClose").addEventListener("click", function () { lb.close(); });
+    lb.addEventListener("click", function (e) { if (!e.target.closest("img, button")) lb.close(); });
     lb.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") $("#lbNext").click(); if (e.key === "ArrowLeft") $("#lbPrev").click(); });
     renderSpace();
   }
@@ -143,6 +225,11 @@
      PLAN MY TABLE: card on the page, then a three-step dialog
      ===================================================================== */
   var dlg = $("#planDlg");
+  if (!dlg) {   // menu and events pages do not carry the dialog; it is built here so booking never leaves the page
+    dlg = document.createElement("dialog"); dlg.className = "dlg"; dlg.id = "planDlg"; dlg.setAttribute("aria-labelledby", "pTitle");
+    dlg.innerHTML = '<div class="sheet"><div class="top"><div class="r"><b id="pTitle">Plan my table</b><button type="button" class="x" id="pClose" aria-label="Close">×</button></div><div class="prog" id="pProg"></div></div><div class="body" id="pBody"></div><div class="ft" id="pFt"></div></div>';
+    document.body.appendChild(dlg);
+  }
   if (dlg) {
     var WHO = [{ t: "Two of us", g: 2, seat: "Outdoor" }, { t: "Family", g: 5, seat: "Restaurant" }, { t: "Friends", g: 4, seat: "Bar & Lounge" }, { t: "Celebration", g: 8, seat: "Private room" }, { t: "Work", g: 6, seat: "Private room" }];
     var SEATS = {
@@ -163,6 +250,7 @@
     /* --- the card on the page --- */
     var card = $("#plan");
     var renderCard = function () {
+      if (!card) return;
       $("#who").innerHTML = WHO.map(function (w, i) { return '<button type="button" class="chip" data-who="' + i + '" aria-pressed="' + (i === P.who) + '">' + w.t + "</button>"; }).join("");
       $("#guests").textContent = P.guests;
       var d = dayDiff();
@@ -170,7 +258,7 @@
         '<button type="button" class="chip" data-day="pick" aria-pressed="' + (d > 1) + '">' + (d > 1 ? esc(dateTxt()) : "Pick a date") + "</button>";
       $("#guestNote").textContent = P.guests >= CFG.MAX_GUESTS ? "For more than " + CFG.MAX_GUESTS + ", use the event planner" : "";
     };
-    card.addEventListener("click", function (e) {
+    if (card) card.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
       if (b.dataset.who) { P.who = +b.dataset.who; P.guests = WHO[P.who].g; P.seat = WHO[P.who].seat; }
       else if (b.dataset.day === "pick") { var di = $("#datePick"); if (di.showPicker) { try { di.showPicker(); } catch (er) { di.focus(); } } else di.focus(); return; }
@@ -180,16 +268,19 @@
       renderCard();
     });
     var dp = $("#datePick"), iso = function (d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); };
-    dp.min = iso(today); dp.max = iso(new Date(today.getTime() + 60 * 86400000));
-    dp.addEventListener("change", function () { if (!dp.value) return; var d = new Date(dp.value + "T00:00"); if (d >= today) { P.date = d; P.time = null; renderCard(); } });
+    var maxDay = iso(new Date(today.getTime() + 60 * 86400000));
+    if (dp) { dp.min = iso(today); dp.max = maxDay; }
+    if (dp) dp.addEventListener("change", function () { if (!dp.value) return; var d = new Date(dp.value + "T00:00"); if (d >= today) { P.date = d; P.time = null; renderCard(); } });
     renderCard();
 
     /* --- the dialog --- */
     var body = $("#pBody"), ft = $("#pFt");
+    // the WhatsApp message always names the weekday and date, so it still reads right when staff open it later
+    var msgDate = function () { var d = dayDiff(); return P.date.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" }) + (d === 0 ? " (today)" : d === 1 ? " (tomorrow)" : ""); };
     var sumLine = function () { return (P.step === 1 ? WHO[P.who].t : P.seat) + " · " + guestsTxt() + " · " + dateTxt() + (P.time && P.step > 1 ? " · " + P.time : ""); };
     var listNames = function () { return list.map(function (x) { return (x.q > 1 ? x.q + " × " : "") + x.name; }); };
     var message = function () {
-      return "Hi Bharat Fine Dine! Table request " + P.ref + ": " + P.seat + " for " + P.guests + " on " + dateTxt() + " at " + P.time + " (" + WHO[P.who].t + "). Name: " + P.name.trim() + ". Phone: " + P.phone.trim() + "." +
+      return "Hi Bharat Fine Dine! Table request " + P.ref + ": " + P.seat + " for " + P.guests + " on " + msgDate() + " at " + P.time + " (" + WHO[P.who].t + "). Name: " + P.name.trim() + ". Phone: " + P.phone.trim() + "." +
         (listNames().length ? " Dishes we would like: " + listNames().join(", ") + "." : "") + (P.note.trim() ? " Note: " + P.note.trim() : "");
     };
     var calUrl = function () {
@@ -203,11 +294,16 @@
       var h = "", f = "";
       var sum = '<div class="sum"><span>' + esc(sumLine()) + '</span><button type="button" data-act="change">Change</button></div>';
       if (P.step === 1) {
-        var s = SEATS[P.seat];
-        h = sum + '<div class="card flat sug"><img src="' + s.img + '" alt="' + esc(s.title) + '" width="720" height="480"><div class="tx"><span class="kick">We would seat you in</span><h3 class="h3">' + esc(s.title) + '</h3><ul class="why">' + s.why.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") + "</ul></div></div>" +
+        var s = SEATS[P.seat], dd = dayDiff();
+        var pick = card ? sum :
+          '<div class="grp"><b>Who’s coming?</b><div class="chips">' + WHO.map(function (w, i) { return '<button type="button" class="chip" data-act="who" data-v="' + i + '" aria-pressed="' + (i === P.who) + '">' + w.t + "</button>"; }).join("") + "</div></div>" +
+          '<div class="stepper"><b style="font-size:14px">How many?</b><div class="c"><button type="button" data-act="g" data-v="-1" aria-label="Fewer guests">−</button><output aria-live="polite">' + P.guests + '</output><button type="button" data-act="g" data-v="1" aria-label="More guests">+</button></div></div>' +
+          '<div class="grp"><b>When?</b><div class="chips">' + [["0", "Today"], ["1", "Tomorrow"]].map(function (o) { return '<button type="button" class="chip" data-act="day" data-v="' + o[0] + '" aria-pressed="' + (dd === +o[0]) + '">' + o[1] + "</button>"; }).join("") +
+          '<label class="chip datechip" aria-pressed="' + (dd > 1) + '">' + (dd > 1 ? esc(dateTxt()) : "Pick a date") + '<input type="date" data-pick min="' + iso(today) + '" max="' + maxDay + '" value="' + (dd > 1 ? iso(P.date) : "") + '" aria-label="Pick a date"></label></div></div>';
+        h = pick + '<div class="card flat sug"><img src="' + s.img + '" alt="' + esc(s.title) + '" width="720" height="480"><div class="tx"><span class="kick">We would seat you in</span><h3 class="h3">' + esc(s.title) + '</h3><ul class="why">' + s.why.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") + "</ul></div></div>" +
+          '<div class="grp"><b>Or sit somewhere else</b><div class="chips">' + Object.keys(SEATS).map(function (k) { return '<button type="button" class="chip" data-act="seat" data-v="' + esc(k) + '" aria-pressed="' + (P.seat === k) + '">' + esc(k) + "</button>"; }).join("") + "</div></div>" +
           Object.keys(CFG.SLOTS).map(function (g) { return '<div class="grp"><b>' + g + '</b><div class="chips">' + CFG.SLOTS[g].map(function (t) { return '<button type="button" class="chip" data-act="time" data-v="' + t + '" aria-pressed="' + (P.time === t) + '"' + (past(t) ? " disabled" : "") + ">" + t + "</button>"; }).join("") + "</div></div>"; }).join("") +
           (anySlot() ? "" : '<p class="err">Today’s times have passed. Tap “Change” and pick another day, or call ' + CFG.PHONE + ".</p>") +
-          '<div class="grp"><b>Or sit somewhere else</b><div class="chips">' + Object.keys(SEATS).map(function (k) { return '<button type="button" class="chip" data-act="seat" data-v="' + esc(k) + '" aria-pressed="' + (P.seat === k) + '">' + esc(k) + "</button>"; }).join("") + "</div></div>" +
           '<p class="note">More than ' + CFG.MAX_GUESTS + ' guests? <a href="events.html" class="lnk">Open the event planner</a></p>';
         f = '<span class="note">Your table is held once we reply to confirm on WhatsApp.</span><div class="row"><button type="button" class="btn" data-act="next" aria-disabled="' + !valid() + '">Request this table</button></div>';
       } else if (P.step === 2) {
@@ -228,10 +324,11 @@
         h = '<span class="mr" lang="mr" style="font-size:26px">भेटूया!</span><h3 class="h3">Request sent, ' + esc(first) + ".</h3>" +
           '<div class="sum" style="flex-direction:column;align-items:flex-start;gap:4px"><span>Waiting for our reply on WhatsApp</span><span class="note" style="font-weight:400">' + esc(P.seat + " · " + guestsTxt() + " · " + dateTxt() + " · " + P.time) + ". Reference <b>" + P.ref + "</b></span></div>" +
           '<ol class="steps"><li>We reply on WhatsApp to confirm your table.</li><li>We set it up the way you asked.</li>' + (list.length ? "<li>The kitchen gets your dish list.</li>" : "") + "</ol>" +
-          '<a class="btn ink block" href="' + calUrl() + '" target="_blank" rel="noopener">Add to calendar</a><button type="button" class="btn line block" data-act="close">Back to the wall</button>' +
+          '<a class="btn ink block" href="' + calUrl() + '" target="_blank" rel="noopener">Add to calendar</a><button type="button" class="btn line block" data-act="close">' + (card ? "Back to the wall" : "Done") + '</button>' +
           '<p class="note">WhatsApp did not open? <a class="lnk" href="' + wa(message()) + '" target="_blank" rel="noopener">Send it again</a> or call <a class="lnk" href="tel:+' + CFG.WHATSAPP + '">' + CFG.PHONE + "</a>.</p>";
       }
-      body.innerHTML = h; ft.innerHTML = f; ft.hidden = !f; body.scrollTop = 0;
+      var keep = body.dataset.step === String(P.step) ? body.scrollTop : 0;
+      body.innerHTML = h; ft.innerHTML = f; ft.hidden = !f; body.dataset.step = P.step; body.scrollTop = keep;
     };
     var open = function (seat) {
       if (seat && SEATS[seat]) P.seat = seat;
@@ -252,8 +349,12 @@
       var a = b.dataset.act, v = b.dataset.v;
       if (a === "time") P.time = v;
       else if (a === "seat") P.seat = v;
-      else if (a === "drop") { list = list.filter(function (x) { return x.id !== v; }); saveList(); }
+      else if (a === "drop") { list = list.filter(function (x) { return x.id !== v; }); saveList(); if (onListChange) onListChange(); }
       else if (a === "back") P.step--;
+      else if (a === "who") { P.who = +v; P.guests = WHO[P.who].g; P.seat = WHO[P.who].seat; }
+      else if (a === "g") P.guests = Math.min(CFG.MAX_GUESTS, Math.max(1, P.guests + (+v)));
+      else if (a === "day") { P.date = new Date(today.getTime() + (+v) * 86400000); P.time = null; }
+      else if (a === "change" && !card) P.step = 1;
       else if (a === "change" || a === "close") { close(); if (a === "change") card.scrollIntoView({ block: "center" }); return; }
       else if (a === "next") {
         if (!valid()) { var bad = body.querySelector(P.name.trim().length > 1 ? '[data-in="phone"]' : '[data-in="name"]'); if (bad) bad.focus(); return; }
@@ -266,12 +367,17 @@
       var k = e.target.dataset.in; if (!k) return; P[k] = e.target.value;
       var n = ft.querySelector('[data-act="next"]'); if (n) n.setAttribute("aria-disabled", !valid());
     });
+    body.addEventListener("change", function (e) {
+      if (!e.target.hasAttribute("data-pick") || !e.target.value) return;
+      var d = new Date(e.target.value + "T00:00"); if (d >= today) { P.date = d; P.time = null; render(); }
+    });
     $("#pClose").addEventListener("click", close);
     document.addEventListener("click", function (e) {
-      var b = e.target.closest && e.target.closest("[data-plan]"); if (!b) return;
+      /* on pages without the booking card, links to it open the booking here instead of leaving the page */
+      var b = e.target.closest && e.target.closest('[data-plan], a[href$="#plan"]'); if (!b) return;
       e.preventDefault(); open(b.dataset.plan);
     });
-    if (location.hash === "#plan") setTimeout(function () { card.scrollIntoView({ block: "center" }); }, 100);
+    if (card && location.hash === "#plan") setTimeout(function () { card.scrollIntoView({ block: "center" }); }, 100);
   }
 
   /* =====================================================================
@@ -299,7 +405,8 @@
     var go = function (id, scroll) {
       if (!all.some(function (k) { return k.dataset.k === id; })) return;
       curK = id; q.value = ""; apply();
-      if (scroll) window.scrollTo({ top: $(".railbox").offsetTop - 64 });
+      /* only scroll when the dishes have gone up under the sticky rail; from the top of the page the search stays in view */
+      if (scroll) { var rb = $(".railbox").getBoundingClientRect().bottom, gt = $(".mgrid").getBoundingClientRect().top; if (gt < rb) window.scrollTo({ top: window.scrollY + gt - rb - 8 }); }
       try { history.replaceState(null, "", "#k-" + id); } catch (e) {}
     };
     document.addEventListener("click", function (e) {
@@ -323,7 +430,7 @@
       if (!list.length) { panel.innerHTML = '<span class="kick">Your list</span><b style="font-size:20px">Nothing yet</b><p class="note" style="margin-top:6px">Tap + beside a dish to add it. Your list goes with your table request, so the kitchen knows what you are coming for.</p>'; return; }
       panel.innerHTML = '<span class="kick">Your list</span><b style="font-size:20px">' + list.length + (list.length === 1 ? " dish" : " dishes") + "</b>" +
         list.map(function (x) { return '<div class="row"><span>' + esc(x.name) + '<small>' + esc(x.price) + '</small></span><span class="qty"><button type="button" data-q="-1" data-id="' + esc(x.id) + '" aria-label="One less ' + esc(x.name) + '">−</button><output aria-live="polite">' + (x.q || 1) + '</output><button type="button" data-q="1" data-id="' + esc(x.id) + '" aria-label="One more ' + esc(x.name) + '">+</button><button type="button" class="rm" data-rm="' + esc(x.id) + '" aria-label="Remove ' + esc(x.name) + '">×</button></span></div>'; }).join("") +
-        '<p class="note" style="margin:8px 0 10px">Your list goes with your table request.</p><a class="btn" href="index.html#plan" style="align-self:flex-start">Plan my table</a>';
+        '<p class="note" style="margin:8px 0 10px">Your list goes with your table request.</p><button type="button" class="btn" data-plan style="align-self:flex-start">Plan my table</button>';
     };
     kits.addEventListener("click", function (e) {
       var b = e.target.closest(".add"); if (!b) return;
@@ -335,7 +442,7 @@
       var qb = e.target.closest("[data-q]");
       if (qb) { var it = list.filter(function (x) { return x.id === qb.dataset.id; })[0]; if (it) { it.q = Math.min(20, (it.q || 1) + (+qb.dataset.q)); if (it.q < 1) list = list.filter(function (x) { return x !== it; }); saveList(); renderList(); } return; }
       var b = e.target.closest("[data-rm]"); if (!b) return; list = list.filter(function (x) { return x.id !== b.dataset.rm; }); saveList(); renderList(); });
-    renderList();
+    renderList(); onListChange = renderList;
   }
 
   /* =====================================================================
@@ -384,11 +491,41 @@
     renderEv();
   }
 
+  /* figures count up the first time they are seen */
+  var countUp = function (el) {
+    var m = el.textContent.match(/^([\d.]+)(.*)$/); if (!m) return;
+    var to = parseFloat(m[1]), dec = m[1].indexOf(".") > -1 ? 1 : 0, tail = m[2], t0 = null;
+    var step = function (t) { if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 900), v = to * (1 - Math.pow(1 - p, 3)); el.textContent = v.toFixed(dec) + tail; if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+    setTimeout(function () { el.textContent = m[1] + tail; }, 1100);   // whatever happens to the animation, the real figure is what stays on the page
+  };
+  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var co = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); co.unobserve(e.target); } }); }, { threshold: 0.6 });
+    $$(".stats b, .rating b").forEach(function (el) { co.observe(el); });
+  }
+
   /* reveal sections as they scroll in; anything already on screen is left alone */
   if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { rootMargin: "0px 0px -8% 0px" });
     $$("[data-rv]").forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add("rv"); io.observe(el); } });
   }
+
+  /* moving between pages: a strip of the mural slides past while the next page loads */
+  (function () {
+    var ld = document.createElement("div"); ld.className = "ld"; ld.setAttribute("aria-hidden", "true");
+    ld.innerHTML = '<span class="seal"><img src="img/BFD_seal_red.png" alt="" width="128" height="128"><img class="f" src="img/BFD_seal_red.png" alt="" width="128" height="128"></span><span class="mr" lang="mr">चला…</span>';
+    document.body.appendChild(ld);
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest("a[href]"); if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+      var u; try { u = new URL(a.href, location.href); } catch (er) { return; }
+      if (u.origin !== location.origin || u.pathname === location.pathname) return;   // other sites and same-page links pass straight through
+      if ("onpagereveal" in window) { setTimeout(function () { ld.classList.add("on"); }, 450); return; }   // this browser cross-fades between pages by itself
+      e.preventDefault(); ld.classList.add("on");
+      setTimeout(function () { location.href = u.href; }, 380);                         // long enough to see the seal fill once                       // long enough to read as a transition, not a flash
+    });
+    window.addEventListener("pageshow", function () { ld.classList.remove("on"); });   // also when coming back with the Back button
+  })();
 
   var yr = $("#yr"); if (yr) yr.textContent = new Date().getFullYear();
 })();

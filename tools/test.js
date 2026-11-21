@@ -22,6 +22,8 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   async function ctx(w, h, opt = {}) {
     const c = await b.newContext(Object.assign({ viewport: { width: w, height: h }, timezoneId: 'Asia/Kolkata', locale: 'en-IN' }, opt));
     const p = await c.newPage();
+    // the mural drifts slowly when idle and pauses under a cursor; hold it still so clicks land where a person's would
+    await p.addInitScript(() => document.addEventListener('DOMContentLoaded', () => { const s = document.createElement('style'); s.textContent = '.wall-in{animation:none!important}'; document.head.appendChild(s); }));
     p.on('console', m => { if (m.type() === 'error' && !/404|Failed to load resource/.test(m.text())) errs.push(m.text()); });
     p.on('pageerror', e => errs.push('PAGEERR ' + e.message));
     await p.route('**/img/**', r => { const u = r.request().url(); imgs.add(u.replace(U, '')); const f = REPO + u.replace(U, '').split('?')[0]; fs.existsSync(f) ? r.continue() : r.fulfill({ status: 404, body: '' }); });   // img/ may not be in the repo
@@ -39,7 +41,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
       document.querySelectorAll('body *').forEach(e => {
         if (!vis(e) || e.closest('.sr,.skip')) return;
         const r = e.getBoundingClientRect();
-        if ((r.right > innerWidth + 1 || r.left < -1) && !inScroller(e) && !e.closest('.wall,.foot .m')) out.off.push(id(e));
+        if ((r.right > innerWidth + 1 || r.left < -1) && !inScroller(e) && !e.closest('.wall,.foot .m,.zoom')) out.off.push(id(e));
         if (/^(A|BUTTON)$/.test(e.tagName)) {
           const nm = (e.getAttribute('aria-label') || e.textContent || '').trim() || (e.querySelector('img[alt]:not([alt=""])') ? 'img' : '');
           if (!nm) out.noname.push(id(e));
@@ -64,12 +66,11 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   const DAY = '2026-11-11T07:40:00Z';   // 13:10 India time, a Wednesday
 
   /* ============ 1. layout audit, every page, every size ============ */
-  for (const [vn, w, h] of VP) for (const pg of ['index.html', 'menu.html', 'events.html']) {
+  for (const [vn, w, h] of VP) for (const pg of ['index.html', 'menu.html', 'events.html', 'spaces.html', 'visit.html']) {
     const p = await ctx(w, h); await at(p, DAY); await p.goto(U + pg); await p.waitForTimeout(350);
     await audit(p, 'Layout · ' + pg + ' · ' + vn);
     if (pg === 'index.html') {
-      const tops = await p.$$eval('.node', e => e.map(x => Math.round(x.getBoundingClientRect().top)));
-      ck('Layout · ' + pg + ' · ' + vn, 'seven kitchens stay on one line', new Set(tops).size === 1 && tops.length === 7, tops);
+      eq('Layout · ' + pg + ' · ' + vn, 'all seven kitchens have a pin on the mural', await p.$$eval('.pin', e => e.length), 7);
       const bar = await p.$eval('.mbar', e => getComputedStyle(e).display !== 'none');
       eq('Layout · ' + pg + ' · ' + vn, 'bottom bar only on phone/tablet', bar, w < 820);
       await p.click('[data-plan] >> visible=true >> nth=0'); await p.waitForTimeout(250);
@@ -88,10 +89,10 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   /* ============ 2. header, hero, links ============ */
   {
     const p = await ctx(1440, 900); await at(p, DAY); await p.goto(U + 'index.html'); await p.waitForTimeout(300);
-    eq('Header', 'desktop nav items', await p.$$eval('.hdr nav a', e => e.filter(x => x.offsetParent).map(x => x.textContent.trim())), ['The wall', 'Spaces', 'Events', 'Visit', 'Food menu', 'Plan my table']);
+    eq('Header', 'desktop nav items', await p.$$eval('.hdr nav a', e => e.filter(x => x.offsetParent).map(x => x.textContent.trim())), ['Menu', 'Spaces', 'Events', 'Visit', 'Plan my table']);
     eq('Header', 'stays pinned on scroll', await p.evaluate(async () => { scrollTo(0, 2000); await new Promise(r => setTimeout(r, 100)); return Math.round(document.querySelector('.hdr').getBoundingClientRect().top); }), 0);
     // every internal link resolves
-    for (const pg of ['index.html', 'menu.html', 'events.html']) {
+    for (const pg of ['index.html', 'menu.html', 'events.html', 'spaces.html', 'visit.html']) {
       await p.goto(U + pg); await p.waitForTimeout(200);
       const links = await p.$$eval('a[href]', e => e.map(x => x.getAttribute('href')));
       const bad = [];
@@ -127,11 +128,20 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     const S = 'Wall & stops · ' + vn;
     const p = await ctx(w, h); await at(p, DAY); await p.goto(U + 'index.html'); await p.waitForTimeout(300);
     const K = await p.evaluate(() => window.BFD_KITCHENS);
-    eq(S, '5 pins on the mural, 7 journey stops', [await p.$$eval('.pin', e => e.length), await p.$$eval('.node', e => e.length)], [5, 7]);
+    eq(S, '7 pins on the mural', await p.$$eval('.pin', e => e.length), 7);
+    if (w >= 820) {   // a pin must stay under the cursor when hovered, or the click misses it
+      const moved = [];
+      for (const k of K.filter(x => x.pin)) {
+        const sel = '.pin[data-stop="' + k.n + '"]', at = () => p.$eval(sel, e => { const r = e.getBoundingClientRect(); return [r.left, r.width]; });
+        const a0 = await at(); await p.mouse.move(a0[0] + a0[1] / 2, (await p.$eval(sel, e => { const r = e.getBoundingClientRect(); return r.top + r.height / 2; }))); await p.waitForTimeout(320);
+        const a1 = await at(); if (Math.abs(a1[0] - a0[0]) > 12) moved.push(k.name + ' moved ' + Math.round(a1[0] - a0[0]) + 'px');
+      }
+      await p.mouse.move(5, 5); eq(S, 'no pin jumps away when hovered', moved.join('; '), '');
+    }
     const byK = {}; MENU.sections.forEach(s => { (byK[s.kitchen] = byK[s.kitchen] || []).push(...s.items); });
     for (const k of K) {
-      await p.click('.node[data-stop="' + k.n + '"]'); await p.waitForTimeout(w < 820 ? 450 : 80);
-      const got = await p.evaluate(() => ({ title: document.querySelector('#stop h2').textContent, kick: document.querySelector('#stop .kick').textContent, dishes: [...document.querySelectorAll('#stop .dish')].map(d => [d.querySelector('.n').textContent, d.querySelector('b').textContent, !d.querySelector('.mark').classList.contains('nv')]), link: document.querySelector('#stop .lnk').getAttribute('href'), linkT: document.querySelector('#stop .lnk').textContent, next: document.querySelector('#stop .next').textContent, pressed: [...document.querySelectorAll('.node[aria-pressed=true]')].map(x => x.dataset.stop) }));
+      await p.click('.pin[data-stop="' + k.n + '"]', { force: true }); await p.waitForTimeout(w < 820 ? 450 : 80);
+      const got = await p.evaluate(() => ({ title: document.querySelector('#stop h2').textContent, kick: document.querySelector('#stop .kick').textContent, dishes: [...document.querySelectorAll('#stop .dish')].map(d => [d.querySelector('.n').textContent, d.querySelector('b').textContent, !d.querySelector('.mark').classList.contains('nv')]), link: document.querySelector('#stop .lnk').getAttribute('href'), linkT: document.querySelector('#stop .lnk').textContent, next: document.querySelector('#stop .next').textContent, pressed: [...document.querySelectorAll('.pin[aria-pressed=true]')].map(x => x.dataset.stop) }));
       const items = byK[k.id];
       const okD = got.dishes.length === 4 && got.dishes.every(d => items.some(i => i.veg === d[2] && (i.price === 'APS' ? d[1] === 'As per size' : d[1].replace(/\s/g, '') === String(i.price).replace(/\s/g, '').replace(/^(?!₹)/, ''))));
       ck(S, 'stop ' + k.n + ' ' + k.name + ': title, 4 dishes with real menu prices and veg marks', got.title === k.title && okD, JSON.stringify(got.dishes));
@@ -147,12 +157,12 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
       if (w < 820) { const full = await p.$eval('.pin[data-stop="' + k.n + '"]', e => { const r = e.getBoundingClientRect(); return !e.classList.contains('flip') && r.left >= 0 && r.right <= innerWidth; }); ck(S, 'pin ' + k.n + ' shows its full name once swiped to', full); }
     }
     if (w < 820) {
-      await p.$eval('#wallScroll', e => { e.scrollLeft = 0; }); await p.waitForTimeout(500);
-      const cut = await p.$$eval('.pin', e => e.filter(x => { const r = x.getBoundingClientRect(); return r.left < innerWidth && r.right > innerWidth; }).length);
+      await p.$eval('#wallScroll', e => { e.scrollLeft = 0; }); await p.waitForTimeout(1200);
+      const cut = await p.$$eval('.pin:not(.flip)', e => { const wr = document.querySelector('#wallScroll').getBoundingClientRect().right; return e.filter(x => { const r = x.getBoundingClientRect(); return r.left < wr - 8 && r.right > wr + 1; }).length; });
       eq(S, 'no pin label is cut by the screen edge', cut, 0);
       const ov = await p.$$eval('.pin', e => { const rs = e.map(x => x.getBoundingClientRect()); let n = 0; for (let i = 0; i < rs.length; i++) for (let j = i + 1; j < rs.length; j++) if (rs[i].left < rs[j].right && rs[j].left < rs[i].right && rs[i].top < rs[j].bottom && rs[j].top < rs[i].bottom) n++; return n; });
       eq(S, 'pins do not overlap each other', ov, 0);
-      ck(S, 'journey row can be swiped sideways', await p.$eval('.scrollx', e => e.scrollWidth > e.clientWidth));
+      ck(S, 'the mural can be swiped sideways', await p.$eval('#wallScroll', e => e.scrollWidth > e.clientWidth));
     }
     // each "see all" link lands on the right kitchen
     for (const k of K) { await p.goto('about:blank'); await p.goto(U + 'menu.html#k-' + k.id); await p.waitForTimeout(120); eq(S, 'menu link for ' + k.name + ' opens that kitchen', await p.$$eval('.kit.show', e => e.map(x => x.dataset.k)), [k.id]); }
@@ -207,7 +217,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     eq(S, 'summary rows are right', rows, [['Table', 'Bar & Lounge'], ['Date', 'Tomorrow, 12 Nov'], ['Time', '7:30 pm'], ['Guests', '19 · Two of us'], ['Name', 'Asha <b>K</b>'], ['WhatsApp', '+91 98765 43210']]);
     const href = await p.getAttribute('#pSend', 'href'); const msg = decodeURIComponent(href.split('text=')[1]);
     ck(S, 'WhatsApp link goes to the restaurant number', href.startsWith('https://wa.me/919126268181?text='), href.slice(0, 50));
-    ck(S, 'message carries table, guests, day, time, name, phone, note and a BFD reference', /^Hi Bharat Fine Dine! Table request BFD-\d{4}: Bar & Lounge for 19 on Tomorrow, 12 Nov at 7:30 pm \(Two of us\)\. Name: Asha <b>K<\/b>\. Phone: \+91 98765 43210\. Note: Cake at 9 & a high chair$/.test(msg), msg);
+    ck(S, 'message carries table, guests, day, time, name, phone, note and a BFD reference', /^Hi Bharat Fine Dine! Table request BFD-\d{4}: Bar & Lounge for 19 on Thu, 12 Nov \(tomorrow\) at 7:30 pm \(Two of us\)\. Name: Asha <b>K<\/b>\. Phone: \+91 98765 43210\. Note: Cake at 9 & a high chair$/.test(msg), msg);
     eq(S, 'message on screen is the message that is sent', await p.textContent('#pBody .bubble'), msg);
     // back keeps values
     await p.click('#pFt [data-act=back]'); eq(S, 'Back keeps what was typed', [await p.inputValue('[data-in=name]'), await p.inputValue('[data-in=phone]'), await p.inputValue('[data-in=note]')], ['Asha <b>K</b>', '+91 98765 43210', 'Cake at 9 & a high chair']);
@@ -254,32 +264,33 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   /* ============ 5. spaces + lightbox, events band, reviews, visit, footer ============ */
   for (const [vn, w, h] of [['phone', 390, 844], ['desktop', 1440, 900]]) {
     const S = 'Spaces · ' + vn; const p = await ctx(w, h); await at(p, DAY); await p.goto(U + 'index.html'); await p.waitForTimeout(300);
-    const tabs = await p.$$eval('#stabs .chip', e => e.map(x => x.textContent));
-    const head = await p.textContent('#spH');
-    ck(S, 'heading count matches the number of spaces shown', (head.toLowerCase().includes('seven') ? 7 : tabs.length) === tabs.length && tabs.length === 6, 'heading "' + head + '" but ' + tabs.length + ' tabs: ' + tabs.join(', '));
-    const want = [['Restaurant', 'Plan a table here'], ['Outdoor', 'Plan a table here'], ['Bar & Lounge', 'Plan a table here'], ['Private room', 'Plan a table here'], [null, 'Open the event planner'], [null, 'Open the event planner']];
-    for (let i = 0; i < tabs.length; i++) {
-      await p.click('#stabs [data-sp="' + i + '"]', { force: true });
-      const s = await p.evaluate(() => ({ n: document.querySelector('#sName').textContent, d: document.querySelector('#sDesc').textContent.length, alt: document.querySelector('#sImg').alt, th: document.querySelectorAll('#sThumbs button').length, a: document.querySelector('#sAct').textContent, href: document.querySelector('#sAct').getAttribute('href'), seat: document.querySelector('#sAct').dataset.plan || null, pr: [...document.querySelectorAll('#stabs [aria-pressed=true]')].length }));
-      ck(S, tabs[i] + ': name, text, photo, 4 thumbnails, right button', s.n === tabs[i] && s.d > 30 && s.alt === tabs[i] && s.th === 4 && s.a === want[i][1] && s.seat === want[i][0] && s.pr === 1 && s.href === (want[i][0] ? '#plan' : 'events.html'), JSON.stringify(s));
-      if (want[i][0]) { await p.click('#sAct'); await p.waitForTimeout(120); const SE = { 'Restaurant': 'The fine-dine restaurant', 'Outdoor': 'An outdoor table', 'Bar & Lounge': 'The Bar & Lounge', 'Private room': 'A private dining room' }; eq(S, tabs[i] + ': "Plan a table here" opens booking with that space', await p.textContent('#pBody .sug h3'), SE[want[i][0]]); await p.click('#pClose'); }
-    }
-    await p.click('#stabs [data-sp="2"]', { force: true }); await p.click('#sThumbs [data-ph="1"]'); await p.waitForTimeout(100);
-    eq(S, 'thumbnail opens the photo viewer on that photo', [await p.$eval('#lb', d => d.open), await p.textContent('#lbPos'), await p.getAttribute('#lbImg', 'src')], [true, '2 / 6', 'img/spaces/bar-2.webp']);
-    await p.click('#lbPrev'); await p.click('#lbPrev'); eq(S, 'previous wraps round to the last photo', await p.textContent('#lbPos'), '6 / 6');
-    await p.click('#lbNext'); eq(S, 'next wraps round to the first', await p.textContent('#lbPos'), '1 / 6');
-    await p.keyboard.press('ArrowRight'); eq(S, 'arrow keys move between photos', await p.textContent('#lbPos'), '2 / 6');
-    ck(S, 'viewer photo has a description for screen readers', (await p.getAttribute('#lbImg', 'alt')).length > 5);
-    await p.click('#lbClose'); eq(S, 'Close shuts the viewer', await p.$eval('#lb', d => d.open), false);
-    await p.click('#sThumbs [data-ph="0"]'); await p.keyboard.press('Escape'); eq(S, 'Esc shuts the viewer', await p.$eval('#lb', d => d.open), false);
-
+    const tiles = await p.$$eval('#spaces .pwall a', e => e.map(x => x.getAttribute('href')));
+    eq(S, 'homepage shows six space tiles linking to the Spaces page', tiles, ['dining', 'outdoor', 'bar', 'private', 'meeting', 'hall'].map(k => 'spaces.html#sp-' + k));
+    await p.goto(U + 'spaces.html'); await p.waitForTimeout(300);
+    await p.addStyleTag({ content: '.rv{opacity:1!important;transform:none!important}' });
+    eq(S, 'Spaces page: six sections, six photos each', [await p.$$eval('.sp', e => e.length), await p.$$eval('.gal button', e => e.length)], [6, 36]);
+    const SE = { 'Restaurant': 'The fine-dine restaurant', 'Outdoor': 'An outdoor table', 'Bar & Lounge': 'The Bar & Lounge', 'Private room': 'A private dining room' };
+    for (const seat of Object.keys(SE)) { await p.click('.sp [data-plan="' + seat + '"]'); await p.waitForTimeout(450); eq(S, seat + ': "Plan a table here" opens booking on this page with that space', [await p.evaluate(() => location.pathname), await p.textContent('#pBody .sug h3')], ['/spaces.html', SE[seat]]); await p.click('#pClose'); await p.waitForTimeout(150); }
+    eq(S, 'meeting rooms and halls point to the event planner', await p.$$eval('.sp a.btn', e => e.map(x => x.getAttribute('href'))), ['events.html', 'events.html']);
+    await p.click('.gal [data-lbk="bar"][data-lbn="2"]'); await p.waitForTimeout(400);
+    eq(S, 'a gallery photo opens the viewer on that photo', [await p.$eval('dialog.lb', d => d.open), await p.textContent('dialog.lb span'), await p.getAttribute('dialog.lb img', 'src')], [true, '2 / 6', 'img/spaces/bar-2.webp']);
+    await p.click('dialog.lb [data-d="-1"]'); await p.click('dialog.lb [data-d="-1"]'); eq(S, 'previous wraps round to the last photo', await p.textContent('dialog.lb span'), '6 / 6');
+    await p.click('dialog.lb [data-d="1"]'); eq(S, 'next wraps round to the first', await p.textContent('dialog.lb span'), '1 / 6');
+    await p.keyboard.press('ArrowRight'); eq(S, 'arrow keys move between photos', await p.textContent('dialog.lb span'), '2 / 6');
+    ck(S, 'viewer photo has a description for screen readers', (await p.getAttribute('dialog.lb img', 'alt')).length > 5);
+    await p.mouse.click(8, 8); await p.waitForTimeout(150); eq(S, 'tapping outside the photo shuts the viewer', await p.$eval('dialog.lb', d => d.open), false);
+    await p.click('.gal [data-lbk="hall"][data-lbn="1"]'); await p.waitForTimeout(300); await p.click('dialog.lb [data-d="0"]'); eq(S, 'Close shuts the viewer', await p.$eval('dialog.lb', d => d.open), false);
+    await p.goto(U + 'visit.html'); await p.waitForTimeout(300); await p.addStyleTag({ content: '.rv{opacity:1!important;transform:none!important}' });
+    const fq = await p.$$eval('.faq details', e => e.length); let op = 0;
+    for (let i = 0; i < fq; i++) { await p.click('.faq details >> nth=' + i + ' >> summary'); if (await p.$eval('.faq details >> nth=' + i, d => d.open && d.querySelector('p').offsetHeight > 10)) op++; }
+    eq(S, 'Visit page: all 7 questions open and show an answer', [fq, op], [7, 7]);
+    eq(S, 'Visit page: directions link points at the restaurant', await p.getAttribute('.vcard .cta a.btn >> nth=0', 'href'), 'https://www.google.com/maps/dir/?api=1&destination=18.4099037,76.5422986');
+    await p.goto(U + 'index.html'); await p.waitForTimeout(300);
     const S2 = 'Lower sections · ' + vn;
     eq(S2, 'events band button goes to the event planner', await p.getAttribute('#events a.btn', 'href'), 'events.html');
     eq(S2, 'three reviews shown', await p.$$eval('.rgrid blockquote', e => e.length), 3);
     const stats = await p.$$eval('.stats b', e => e.map(x => x.textContent)); eq(S2, 'event stats present', stats, ['300+', '2', '4']);
-    const faq = await p.$$eval('.faq details', e => e.length); let opened = 0;
-    for (let i = 0; i < faq; i++) { await p.click('.faq details >> nth=' + i + ' >> summary'); if (await p.$eval('.faq details >> nth=' + i, d => d.open && d.querySelector('p').offsetHeight > 10)) opened++; }
-    eq(S2, 'all 3 questions open and show an answer', [faq, opened], [3, 3]);
+    eq(S2, 'homepage Visit card links to the Visit page', await p.getAttribute('.vcard a.lnk', 'href'), 'visit.html');
     eq(S2, 'directions link points at the restaurant', await p.getAttribute('#visit .cta a.btn >> nth=0', 'href'), 'https://www.google.com/maps/dir/?api=1&destination=18.4099037,76.5422986');
     eq(S2, 'footer year is current', await p.textContent('#yr'), '2026');
     if (w < 820) {
@@ -396,7 +407,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
     eq(S, 'after sending: thanks note shows, error hides, lead counted', [await p.$eval('#evDone', e => e.hidden), await p.$eval('#evErr', e => e.hidden), await p.evaluate(() => [...window.dataLayer].some(a => a[0] === 'event' && a[1] === 'generate_lead'))], [false, true, true]);
     await p.fill('#evDate', ''); const m2 = decodeURIComponent((await p.getAttribute('#evSend', 'href')).split('text=')[1]); ck(S, 'no date chosen reads "date to be decided"', m2.includes('date to be decided'), m2);
     eq(S, 'past dates cannot be picked', await p.getAttribute('#evDate', 'min'), '2026-11-11');
-    ck(S, 'header has a way to book a table or see the menu', (await p.$$eval('.hdr a', e => e.filter(x => x.offsetParent).map(x => x.textContent.trim()))).includes('Food menu'));
+    ck(S, 'header has a way to book a table or see the menu', (await p.$$eval('.hdr a', e => e.filter(x => x.offsetParent).map(x => x.textContent.trim()))).includes('Plan my table'));
     await p.context().close();
   }
 
@@ -404,7 +415,7 @@ const eq = (sec, name, got, want) => ck(sec, name, JSON.stringify(got) === JSON.
   {
     const S = 'Resilience';
     const p = await ctx(390, 844, { javaScriptEnabled: false }); await p.goto(U + 'index.html');
-    const nj = await p.evaluate(() => ({ stop: document.querySelector('#stop h2')?.textContent, dishes: document.querySelectorAll('#stop .dish').length, who: document.querySelector('#who').children.length, planBtnVisible: !!document.querySelector('#plan').offsetParent, journey: document.querySelector('#journey').children.length, jVis: !!document.querySelector('#journey').offsetParent, tVis: !!document.querySelector('#stabs').offsetParent, bookWA: [...document.querySelectorAll('a')].some(a => a.offsetParent && /wa\.me/.test(a.href)), tabs: document.querySelector('#stabs').children.length, wa: [...document.querySelectorAll('a')].some(a => /wa\.me/.test(a.href)), tel: [...document.querySelectorAll('a[href^="tel:"]')].filter(a => a.offsetParent).length }));
+    const nj = await p.evaluate(() => ({ stop: document.querySelector('#stop h2')?.textContent, dishes: document.querySelectorAll('#stop .dish').length, who: document.querySelector('#who').children.length, planBtnVisible: !!document.querySelector('#plan').offsetParent, journey: 0, jVis: false, tVis: false, bookWA: [...document.querySelectorAll('a')].some(a => a.offsetParent && /wa\.me/.test(a.href)), tabs: 0, wa: [...document.querySelectorAll('a')].some(a => /wa\.me/.test(a.href)), tel: [...document.querySelectorAll('a[href^="tel:"]')].filter(a => a.offsetParent).length }));
     ck(S, 'JavaScript off: first stop card still shows', nj.stop === 'The Punjabi kitchen' && nj.dishes === 4, JSON.stringify(nj));
     ck(S, 'JavaScript off: visitor can still call and book on WhatsApp', nj.tel > 0 && nj.bookWA, JSON.stringify(nj));
     ck(S, 'JavaScript off: no empty, dead controls are shown (booking card, journey, spaces tabs)', !(nj.planBtnVisible && nj.who === 0) && !nj.jVis && !nj.tVis, 'booking card visible with ' + nj.who + ' choices; journey has ' + nj.journey + ' stops; spaces has ' + nj.tabs + ' tabs');

@@ -28,7 +28,7 @@ KITCHENS = [
          line="Lucknow’s gateway, a nawab at ease, and slow dum handis.",
          featured=[("Chicken Mughlai", None), ("Mutton Rogan Josh", None), ("Veg Dum Biryani", None), ("Butter Chicken", None)]),
     dict(id="maharashtrian", name="Maharashtrian", title="The Maharashtrian kitchen", sub="Home ground", color="#8C2D46", ink="#8C2D46",
-         art="img/mural-maharashtra-720.webp", thumb="img/mural-maharashtra-480.webp", pin=(40.5, 46),
+         art="img/mural-maharashtra-720.webp", thumb="img/mural-maharashtra-480.webp", pin=(45, 58),
          line="Kolhapuri heat and Saoji spice from next door.",
          featured=[("Chicken Kolhapuri Full/Half", "Chicken Kolhapuri"), ("Veg Saoji", None), ("Shev Bhaji", None), ("Chicken Sukha", None)]),
     dict(id="coastal", short="Coastal", name="Coastal & Seafood", title="Coastal & Seafood", sub="Konkan to Kerala", color="#163E52", ink="#163E52",
@@ -37,11 +37,11 @@ KITCHENS = [
          featured=[("Fish (Amritsari/Ajwaini/Achari/Lasuni)", "Fish Amritsari"), ("Prawns (Koliwada/Rava/Tawa/Tandoori)", "Prawns Koliwada"),
                    ("Surmai Curry (Goan/Kerala/Mangalorean)", "Surmai Curry"), ("Pomfret (Tawa/Tandoori/Rava)", "Pomfret Tawa")]),
     dict(id="continental", name="Continental", title="The Continental kitchen", sub="Beyond Bharat", color="#48532A", ink="#48532A",
-         art="img/mural-continental.webp", thumb="img/mural-continental-300.webp", pin=None,
+         art="img/mural-continental.webp", thumb="img/mural-continental-300.webp", pin=(38, 40),
          line="Grills, salads, sizzlers, pizza and pasta.",
          featured=[("Waldorf Salad", None), ("Cheese Club Sandwich", None), ("Grilled Chicken Salad", None), ("Veg Club Sandwich", None)]),
     dict(id="oriental", short="Chinese", name="Chinese & Oriental", title="Chinese & Oriental", sub="The East", color="#0F4E37", ink="#0F4E37",
-         art="img/mural-oriental.webp", thumb="img/mural-oriental-300.webp", pin=None,
+         art="img/mural-oriental.webp", thumb="img/mural-oriental-300.webp", pin=(51.5, 40),
          line="Wok-tossed starters, noodles, rice bowls and Thai curries.",
          featured=[("Veg Hakka Noodles", None), ("Burnt Garlic Noodles", None), ("Crispy Honey Chilli Chicken", None), ("Veg Spring Roll", None)]),
 ]
@@ -150,8 +150,8 @@ PAGE = f"""<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Menu · Bharat Fine Dine, Latur | {total_items} dishes, seven kitchens</title>
-<meta name="description" content="Full menu for Bharat Fine Dine by Sardesai's Kitchen, Latur: Punjabi, tandoor, Mughlai, Maharashtrian, coastal, Continental and Chinese, plus drinks, soups and desserts. Search, filter veg, and build a list for your table.">
+<title>Menu · Bharat Fine Dine, Latur | Veg &amp; non-veg, {total_items} dishes</title>
+<meta name="description" content="Full veg and non-veg menu for Bharat Fine Dine by Sardesai's Kitchen, Latur: Punjabi, tandoor, Mughlai, Maharashtrian, coastal, Continental and Chinese, plus drinks, soups and desserts. Search, filter veg, and build a list for your table.">
 <link rel="canonical" href="https://bharatfinedine.com/menu.html">
 <meta name="theme-color" content="#FAF5EC">
 <link rel="icon" href="BFD_favicon.ico" sizes="any">
@@ -161,10 +161,10 @@ PAGE = f"""<!DOCTYPE html>
 <meta property="og:title" content="Menu · Bharat Fine Dine by Sardesai's Kitchen">
 <meta property="og:description" content="{total_items} dishes across seven kitchens. Latur MIDC.">
 <meta property="og:url" content="https://bharatfinedine.com/menu.html">
-<meta property="og:image" content="https://bharatfinedine.com/og-image.jpg">
+<meta property="og:image" content="https://bharatfinedine.com/og-bharat.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261128">
+<link rel="stylesheet" href="assets/site.css?v=20261231">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False, separators=(",", ":"))}</script>
 <noscript><style>.add,.search,#vegOnly,.mgrid aside,.mbar .cnt{{display:none!important}}</style></noscript>
 </head>
@@ -172,12 +172,12 @@ PAGE = f"""<!DOCTYPE html>
 <a class="skip" href="#main">Skip to content</a>
 <header class="hdr"><div class="wrap">
   <a href="index.html"><img src="img/BFD_logo_horizontal_dark.png" alt="Bharat Fine Dine, home" width="124" height="46"></a>
-  <nav aria-label="Main"><a class="l" href="index.html#wall">The wall</a><a class="l" href="index.html#spaces">Spaces</a><a class="l" href="events.html">Events</a><a class="l" href="index.html#visit">Visit</a><a class="btn" href="index.html#plan">Plan my table</a></nav>
+  <nav aria-label="Main"><a class="l" href="menu.html">Menu</a><a class="l" href="spaces.html">Spaces</a><a class="l" href="events.html">Events</a><a class="l" href="visit.html">Visit</a><a class="btn" href="index.html#plan" data-plan>Plan my table</a><details class="mnav"><summary aria-label="All pages"><i></i></summary><div><a href="index.html">Home</a><a href="menu.html">Food menu</a><a href="spaces.html">Spaces</a><a href="events.html">Events</a><a href="visit.html">Visit</a><a href="tel:+919126268181">Call +91 91262 68181</a></div></details></nav>
 </div></header>
 <main id="main" class="wrap">
   <div class="mhead">
-    <div class="l"><span class="mr" lang="mr" style="font-size:24px">काय मागवायचं?</span><h1 class="h1" style="font-size:clamp(40px,4.6vw,64px)">The menu</h1></div>
-    <div class="r"><span class="lede" style="font-size:15px">Follow the wall, one stop at a time, or search all {total_items} dishes.</span>
+    <div class="l"><span class="mr mrk" lang="mr">काय मागवायचं?</span><h1 class="h2">The menu</h1></div>
+    <div class="r"><span class="note">Follow the wall, one stop at a time, or search all {total_items} dishes.</span>
       <label class="search"><span aria-hidden="true">⌕</span><span class="sr">Search dishes</span><input type="search" id="q" placeholder="Search paneer, biryani, kolhapuri" autocomplete="off"></label></div>
   </div>
   <div class="railbox"><div class="rail" id="rail" role="group" aria-label="Kitchens">{rail}<button type="button" class="chip" id="vegOnly" aria-pressed="false"><span class="mark" aria-hidden="true"></span>Veg only</button></div></div>
@@ -192,9 +192,9 @@ PAGE = f"""<!DOCTYPE html>
   </div>
 </main>
 <footer class="foot"><div class="legal"><div class="wrap"><span>© 2026 Bharat Fine Dine · by Sardesai's Kitchen · FSSAI Lic. No. 11524049000056</span><span><a href="index.html">Home</a> · <a href="events.html">Events</a> · <a href="tel:+919126268181">+91 91262 68181</a></span></div></div></footer>
-<div class="mbar" aria-label="Quick actions"><a class="cnt" id="barCount" href="#mylist">Add dishes with +</a><a class="go" href="index.html#plan">Plan my table</a></div>
-<script src="assets/data.js?v=20261128" defer></script>
-<script src="assets/app.min.js?v=20261128" defer></script>
+<div class="mbar" aria-label="Quick actions"><a class="cnt" id="barCount" href="#mylist">Add dishes with +</a><a class="go" href="index.html#plan" data-plan>Plan my table</a></div>
+<script src="assets/data.js?v=20261231" defer></script>
+<script src="assets/app.min.js?v=20261231" defer></script>
 </body>
 </html>
 """
@@ -222,3 +222,7 @@ try:
 except Exception as err:  # keep the site working even without Node: ship the readable file
     shutil.copyfile(ROOT / "assets" / "app.js", ROOT / "assets" / "app.min.js")
     print("WARNING: could not minify (%s). app.min.js is an unminified copy of app.js." % err)
+
+# ---------- spaces.html and visit.html ----------
+import runpy
+runpy.run_path(str(ROOT / "tools" / "pages.py"))
